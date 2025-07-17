@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+
+  .custom-button{
+    @apply px-6 bg-gray-500 py-3 rounded-full font-bold cursor-pointer  ; 
+  }
+}

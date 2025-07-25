@@ -3,10 +3,11 @@ import React from "react";
 import Logo from "@/assets/Logo.js";
 import Link from "next/link";
 import { usePathname } from 'next/navigation'
+import { useSession } from "next-auth/react";
 const Navbar = () => {
   const pathname = usePathname()
-    const hideNavebar = !(pathname === "/login");
- 
+  const hideNavebar = !(pathname === "/login");
+  const { data: session } = useSession();
 
   return (
     <>
@@ -36,10 +37,11 @@ const Navbar = () => {
 
             </ul>
 
-            <div className="flex gap-2">
-              <Link href={"/login?action=login"} className=" px-6 bg-gray-200 py-3 rounded-sm font-bold">Log in</Link>
-              <Link href={'/login?action=signup'} className=" custom-button   bg-gray-900 text-white   ">Sign up free</Link>
-            </div>
+            {session?.user ? <button className=" px-6 bg-gray-200 py-3 rounded-sm font-bold" onClick={() => signOut()}>Sign out</button>
+              : <div className="flex gap-2">
+                <Link href={"/login?action=login"} className=" px-6 bg-gray-200 py-3 rounded-sm font-bold">Log in</Link>
+                <Link href={'/login?action=signup'} className=" custom-button   bg-gray-900 text-white   ">Sign up free</Link>
+              </div>}
           </div>
         </nav>
 

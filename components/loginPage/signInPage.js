@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "@/assets/Logo";
 import SocialButton from "./socialButton";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -8,9 +8,10 @@ const SignInPage = props => {
     email: "test@email.com",
     username: "testUSername",
     password: "TEst passw",
-  }); 
-  const router = useRouter()
-  
+  });
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const handelChange = e => {
     setform({ ...form, [e.target.name]: e.target.value });
   };
@@ -27,18 +28,30 @@ const SignInPage = props => {
       isSignUp: true,
     };
 
-    await signIn("credentials", sendingData);
-
-   
     let res = await signIn("credentials", sendingData);
-    if (res.ok) {
-      router.push('dashboard')
+   
+    if (res.error) {
+      alert(res.error)
     }
 
-     
-     
   };
+  useEffect(() => {
+    if (session?.user) {
+      console.log(session.user);
 
+      fetch("api/user")
+        .then(res => res.json())
+        .then(data => {
+
+          
+          if (data.isAvailable) {
+            router.push("dashboard");
+          } else {
+            router.push("userinfo");
+          }
+        });
+    }
+  }, [session]);
   return (
     <main className="box border  flex h-screen ">
       <section className="left  border max-w-1/2 w-1/2 bg-white  text-black max-h-screen overflow-y-scroll ">

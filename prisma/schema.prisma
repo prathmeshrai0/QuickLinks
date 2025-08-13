@@ -14,10 +14,46 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId // MongoDB uses _id
+  // fieldName  FieldType   @attribute
+
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique
   username  String?  @unique
   password  String?
   provider  Boolean
   createdAt DateTime @default(now())
+
+  userInfo UserInfo?
+}
+
+model UserInfo {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  about String?
+
+  // Personal Info
+  firstName     String?
+  lastName      String?
+  country       String?
+  streetAddress String?
+  city          String?
+  region        String?
+  postalCode    String?
+
+  // Academic Info
+  tenthMarks       String?
+  twelfthMarks     String?
+  schoolName       String?
+  collegeName      String?
+  graduationCourse String?
+  graduationCgpa   String?
+  postgrad         String?
+  postgradCgpa     String?
+  phd              String?
+  specialization   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  userId String @unique @db.ObjectId
 }

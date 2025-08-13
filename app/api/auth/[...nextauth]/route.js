@@ -1,10 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import prisma from "@/prisma/connectDb";
+export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET, // 👈 REQUIRED to decrypt the session
 
-const prisma = new PrismaClient();
-const handler = NextAuth({
   // Configure one or more authentication providers
   providers: [
     GithubProvider({
@@ -23,7 +24,7 @@ const handler = NextAuth({
       async authorize(credentials, req) {
         // SIGN IN FLOW
 
-        if (credentials.isSignUp == "true") {
+        if (credentials.isSignUp === "true") {
           const existingUser = await prisma.user.findFirst({
             where: {
               OR: [
@@ -48,16 +49,22 @@ const handler = NextAuth({
               },
             });
 
-            const { email, username } = newUser;
-            return { email, username };
+            const { email, username , id } = newUser;
+            return { email, username  , id};
           }
         }
         // LOGIN FLOW
         else {
-          const givenUsername = credentials.givenUsername;
+     
+
+          const givenUsername = credentials.givenUsername === 'true';
+           
+          
           const whereCondition = givenUsername
             ? { username: credentials.username }
             : { email: credentials.email };
+
+          
           const existingUser = await prisma.user.findFirst({
             where: whereCondition,
           });
@@ -79,14 +86,12 @@ const handler = NextAuth({
       if (user) {
         token.user = user; // attach your returned user here
       }
-      console.log("in jwt acc ", account, " user ", user, " token ", token);
 
       return token;
     },
     async session({ session, token, user }) {
       session.accessToken = token.accessToken;
       session.user = token.user; // this sets what goes to the frontend
-      console.log("session ", session);
 
       return session;
     },
@@ -111,6 +116,7 @@ const handler = NextAuth({
       return true;
     },
   },
-});
+};
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

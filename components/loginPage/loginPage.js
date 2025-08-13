@@ -5,7 +5,9 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import SocialButton from "./socialButton";
 import validator from "validator";
 import { useRouter } from "next/navigation";
+import prisma from "@/prisma/connectDb";
 const LoginPage = props => {
+  const { data: session } = useSession();
   const [form, setform] = useState({
     email: "test@email.com",
     username: "testUSername",
@@ -47,10 +49,25 @@ const LoginPage = props => {
     }
 
     let res = await signIn("credentials", sendingData);
-    if (res.ok) {
-      router.push("dashboard");
+
+    if (res.error) {
+      alert(res.error);
     }
   };
+
+  useEffect(() => {
+    if (session?.user) {
+      fetch("api/user")
+        .then(res => res.json())
+        .then(data => {
+          if (data.isAvailable) {
+            router.push("dashboard");
+          } else {
+            router.push("userinfo");
+          }
+        });
+    }
+  }, [session]);
 
   return (
     <main className="box border  flex h-screen ">

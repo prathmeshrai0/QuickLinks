@@ -43,3 +43,5 @@ next-env.d.ts
 /generated/prisma
 
 test.js
+
+points.md

@@ -6,16 +6,18 @@ export async function POST(req) {
   const session = await getServerSession(authOptions);
   const body = await req.json();
   let response;
+
+  // console.log(body);
+
   if (session?.user) {
-    const user = await prisma.userInfo.create({
-      data: {
-        ...body,
-        user: {
-          connect: {
-            id: session.user.id,
-          },
-        },
-      },
+    body.forEach(obj => {
+      delete obj.tag;
+      obj.projectId = session.user.id;
+    });
+    console.log(body);
+
+    const user = await prisma.allProjects.createMany({
+      data: body,
     });
     response = {
       success: true,
@@ -31,23 +33,6 @@ export async function POST(req) {
   }
 
   return new Response(JSON.stringify(response));
-}
-
-export async function GET(req) {
-  const session = await getServerSession(authOptions);
-
-  let user = null;
-  if (session.user.id) {
-    user = await prisma.userInfo.findFirst({
-      where: {
-        userId: session.user.id,
-      },
-    });
-  }
-
-  if (user) {
-    return new Response(JSON.stringify({ isAvailable: true, status: 200 }));
-  } else {
-    return new Response(JSON.stringify({ isAvailable: false, status: 404 }));
-  }
+  return new Response();
+  // JSON.stringify({ success: true, message: "data  all projects saved" })
 }

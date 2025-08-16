@@ -14,8 +14,10 @@ const Dashboard = () => {
     subcategory: "",
     thumbnail: "",
     tag: "",
-    tags: [],
-  });
+    techStack: [],
+ 
+  }
+  );
   const { data: session } = useSession();
   const router = useRouter();
   const [TotalProjects, setTotalProjects] = useState([form]);
@@ -35,17 +37,15 @@ const Dashboard = () => {
       if (currentForm.tag.endsWith(",") && currentForm.tag.length > 1) {
         console.log(currentForm);
         let newTag = currentForm.tag.slice(0, -1);
-        // console.log(currentForm.tags);
+        // console.log(currentForm.techStack);
 
-        let updatedTags = [...currentForm["tags"], newTag];
-       
+        let updatedTags = [...currentForm["techStack"], newTag];
 
         currentForm = {
           ...currentForm,
-          ["tags"]: updatedTags,
+          ["techStack"]: updatedTags,
           ["tag"]: "",
         };
-        console.log(currentForm);
       } else if (currentForm.tag.endsWith(",") && currentForm.tag.length < 2) {
         alert("You need to add a tag ");
       }
@@ -55,46 +55,38 @@ const Dashboard = () => {
     setTotalProjects(updatedProjects);
   };
 
-  const removeTag = (e, key ,tagKey)  => {
-
+  const removeTag = (e, key, tagKey) => {
     const currentProjectObject = TotalProjects[key];
-    currentProjectObject.tags.splice(tagKey, 1);
+    currentProjectObject.techStack.splice(tagKey, 1);
 
-    TotalProjects[key] =  currentProjectObject ;
-    setTotalProjects([...TotalProjects ])
-     
-
-    // console.log(tagKey);
-    
-    
-    // setTotalProjects([...TotalProjects , currentProjectObject])
-    // let newTags = [...form.tags];
-    // newTags.splice(key, 1);
-    // setform({ ...form, tags: newTags });
+    TotalProjects[key] = currentProjectObject;
+    setTotalProjects([...TotalProjects]);
   };
   const handleAdd = (e, key) => {
     e.preventDefault();
     const currentProjectObject = TotalProjects[key];
 
-    const isEmpty = Object.entries(currentProjectObject).every(([key, value]) => {
-      // iterating through all the pair of object
-      // skipping for only thumbnail as its not compulsory
+    const isEmpty = Object.entries(currentProjectObject).every(
+      ([key, value]) => {
+        // iterating through all the pair of object
+        // skipping for only thumbnail as its not compulsory
 
-      let result;
-      if (key === "thumbnail") {
-        result = false;
-        return result;
-      } else {
-        result =
-          value === "" || (Array.isArray(value) && value.length === 0)
-            ? value.length > 0
-            : false;
-        return result;
+        let result = false;
+        if (key === "thumbnail") {
+          result = true;
+          return result;
+        } else {
+          result =
+            (typeof value === "string" && value.length <= 1) ||
+            (Array.isArray(value) && value.length <= 1);
+
+          return result;
+        }
       }
-    });
+    );
 
     if (isEmpty) {
-      alert("Kindly fill Project Details");
+      alert("Kindly first fill Project Details");
     } else {
       setTotalProjects([...TotalProjects, form]);
     }
@@ -105,8 +97,6 @@ const Dashboard = () => {
     }
   }, [TotalProjects.length]);
 
- 
-  
   useEffect(() => {
     if (!session) {
       router.push("/login");
@@ -117,6 +107,24 @@ const Dashboard = () => {
     return null;
   }
 
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    await fetch("/api/saveProjects", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(TotalProjects),
+    })
+      .then(res => {
+        return res.json(); // you need to return here because you are doing within {}
+      })
+      .then(data => {
+        // console.log(data);
+        if (data.success) {
+           router.push('portfolio')
+        }
+      });
+  };
   return (
     <>
       {TotalProjects.map((itemForm, key) => {
@@ -136,7 +144,7 @@ const Dashboard = () => {
                       htmlFor="title"
                       className="text-xs xs:text-sm font-medium text-gray-700 mb-1"
                     >
-                      Project Title{" "}
+                      Project Title
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="17"
@@ -211,6 +219,23 @@ const Dashboard = () => {
                         className="text-xs xs:text-sm font-medium text-gray-700 mb-1"
                       >
                         Category
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="17"
+                          height="17"
+                          color="#9CA3AF"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-circle-alert inline-block"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" x2="12" y1="8" y2="12"></line>
+                          <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                        </svg>
                       </label>
                       <select
                         name="category"
@@ -240,6 +265,23 @@ const Dashboard = () => {
                         className="text-xs xs:text-sm font-medium text-gray-700 mb-1"
                       >
                         Subcategory
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="17"
+                          height="17"
+                          color="#9CA3AF"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-circle-alert inline-block"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" x2="12" y1="8" y2="12"></line>
+                          <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                        </svg>
                       </label>
                       <select
                         name="subcategory"
@@ -294,10 +336,27 @@ const Dashboard = () => {
                         className="text-xs xs:text-sm font-medium text-gray-700 mb-1"
                       >
                         Tech Stack (seperated by commas)
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="17"
+                          height="17"
+                          color="#9CA3AF"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-circle-alert inline-block"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" x2="12" y1="8" y2="12"></line>
+                          <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                        </svg>
                       </label>
                       <div className="flex flex-wrap items-center border rounded-md xs:p-2 bg-white pl-2">
-                        {itemForm.tags.length > 0 &&
-                          itemForm.tags.map((ele, tagKey) => {
+                        {itemForm.techStack.length > 0 &&
+                          itemForm.techStack.map((ele, tagKey) => {
                             return (
                               <span
                                 className="bg-[#D9F99D] text-[#4D7C0F] px-1 py-0 xs:px-2 xs:py-1 rounded m-1 text-xs xs:text-sm flex items-center"
@@ -307,8 +366,8 @@ const Dashboard = () => {
                                 <button
                                   type="button"
                                   className="ml-1 text-[#4D7C0F] focus:outline-none cursor-pointer"
-                                  onClick={(e) => {
-                                    removeTag(e,key , tagKey);
+                                  onClick={e => {
+                                    removeTag(e, key, tagKey);
                                   }}
                                 >
                                   {" "}
@@ -346,6 +405,7 @@ const Dashboard = () => {
                       </button>
                       <button
                         type="submit"
+                        onClick={handleSubmit}
                         className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]  gap-[10px] text-white px-1.5 cursor-pointer"
                       >
                         Continue

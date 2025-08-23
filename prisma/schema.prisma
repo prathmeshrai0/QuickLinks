@@ -67,9 +67,8 @@ model AllProjects {
   subcategory String
   thumbnail   String?
   techStack   String[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  owner     UserInfo @relation(fields: [projectId], references: [id])
-  projectId String   @db.ObjectId
+  owner     UserInfo @relation(fields: [UserInfoId], references: [userId])
+  UserInfoId String   @db.ObjectId
 }

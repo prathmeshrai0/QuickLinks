@@ -119,9 +119,9 @@ const Dashboard = () => {
         return res.json(); // you need to return here because you are doing within {}
       })
       .then(data => {
-        // console.log(data);
+         
         if (data.success) {
-           router.push('portfolio')
+           router.push('portfolio/'+data.user.username)
         }
       });
   };

@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 const Navbar = () => {
   const pathname = usePathname();
-  const hideNavebar = !(pathname === "/login");
+  const hideNavebar = !(pathname === "/login" || pathname.startsWith("/portfolio"));
   const { data: session } = useSession();
   const [ifUserInfoAvailable, setifUserInfoAvailable] = useState(null);
 
@@ -40,27 +40,28 @@ const Navbar = () => {
             <ul className="flex   items-center gap-10    ">
               {/* (li>Link[href="/"]{test $})*4 */}
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/">test 1</Link>
+                <Link href="/">Home</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/">test 2</Link>
+                <Link href="/about">About</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/">test 3</Link>
+                <Link href="/licensing">Licensing</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/">test 4</Link>
+                <Link href="/">Github</Link>
               </li>
             </ul>
             <div className="buttons flex gap-2">
 
               {session?.user ? (
-                <button
+                <Link
+                href={'/login?action=login'}
                   className=" px-6 bg-gray-200 py-3 rounded-sm font-bold"
-                  onClick={() => signOut()}
+                  onClick={() => signOut({ callbackUrl: "/login?action=login" })}
                 >
                   Sign out
-                </button>
+                </Link>
               ) : (
                <>
                   <Link

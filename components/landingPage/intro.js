@@ -1,6 +1,20 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
+import LoadingPage from "../Loading/LoadingPage";
 
 const intro = () => {
+  const [LatestCustomers, setLatestCustomers] = useState()
+
+  useEffect(() => {
+     fetch(new URL('api/latestCustomers', process.env.NEXT_PUBLIC_BASE_URL))
+    .then(res => res.json())
+    .then(data => { 
+      setLatestCustomers(data.users)
+    })
+  }, [])
+  
+ console.log(LatestCustomers);
+ 
   return (
     <section className="bg-[#254f1a] h-[140vh]   relative    ">
       <div className=" absolute bottom-30         h-[65%] flex mx-14  gap-20   ">
@@ -28,12 +42,7 @@ const intro = () => {
             <h5 className="text-xl font-bold leading-none text-gray-900  ">
               Latest Customers
             </h5>
-            <a
-              href="#"
-              className="text-sm font-medium text-blue-600 hover:underline "
-            >
-              View all
-            </a>
+
           </div>
 
           <div className="flow-root border-2   ">
@@ -41,33 +50,7 @@ const intro = () => {
               role="list"
               className="divide-y divide-gray-200    "
             >
-              {[
-                {
-                  name: "Neil Sims",
-                  amount: "$320",
-                  img: "/docs/images/people/profile-picture-1.jpg",
-                },
-                {
-                  name: "Bonnie Green",
-                  amount: "$3467",
-                  img: "/docs/images/people/profile-picture-3.jpg",
-                },
-                {
-                  name: "Michael Gough",
-                  amount: "$67",
-                  img: "/docs/images/people/profile-picture-2.jpg",
-                },
-                {
-                  name: "Lana Byrd",
-                  amount: "$367",
-                  img: "/docs/images/people/profile-picture-4.jpg",
-                },
-                {
-                  name: "Thomes Lean",
-                  amount: "$2367",
-                  img: "/docs/images/people/profile-picture-5.jpg",
-                },
-              ].map((user, index) => (
+               { LatestCustomers?  LatestCustomers.map((user, index) => (
                 <li
                   key={index}
                   className={`py-3 sm:py-4 ${index === 4 ? "pb-0 sm:pt-4 pt-3" : ""
@@ -78,15 +61,15 @@ const intro = () => {
                       <img
                         className="w-8 h-8 rounded-full"
                         src={user.img}
-                        alt={`${user.name} image`}
+                        alt={`${user.firstName} image`}
                       />
                     </div>
                     <div className="flex-1 min-w-0 ms-4">
                       <p className="text-sm font-medium text-gray-900 truncate ">
-                        {user.name}
+                        {user.firstName} {user.lastName}
                       </p>
                       <p className="text-sm text-gray-500 truncate ">
-                        email@windster.com
+                        
                       </p>
                     </div>
                     <div className="inline-flex items-center text-base font-semibold text-gray-900 ">
@@ -94,7 +77,7 @@ const intro = () => {
                     </div>
                   </div>
                 </li>
-              ))}
+              )) : <LoadingPage/> }
             </ul>
           </div>
         </div>

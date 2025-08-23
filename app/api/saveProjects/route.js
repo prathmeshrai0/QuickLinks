@@ -12,9 +12,9 @@ export async function POST(req) {
   if (session?.user) {
     body.forEach(obj => {
       delete obj.tag;
-      obj.projectId = session.user.id;
+      obj.UserInfoId = session.user.id;
     });
-    console.log(body);
+    // console.log(body);
 
     const user = await prisma.allProjects.createMany({
       data: body,
@@ -23,9 +23,10 @@ export async function POST(req) {
       success: true,
       dataSaved: user,
       message: "data saved",
+      user:session?.user
     };
   } else {
-    console.log(" else case is executed");
+    // console.log(" else case is executed");
     response = {
       success: false,
       message: "data not saved session data not available",

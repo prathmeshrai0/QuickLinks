@@ -2,6 +2,7 @@ import prisma from "@/prisma/connectDb";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+// creating user info 
 export async function POST(req) {
   const session = await getServerSession(authOptions);
   const body = await req.json();
@@ -33,6 +34,7 @@ export async function POST(req) {
   return new Response(JSON.stringify(response));
 }
 
+// getting particular userInfo data according to session data 
 export async function GET(req) {
   const session = await getServerSession(authOptions);
 
@@ -44,10 +46,11 @@ export async function GET(req) {
       },
     });
   }
+  
 
   if (user) {
-    return new Response(JSON.stringify({ isAvailable: true, status: 200 }));
+    return new Response(JSON.stringify({ isAvailable: true, status: 200 , message:"Welcome" , user: user}));
   } else {
-    return new Response(JSON.stringify({ isAvailable: false, status: 404 }));
+    return new Response(JSON.stringify({ isAvailable: false, status: 404 , message:"User Data is not Available Kindly fill the Form" }));
   }
 }

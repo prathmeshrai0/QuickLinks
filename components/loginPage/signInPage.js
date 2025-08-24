@@ -37,13 +37,11 @@ const SignInPage = props => {
   };
   useEffect(() => {
     if (session?.user) {
-      console.log(session.user);
 
       fetch("api/user")
         .then(res => res.json())
         .then(data => {
-
-          
+ 
           if (data.isAvailable) {
             router.push("dashboard");
           } else {

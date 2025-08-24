@@ -60,6 +60,8 @@ const LoginPage = props => {
       fetch("api/user")
         .then(res => res.json())
         .then(data => {
+      
+          
           if (data.isAvailable) {
             router.push("dashboard");
           } else {

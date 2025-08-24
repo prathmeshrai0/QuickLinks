@@ -51,8 +51,8 @@ const PortfolioPage = props => {
       techStack: ["tmkoc"],
       UserInfoId: "68a767535d8a8740c8aaca19",
     },
-  ];
-  console.log(AllProjects);
+  ]; 
+ 
 
   return (
     <>
@@ -96,20 +96,10 @@ const PortfolioPage = props => {
               <span className="font-medium">Country:</span>{" "}
               {UserDetails.country}
             </div>
-            <div>
+            {UserDetails.city && <div>
               <span className="font-medium">City:</span> {UserDetails.city}
-            </div>
-            <div>
-              <span className="font-medium">Region:</span> {UserDetails.region}
-            </div>
-            <div>
-              <span className="font-medium">Postal Code:</span>{" "}
-              {UserDetails.postalCode}
-            </div>
-            <div>
-              <span className="font-medium">Street Address:</span>{" "}
-              {UserDetails.streetAddress}
-            </div>
+            </div>}
+             
           </div>
         </section>
 
@@ -173,7 +163,7 @@ const PortfolioPage = props => {
                     <img
                       className="w-full h-full object-cover"
                       // src="https://docs.material-tailwind.com/img/team-3.jpg"
-                      src={ele.thumbnail}
+                      src={ele.thumbnail || ""} 
                       alt="thumbnail"
                     />
                   </div>

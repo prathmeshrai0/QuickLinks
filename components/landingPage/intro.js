@@ -37,7 +37,7 @@ const intro = () => {
           </form>
         </div>
         {/* part 2 */}
-        <div className="w-full max-w-md p-4 bg-white border-2 border-black rounded-lg shadow-sm sm:p-8  ">
+        <div className="w-full max-w-md p-4 bg-white border-2 border-black rounded-lg shadow-md sm:p-8      ">
           <div className="flex items-center justify-between mb-4">
             <h5 className="text-xl font-bold leading-none text-gray-900  ">
               Latest Customers
@@ -45,18 +45,18 @@ const intro = () => {
 
           </div>
 
-          <div className="flow-root border-2   ">
+          <div className="  border-2 h-96     flex  justify-center ">
             <ul
               role="list"
-              className="divide-y divide-gray-200    "
-            >
+              className="divide-y divide-gray-200 w-md   "
+            > 
                { LatestCustomers?  LatestCustomers.map((user, index) => (
                 <li
                   key={index}
-                  className={`py-3 sm:py-4 ${index === 4 ? "pb-0 sm:pt-4 pt-3" : ""
+                  className={`py-3 sm:py-4   w-full ${index === 4 ? "pb-0 sm:pt-4 pt-3" : ""
                     }`}
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center  ">
                     <div className="shrink-0">
                       <img
                         className="w-8 h-8 rounded-full"

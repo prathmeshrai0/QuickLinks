@@ -48,8 +48,7 @@ export default function userCreatingPortfolio() {
       .then(res => {
        return res.json(); // you need to return here because you are doing within {}
       })
-      .then(data => {
-        // console.log(data);
+      .then(data => { 
         if(data.success){
             router.push('dashboard')
         }

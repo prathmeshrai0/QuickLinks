@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import categories_subCat from "./categories_subCat";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LoadingPage from "../Loading/LoadingPage";
 
 const Dashboard = () => {
   const categories = categories_subCat.categories;
@@ -15,12 +16,39 @@ const Dashboard = () => {
     thumbnail: "",
     tag: "",
     techStack: [],
- 
-  }
-  );
-  const { data: session } = useSession();
-  const router = useRouter();
+  });
+  const { data: session, status } = useSession();
   const [TotalProjects, setTotalProjects] = useState([form]);
+  const [ProjectsAlreadyPresent, setProjectsAlreadyPresent] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (TotalProjects.length > 1) {
+      window.scrollBy({ top: 580, behavior: "smooth" });
+    }
+  }, [TotalProjects.length]);
+
+  useEffect(() => {
+
+    if (session?.user && status === 'authenticated') {
+      fetch("api/aboutProjects")
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setProjectsAlreadyPresent(true);
+          }
+        });
+    }
+
+
+  }, [status, router, session]);
+
+
+
+  if (status === "loading") {
+    return <LoadingPage />
+  }
+
   const handleChange = (e, key) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -35,9 +63,8 @@ const Dashboard = () => {
       let currentForm = updatedProjects[key];
 
       if (currentForm.tag.endsWith(",") && currentForm.tag.length > 1) {
-        console.log(currentForm);
+
         let newTag = currentForm.tag.slice(0, -1);
-        // console.log(currentForm.techStack);
 
         let updatedTags = [...currentForm["techStack"], newTag];
 
@@ -64,80 +91,59 @@ const Dashboard = () => {
   };
   const handleAdd = (e, key) => {
     e.preventDefault();
-    const currentProjectObject = TotalProjects[key];
 
-    const isEmpty = Object.entries(currentProjectObject).every(
-      ([key, value]) => {
-        // iterating through all the pair of object
-        // skipping for only thumbnail as its not compulsory
-
-        let result = false;
-        if (key === "thumbnail") {
-          result = true;
-          return result;
-        } else {
-          result =
-            (typeof value === "string" && value.length <= 1) ||
-            (Array.isArray(value) && value.length <= 1);
-
-          return result;
-        }
-      }
-    );
-
-    if (isEmpty) {
-      alert("Kindly first fill Project Details");
-    } else {
-      setTotalProjects([...TotalProjects, form]);
-    }
+    setTotalProjects([...TotalProjects, form]);
   };
-  useEffect(() => {
-    if (TotalProjects.length > 1) {
-      window.scrollBy({ top: 580, behavior: "smooth" });
-    }
-  }, [TotalProjects.length]);
-
-  useEffect(() => {
-    if (!session) {
-      router.push("/login");
-    }
-  }, [session, router]);
 
   if (!session) {
     return null;
   }
 
-
   const handleSubmit = async e => {
     e.preventDefault();
-    await fetch("/api/saveProjects", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(TotalProjects),
+
+    const isAllTechStackFilled = TotalProjects.every((obj) => {
+      console.log(obj.techStack);
+      if (obj.techStack.length < 1) {
+        return false;
+      }
+      return true;
+
     })
-      .then(res => {
-        return res.json(); // you need to return here because you are doing within {}
+    if (isAllTechStackFilled) {
+
+      await fetch("/api/aboutProjects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(TotalProjects),
       })
-      .then(data => {
-         
-        if (data.success) {
-           router.push('portfolio/'+data.user.username)
-        }
-      });
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          if (data.success) {
+            router.push("portfolio/" + data.user.username);
+          }
+        });
+    }
+    else {
+      alert('Kindly add minimun one #Tag ')
+    }
   };
   return (
     <>
-      {TotalProjects.map((itemForm, key) => {
-        return (
-          <section
-            key={key}
-            className="bg-white p-1 xs:p-8 min-h-screen pt-32 pb-12  "
-          >
-            <div className="max-w-96 sm:max-w-4xl mx-auto border border-[#4D7C0F] rounded-lg p-8">
-              <h2 className="sm:text-xl text-[12px] font-bold mb-6 text-black">
-                Project {key + 1}
-              </h2>
-              <form>
+      <form onSubmit={handleSubmit}>
+        {TotalProjects.map((itemForm, key) => {
+          return (
+            <section
+              key={key}
+              className="bg-white p-1 xs:p-8 min-h-screen pt-32 pb-12  "
+            >
+              <div className="max-w-96 sm:max-w-4xl mx-auto border border-[#4D7C0F] rounded-lg p-8">
+                <h2 className="sm:text-xl text-[12px] font-bold mb-6 text-black">
+                  Project {key + 1}
+                </h2>
+
                 <div className="space-y-6">
                   <div>
                     <label
@@ -380,11 +386,11 @@ const Dashboard = () => {
                           type="text"
                           className=" h-[50px] rounded-[5px]  text-black font-light text-sm flex-grow outline-none py-2 w-2/3   xs:ml-2"
                           name="tag"
-                          value={itemForm.tag}
+                          value={(itemForm.tag)}
                           onChange={e => {
                             handleChange(e, key);
                           }}
-                          required
+
                         />
                       </div>
                     </div>
@@ -398,26 +404,32 @@ const Dashboard = () => {
                         onClick={e => {
                           handleAdd(e, key);
                         }}
-                        type="submit"
+                        type="button"
                         className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]   gap-[10px] text-white px-1.5 cursor-pointer"
                       >
                         Add Project
                       </button>
                       <button
                         type="submit"
-                        onClick={handleSubmit}
                         className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]  gap-[10px] text-white px-1.5 cursor-pointer"
                       >
                         Continue
                       </button>
+                      {ProjectsAlreadyPresent && <button
+                        type="button"
+                        className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]  gap-[10px] text-white px-1.5 cursor-pointer"
+                        onClick={()=>{ router.push("portfolio/" + session.user.username);}}
+                      >
+                        Show Portfolio
+                      </button>}
                     </>
                   )}
                 </div>
-              </form>
-            </div>
-          </section>
-        );
-      })}
+              </div>
+            </section>
+          );
+        })}
+      </form>
     </>
   );
 };

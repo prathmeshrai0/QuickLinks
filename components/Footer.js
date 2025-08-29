@@ -9,19 +9,15 @@ const Footer = () => {
                     <p className=" absolute left-1/2 -translate-x-1/2   ">  Everything you are, in one simple link | Quicklinks</p>
                     <ul className="  flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                         <li>
-                            <Link href="/about" className="hover:underline me-4 md:me-6">
-                                About
+                            <Link href="/aboutus" className="hover:underline me-4 md:me-6">
+                                About Us
                             </Link>
                         </li>
 
+                       
                         <li>
-                            <a href="/licensing" className="hover:underline me-4 md:me-6">
-                                Licensing
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:underline">
-                                Github
+                            <a href="/upcomingUpdates" className="hover:underline">
+                                Upcoming Updates
                             </a>
                         </li>
                     </ul>

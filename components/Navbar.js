@@ -44,13 +44,13 @@ const Navbar = () => {
                 <Link href="/">Home</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/updates">Updates</Link>
+                <Link href="/upcomingUpdates">Upcoming Updates</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
                 <Link href="/aboutus">About Us</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link onClick={UnderDevelopmentFeature} href="/">Templates</Link>
+                <Link onClick={UnderDevelopmentFeature} href="">Theme</Link>
               </li>
             </ul>
             <div className="buttons flex gap-2">

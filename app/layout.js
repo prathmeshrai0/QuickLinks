@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased   bg-white  h-screen border`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased   bg-white  h-screen  `}
       >
         <SessionWrapper>
           <Navbar />

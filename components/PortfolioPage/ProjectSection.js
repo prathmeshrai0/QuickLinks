@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import Link from "next/link";
 const ProjectSection = ({ UserDetails, allProjects }) => {
   return (
@@ -49,7 +49,6 @@ const ProjectSection = ({ UserDetails, allProjects }) => {
           );
         })} */}
 
-
         {/* <Link
           href={allProjects[0].link}
           target="blank"
@@ -88,54 +87,56 @@ const ProjectSection = ({ UserDetails, allProjects }) => {
           </div>
         </Link> */}
 
-{allProjects.map((ele, key) => {
-  return (
-    <Link
-      key={key}
-      href={ele.link}
-      target="blank"
-      className="flex flex-col bg-white shadow-sm rounded-lg w-80 hover:shadow-2xl transition-all duration-200 p-4 gap-3"
-    >
-      {ele.thumbnail && <div className="overflow-hidden rounded-md h-40 flex justify-center items-center">
-        <img
-          className="w-full h-full object-cover"
-          src={ele.thumbnail || ""}
-          alt="thumbnail"
-        />
-      </div>}
-      <div className="text-center flex gap-3 flex-col text-base">
-        <h4 className="font-semibold text-slate-800">
-          {ele.title}
-        </h4>
-        <p className="text-sm font-semibold text-slate-500 uppercase">
-          {ele.category} - {ele.subcategory}
-        </p>
-        <p className="text-slate-600 font-light text-sm">
-          {ele.description}
-        </p>
-      </div>
-      <div className="flex gap-2 h-fit flex-wrap">
-        {ele.techStack.map((tech, idx) => {
+        {allProjects.map((ele, key) => {
           return (
-            <span
-              key={idx}
-              className="bg-gray-200 p-2 rounded-full h-min w-min text-sm font-semibold text-gray-700"
+            <Link
+              key={key}
+              href={ele.link}
+              target="blank"
+              className="flex flex-col bg-white shadow-sm rounded-lg w-80 hover:shadow-2xl transition-all duration-200 p-4 gap-3    min-h-96  "
             >
-              #{tech}
-            </span>
+              {ele.thumbnail ? (
+                <div className="overflow-hidden rounded-md h-40 flex justify-center items-center">
+                  <img
+                    className="w-full h-full object-cover"
+                    src={ele.thumbnail || ""}
+                    alt=""
+                  />
+                </div>
+              ) : (
+                <img
+                  className="w-full max-h-[30%] object-contain"
+                  src="/thumbnail.jpeg"
+                  alt=""
+                />
+              )}
+              <div className="text-center flex gap-3 flex-col text-base break-words">
+                <h4 className="font-semibold text-slate-800">{ele.title}</h4>
+                <p className="text-sm font-semibold text-slate-500 uppercase">
+                  {ele.category} - {ele.subcategory}
+                </p>
+                <p className="text-slate-600 font-light text-sm">
+                  {ele.description}
+                </p>
+              </div>
+              <div className="flex gap-2 h-fit flex-wrap justify-center">
+                {ele.techStack.map((tech, idx) => {
+                  return (
+                    <span
+                      key={idx}
+                      className="bg-gray-200 p-2 rounded-full h-min w-min text-sm font-semibold text-gray-700"
+                    >
+                      #{tech}
+                    </span>
+                  );
+                })}
+              </div>
+            </Link>
           );
         })}
       </div>
-    </Link>
-  );
-})}
-
-
-
-      </div>
     </section>
+  );
+};
 
-  )
-}
-
-export default ProjectSection
+export default ProjectSection;

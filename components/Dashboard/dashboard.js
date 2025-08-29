@@ -111,8 +111,7 @@ const Dashboard = () => {
     return !res;
   };
   const isTechStackOutOfLimit = () => {
-    let res = TotalProjects.every(obj => {
-      console.log(obj.techStack.length);
+    let res = TotalProjects.every(obj => { 
 
       if (obj.techStack.length > 0 && obj.techStack.length < 7) {
         return true;
@@ -126,6 +125,7 @@ const Dashboard = () => {
 
     if (isTitleLengthMore()) {
       alert("Title words limit reached");
+    
       return false;
     }
     if (isDescLengthMore()) {

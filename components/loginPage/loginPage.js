@@ -110,11 +110,11 @@ const LoginPage = props => {
           <div className="authLogin">
             <SocialButton />
           </div>
-          <div className="reset flex gap-0.5  justify-center items-center text-purple-500  font-medium [&>*]:cursor-pointer">
+          {/* <div className="reset flex gap-0.5  justify-center items-center text-purple-500  font-medium [&>*]:cursor-pointer">
             <span>Forgot username ?</span>
             <span className="font-bold "> . </span>
             <span> Forgot password ?</span>
-          </div>
+          </div> */}
           <div className="toggle flex justify-center items-center">
             <p>Don't have an account?</p>
             <button

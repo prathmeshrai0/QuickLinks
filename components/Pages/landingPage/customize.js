@@ -1,6 +1,6 @@
 import React from 'react'
 
-const customize = () => {
+const Customize = () => {
   return (
    <section className='bg-[#e9c0e9] h-screen  '>
 
@@ -8,4 +8,4 @@ const customize = () => {
   )
 }
 
-export default customize
+export default Customize

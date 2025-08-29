@@ -1,9 +1,6 @@
-import React from 'react'
-import intro from './intro'
-import customize from './customize'
+import Intro from './intro' 
 const landingSections ={
-    intro,
-    customize,
+    Intro, 
 }
 
 export default landingSections

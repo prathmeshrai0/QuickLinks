@@ -16,7 +16,7 @@ const TagInput = props => {
     } else if (tag.endsWith(",") && tag.length < 2) {
       alert("You need to add a tag ");
     }
-  }, [tag]);
+  }, [tag , props.arrayList, props.setarrayList]);
 
   const removeTag = (e, tagKey) => {
     props.arrayList.splice(tagKey, 1);

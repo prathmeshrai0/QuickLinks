@@ -28,9 +28,7 @@ const Dashboard = () => {
       window.scrollBy({ top: 580, behavior: "smooth" });
     }
   }, [TotalProjects.length]);
-  useEffect(() => {
-    console.log(TotalProjects);
-  }, [TotalProjects]);
+
 
   useEffect(() => {
     if (session?.user && status === "authenticated") {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import LoadingPage from "../Loading/LoadingPage";
 import { useRouter } from "next/navigation";
 
-const intro = () => {
+const Intro = () => {
   const [LatestCustomers, setLatestCustomers] = useState()
   const router = useRouter();
   const [username, setusername] = useState("")
@@ -104,4 +104,4 @@ const intro = () => {
   );
 };
 
-export default intro;
+export default Intro;

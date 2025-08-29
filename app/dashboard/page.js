@@ -1,5 +1,6 @@
+import Dashboard from "@/components/Pages/Dashboard/Dashboard";
 
-import Dashboard from "@/components/Pages/Dashboard/Pages/Dashboard";
+ 
 const userDashboard = () => {
 
     return (

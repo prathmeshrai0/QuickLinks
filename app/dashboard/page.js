@@ -1,5 +1,5 @@
 
-import Dashboard from "@/components/Dashboard/Dashboard";
+import Dashboard from "@/components/Dashboard/Dashboard.js";
 const userDashboard = () => {
 
     return (

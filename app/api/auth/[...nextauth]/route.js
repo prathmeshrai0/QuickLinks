@@ -49,22 +49,18 @@ export const authOptions = {
               },
             });
 
-            const { email, username , id } = newUser;
-            return { email, username  , id};
+            const { email, username, id } = newUser;
+            return { email, username, id };
           }
         }
         // LOGIN FLOW
         else {
-     
+          const givenUsername = credentials.givenUsername === "true";
 
-          const givenUsername = credentials.givenUsername === 'true';
-           
-          
           const whereCondition = givenUsername
             ? { username: credentials.username }
             : { email: credentials.email };
 
-          
           const existingUser = await prisma.user.findFirst({
             where: whereCondition,
           });
@@ -91,8 +87,17 @@ export const authOptions = {
     },
     async session({ session, token, user }) {
       session.accessToken = token.accessToken;
-      session.user = token.user; // this sets what goes to the frontend
+      const userEmail = token.user.email;
+      const dbUser = await prisma.user.findFirst({
+        where: { email: userEmail },
+      });
+      if (dbUser.provider) {
+        Object.assign(token.user, dbUser);
+      }
 
+      session.user = token.user; // this sets what goes to the frontend
+      
+      delete session.user.password;
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
@@ -120,3 +125,4 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+ 

@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import SocialButton from "./socialButton";
 import validator from "validator";
-import { useRouter } from "next/navigation";
-import prisma from "@/prisma/connectDb";
+import { useRouter } from "next/navigation"; 
 const LoginPage = props => {
   const { data: session } = useSession();
   const [form, setform] = useState({

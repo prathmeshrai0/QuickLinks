@@ -13,6 +13,7 @@ export async function POST(req) {
       delete obj.tag;
       obj.UserInfoId = session.user.id;   
     }); 
+// console.log(body);
 
     const user = await prisma.allProjects.createMany({
       data: body,
@@ -32,6 +33,7 @@ export async function POST(req) {
     };
   }
 
+  // return new Response(JSON.stringify({response:"hellow"}));
   return new Response(JSON.stringify(response));
 }
 

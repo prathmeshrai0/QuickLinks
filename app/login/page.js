@@ -6,14 +6,22 @@ import SignInPage from "@/components/loginPage/signInPage";
 
 
 const Login = () => {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); 
+
 
   const [login, setlogin] = useState(false);
+  const [username, setusername] = useState(null)
   useEffect(() => {
     if (searchParams.get("action") === "login") {
       setlogin(true);
     }
+    if (searchParams.get('username')) {
+      setusername(searchParams.get('username'));
+    }
+
   }, [searchParams]);
+ 
+  
 
   const toggle = () => {
     setlogin(prev => !prev);
@@ -25,7 +33,7 @@ const Login = () => {
         <LoginPage toggle={toggle} />
 
       ) : (
-        <SignInPage toggle={toggle}/>
+        <SignInPage toggle={toggle} username={username&& username}/>
 
       )}
     </>

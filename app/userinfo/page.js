@@ -1,14 +1,7 @@
-import React from 'react'
-import UserCreatingPortfolio from '@/components/UserInfo/userCreatingPortfolio'
+import React from "react";
+import UserInfoPage from "@/components/UserInfo/UserInfoPage";
 const Userinfo = () => {
-  return (
-    <>
-   
-      <section className='min-w-  screen min-h-screen bg-white pt-32  px-24'>
-        <UserCreatingPortfolio/>
-      </section>  
-    </>
-  )
-}
+  return <UserInfoPage />;
+};
 
-export default Userinfo
+export default Userinfo;

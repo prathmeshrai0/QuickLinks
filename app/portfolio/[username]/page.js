@@ -14,10 +14,10 @@ const Portfolio = async ({ params }) => {
     where: {
       userId: DataUser.id,  
     },
-    include : {AllProjects : true}
+    include : {allProjects : true}
   });
  
-
+ 
 
 
   let { email } = DataUser;
@@ -29,7 +29,9 @@ const Portfolio = async ({ params }) => {
   };
   delete UserDetailsForPortfolio.id;
   delete UserDetailsForPortfolio.userId; 
-
+  
+  
+  
   return (
     <>
     <PortfolioPage  UserDetails={UserDetailsForPortfolio}  />

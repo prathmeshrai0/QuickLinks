@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { UnderDevelopmentFeature } from "@/utlis/utilities";
 const Navbar = () => {
   const pathname = usePathname();
   const hideNavebar = !(pathname === "/login" || pathname.startsWith("/portfolio"));
@@ -17,16 +18,16 @@ const Navbar = () => {
         .then(res => res.json())
         .then(data => {
           if (data.isAvailable) {
-            // router.push("dashboard");
             setifUserInfoAvailable(true);
           } else {
             setifUserInfoAvailable(false);
           }
         });
     }
+
+
   }, [session]);
-  useEffect(() => {
-  }, [ifUserInfoAvailable]);
+
 
   return (
     <>
@@ -43,27 +44,27 @@ const Navbar = () => {
                 <Link href="/">Home</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/about">About</Link>
+                <Link href="/updates">Updates</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/licensing">Licensing</Link>
+                <Link href="/aboutus">About Us</Link>
               </li>
               <li className="hover:bg-gray-200 px-5 py-1.5 rounded-sm">
-                <Link href="/">Github</Link>
+                <Link onClick={UnderDevelopmentFeature} href="/">Templates</Link>
               </li>
             </ul>
             <div className="buttons flex gap-2">
 
               {session?.user ? (
                 <Link
-                href={'/login?action=login'}
+                  href={'/login?action=login'}
                   className=" px-6 bg-gray-200 py-3 rounded-sm font-bold"
                   onClick={() => signOut({ callbackUrl: "/login?action=login" })}
                 >
                   Sign out
                 </Link>
               ) : (
-               <>
+                <>
                   <Link
                     href={"/login?action=login"}
                     className=" px-6 bg-gray-200 py-3 rounded-sm font-bold"
@@ -73,11 +74,11 @@ const Navbar = () => {
                   <Link
                     href={"/login?action=signup"}
                     className=" custom-button   bg-gray-900 text-white   "
-                    >
+                  >
                     Sign up free
                   </Link>
-                    </>
-                 
+                </>
+
               )}
               {ifUserInfoAvailable !== null &&
                 (ifUserInfoAvailable ?

@@ -3,22 +3,22 @@ import Logo from "@/assets/Logo";
 import SocialButton from "./socialButton";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+
 const SignInPage = props => {
-  const [form, setform] = useState({
-    email: "test@email.com",
-    username: "testUSername",
-    password: "TEst passw",
-  });
+  const {
+    register,
+    handleSubmit,setValue,
+    formState: { errors },
+  } = useForm();
+
   const { data: session } = useSession();
   const router = useRouter();
 
-  const handelChange = e => {
-    setform({ ...form, [e.target.name]: e.target.value });
-  };
-  const handelSubmit = async e => {
-    e.preventDefault();
+  const submit = async e => {  
 
-    const { email, username, password } = form;
+    const { email, username, password } = e;
+ 
 
     const sendingData = {
       email,
@@ -29,19 +29,22 @@ const SignInPage = props => {
     };
 
     let res = await signIn("credentials", sendingData);
-   
-    if (res.error) {
-      alert(res.error)
-    }
 
+    if (res.error) {
+      alert(res.error);
+    }
   };
   useEffect(() => {
-    if (session?.user) {
+    if (props?.username) {
+      setValue("username", props.username);
+    }
+  }, [props]);
 
+  useEffect(() => {
+    if (session?.user) {
       fetch("api/user")
         .then(res => res.json())
         .then(data => {
- 
           if (data.isAvailable) {
             router.push("dashboard");
           } else {
@@ -50,6 +53,7 @@ const SignInPage = props => {
         });
     }
   }, [session]);
+
   return (
     <main className="box border  flex h-screen ">
       <section className="left  border max-w-1/2 w-1/2 bg-white  text-black max-h-screen overflow-y-scroll ">
@@ -62,33 +66,74 @@ const SignInPage = props => {
             </p>
           </header>
 
-          <form action="" className="flex flex-col    gap-1.5">
+          <form
+            action=""
+            onSubmit={handleSubmit(submit)}
+            className="flex flex-col    gap-1.5"
+          >
+            {errors.email && (
+              <p className="text-red-500">{errors.email.message}</p>
+            )}
             <input
               className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
               type="text"
               placeholder="email"
               name="email"
-              value={form.email}
-              onChange={handelChange}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email format",
+                },
+              })}
             />
+            {errors.username && (
+              <p className="text-red-500">{errors.username.message}</p>
+            )}
             <input
               className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
               type="text"
               placeholder="username"
               name="username"
-              value={form.username}
-              onChange={handelChange}
+              {...register("username", {
+                required: "Username is required",
+                validate: value =>
+                  !/\s/.test(value) || "Username cannot contain spaces",
+              })}
             />
+            {errors.password && (
+              <p className="text-red-500">{errors.password.message}</p>
+            )}
             <input
               className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
-              type="text"
+              type="password"
               placeholder="password"
               name="password"
-              value={form.password}
-              onChange={handelChange}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+                validate: {
+                  nospace: value =>
+                    !/\s/.test(value) || "Cannot contain spaces",
+                  hasUpper: value =>
+                    /[A-Z]/.test(value) ||
+                    "Must include at least one uppercase letter",
+                  hasLower: value =>
+                    /[a-z]/.test(value) ||
+                    "Must include at least one lowercase letter",
+                  hasNumber: value =>
+                    /[0-9]/.test(value) || "Must include at least one number",
+                  hasSpecial: value =>
+                    /[^A-Za-z0-9]/.test(value) ||
+                    "Must include at least one special character",
+                },
+              })}
             />
             <button
-              onClick={handelSubmit}
+              type="submit"
               className="custom-button rounded-lg bg-black text-white"
             >
               Continue

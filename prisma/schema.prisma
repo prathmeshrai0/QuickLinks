@@ -26,37 +26,60 @@ model User {
   userInfo UserInfo?
 }
 
+enum gender {
+  Male
+  Female
+  Others
+}
+
 model UserInfo {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  about String?
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
 
   // Personal Info
-  firstName     String?
-  lastName      String?
-  country       String?
-  streetAddress String?
-  city          String?
-  region        String?
-  postalCode    String?
+  firstName  String
+  lastName   String
+  country    String
+  gender     String
+  city       String?
+  profilePic String?
+  about String
+
+  // Professional Info 
+  profession String
+  skills     String[]
+  certificates Certificates[]
 
   // Academic Info
-  tenthMarks       String?
-  twelfthMarks     String?
-  schoolName       String?
-  collegeName      String?
-  graduationCourse String?
-  graduationCgpa   String?
-  postgrad         String?
-  postgradCgpa     String?
-  phd              String?
-  specialization   String?
+  tenthMarks             Float?
+  twelfthMarks           Float?
+  schoolName             String
+  collegeName            String?
+  graduationCourse       String?
+  graduationCgpa         Float?
+  postgrad               String?
+  postgradCgpa           Float?
+  postgradSpecialization String?
+  phd                    String?
+  phdSpecialization      String?
+
+  // Projects  
+  allProjects  AllProjects[]
+
+  // Contact Info 
+  phoneNo  String?
+  linkedIn String?
+  github   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
 
-  userId      String        @unique @db.ObjectId
-  AllProjects AllProjects[]
+  userId String @unique @db.ObjectId
+}
+
+type Certificates {
+  title String
+  link  String
 }
 
 model AllProjects {
@@ -66,9 +89,10 @@ model AllProjects {
   category    String
   subcategory String
   thumbnail   String?
+  link        String
   techStack   String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  owner     UserInfo @relation(fields: [UserInfoId], references: [userId])
-  UserInfoId String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  owner       UserInfo @relation(fields: [UserInfoId], references: [userId])
+  UserInfoId  String   @db.ObjectId
 }

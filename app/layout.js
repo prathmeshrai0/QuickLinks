@@ -15,22 +15,21 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "quickLinks: Everything you are, in one simple link | Quicklinks",
-  description: "Generated your link pages within minutes and share across your all social media plateforms",
+  description:
+    "Generated your link pages within minutes and share across your all social media plateforms",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased  h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased   bg-white  h-screen border`}
       >
-
         <SessionWrapper>
-
           <Navbar />
+
           {children}
         </SessionWrapper>
-
       </body>
     </html>
   );

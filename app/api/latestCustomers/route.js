@@ -11,6 +11,6 @@ export async function GET() {
         take : 7,
     }); 
 
-    return new Response(JSON.stringify({ isAvailable: true, status: 200 , message:"fetched latest customere" , users: users}));
+    return new Response(JSON.stringify({ isAvailable: true, status: 200 , message:"fetched latest customers" , users: users}));
     
 }

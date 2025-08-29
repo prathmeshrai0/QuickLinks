@@ -1,20 +1,38 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import LoadingPage from "../Loading/LoadingPage";
+import { useRouter } from "next/navigation";
 
 const intro = () => {
   const [LatestCustomers, setLatestCustomers] = useState()
-
+  const router = useRouter();
+  const [username, setusername] = useState("")
   useEffect(() => {
-     fetch(new URL('api/latestCustomers', process.env.NEXT_PUBLIC_BASE_URL))
-    .then(res => res.json())
-    .then(data => { 
-      setLatestCustomers(data.users)
-    })
+    fetch(new URL('api/latestCustomers', process.env.NEXT_PUBLIC_BASE_URL))
+      .then(res => res.json())
+      .then(data => {
+
+        setLatestCustomers(data.users)
+      })
   }, [])
-  
- console.log(LatestCustomers);
- 
+  const handleChange = (e) => {
+    setusername(e.target.value)
+
+  }
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (username.length > 0) {
+
+      router.push(process.env.NEXT_PUBLIC_BASE_URL + `/login?action=signup&username=${username}`)
+    } else {
+      alert("Enter Your Username First!")
+    }
+
+  }
+
   return (
     <section className="bg-[#254f1a] h-[140vh]   relative    ">
       <div className=" absolute bottom-30         h-[65%] flex mx-14  gap-20   ">
@@ -29,9 +47,9 @@ const intro = () => {
             Instagram, LinkedIn, Twitter, YouTube and other social media
             profiles.
           </p>
-          <form action="" className="flex gap-2.5">
-            <input type="text" className="custom-button bg-white rounded-lg" />
-            <button className="custom-button bg-[#e9c0e9] text-black py-4">
+          <form onSubmit={handleSubmit} className="flex gap-2.5">
+            <input placeholder="Enter Your Username" onChange={handleChange} value={username} type="text" className="custom-button text-black font-medium font-mono cursor-text bg-white rounded-lg" />
+            <button type="submit" className="custom-button bg-[#e9c0e9] text-black py-4">
               Claim your Quicklink
             </button>
           </form>
@@ -49,18 +67,18 @@ const intro = () => {
             <ul
               role="list"
               className="divide-y divide-gray-200 w-md   "
-            > 
-               { LatestCustomers?  LatestCustomers.map((user, index) => (
+            >
+              {LatestCustomers ? LatestCustomers.map((user, index) => (
                 <li
                   key={index}
-                  className={`py-3 sm:py-4   w-full ${index === 4 ? "pb-0 sm:pt-4 pt-3" : ""
+                  className={`py-3 sm:py-4   px-2   w-full ${index === 4 ? "pb-0 sm:pt-4 pt-3" : ""
                     }`}
                 >
                   <div className="flex items-center  ">
                     <div className="shrink-0">
                       <img
                         className="w-8 h-8 rounded-full"
-                        src={user.img}
+                        src={user.profilePic}
                         alt={`${user.firstName} image`}
                       />
                     </div>
@@ -69,7 +87,7 @@ const intro = () => {
                         {user.firstName} {user.lastName}
                       </p>
                       <p className="text-sm text-gray-500 truncate ">
-                        
+
                       </p>
                     </div>
                     <div className="inline-flex items-center text-base font-semibold text-gray-900 ">
@@ -77,7 +95,7 @@ const intro = () => {
                     </div>
                   </div>
                 </li>
-              )) : <LoadingPage/> }
+              )) : <LoadingPage />}
             </ul>
           </div>
         </div>

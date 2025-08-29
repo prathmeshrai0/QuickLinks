@@ -116,7 +116,7 @@ const LoginPage = props => {
             <span> Forgot password ?</span>
           </div> */}
           <div className="toggle flex justify-center items-center">
-            <p>Don't have an account?</p>
+            <p>Doesn&apos;t have an account?</p>
             <button
               onClick={props.toggle}
               className="text-purple-500  font-medium cursor-pointer"

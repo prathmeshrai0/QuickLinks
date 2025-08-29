@@ -4,7 +4,8 @@ import React from "react";
 const ContactSection = ({ UserDetails }) => {
     return (
         <section className="max-w-5xl mx-auto mt-10   ">
-            <h2 className="text-2xl font-semibold mb-4">Let's Connect</h2>
+            <h2 className="text-2xl font-semibold mb-4">Let&apos;s Connect</h2>
+
             <div className="flex justify-start gap-[33%]    text-gray-700">
                 {UserDetails.phoneNo && (
                     <div className="font-medium flex gap-1.5 items-center justify-center ">

@@ -1,8 +1,8 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import LoginPage from "@/components/loginPage/loginPage";
-import SignInPage from "@/components/loginPage/signInPage";
+import LoginPage from "@/components/Pages/loginPage/loginPage";
+import SignInPage from "@/components/Pages/loginPage/signInPage";
 
 
 const Login = () => {

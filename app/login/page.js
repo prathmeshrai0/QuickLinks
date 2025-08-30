@@ -1,39 +1,35 @@
-"use client"
-import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+"use server"
+ 
 import LoginPage from "@/components/Pages/loginPage/loginPage";
 import SignInPage from "@/components/Pages/loginPage/signInPage";
 
 
-const Login = () => {
-  const searchParams = useSearchParams(); 
+const Login = async ({ searchParams }) => {
 
-
-  const [login, setlogin] = useState(false);
-  const [username, setusername] = useState(null)
-  useEffect(() => {
-    if (searchParams.get("action") === "login") {
-      setlogin(true);
-    }
-    if (searchParams.get('username')) {
-      setusername(searchParams.get('username'));
-    }
-
-  }, [searchParams]);
+  const searchParamsData = await searchParams
  
-  
+ 
+  let login = false;
+  let username = null;
+  if (searchParamsData.action === 'login') {
+    login = true;
+  }
+   
+  if (searchParamsData.username ) {
+    username = searchParamsData.username;
+  }
+ 
 
-  const toggle = () => {
-    setlogin(prev => !prev);
-  };
+
+
 
   return (
     <>
       {login ? (
-        <LoginPage toggle={toggle} />
+        <LoginPage  />
 
       ) : (
-        <SignInPage toggle={toggle} username={username&& username}/>
+        <SignInPage  username={username&& username}/>
 
       )}
     </>

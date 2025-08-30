@@ -13,6 +13,7 @@ const SignInPage = props => {
     formState: { errors },
   } = useForm();
 
+ 
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -34,6 +35,10 @@ const SignInPage = props => {
     if (res.error) {
       alert(res.error);
     }
+  };
+   const toggle = () => { 
+     
+    router.push('/login?action=login')
   };
   useEffect(() => {
     if (props?.username) {
@@ -153,7 +158,7 @@ const SignInPage = props => {
           <div className="toggle flex justify-center items-center">
             <p>Already have an account?</p>
             <button
-              onClick={props.toggle}
+              onClick={ toggle}
               className="text-purple-500  font-medium cursor-pointer"
             >
               Log in

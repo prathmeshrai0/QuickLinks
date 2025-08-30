@@ -53,7 +53,10 @@ const LoginPage = props => {
       alert(res.error);
     }
   };
-
+ const toggle = () => { 
+     
+    router.push('/login?action=signup')
+  };
   useEffect(() => {
     if (session?.user) {
       fetch("api/user")
@@ -118,7 +121,7 @@ const LoginPage = props => {
           <div className="toggle flex justify-center items-center">
             <p>Doesn&apos;t have an account?</p>
             <button
-              onClick={props.toggle}
+              onClick={toggle}
               className="text-purple-500  font-medium cursor-pointer"
             >
               Sign up

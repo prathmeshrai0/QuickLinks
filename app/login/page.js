@@ -1,7 +1,5 @@
 "use client"
 import React, { useState, useEffect } from "react";
-
-import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import LoginPage from "@/components/Pages/loginPage/loginPage";
 import SignInPage from "@/components/Pages/loginPage/signInPage";
@@ -31,15 +29,13 @@ const Login = () => {
 
   return (
     <>
-     <Suspense fallback={<div>Loading...</div>}>
       {login ? (
         <LoginPage toggle={toggle} />
-        
+
       ) : (
         <SignInPage toggle={toggle} username={username&& username}/>
-        
+
       )}
-      </Suspense>
     </>
   );
 };

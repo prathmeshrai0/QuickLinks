@@ -62,9 +62,9 @@ const SignInPage = props => {
 
   return (
     <main className="box border  flex h-screen ">
-      <section className="left  border max-w-1/2 w-1/2 bg-white  text-black max-h-screen overflow-y-scroll ">
+      <section className="left  border  md:w-1/2 w-full bg-white  text-black max-h-screen overflow-y-scroll ">
         <Logo customClass="h-20 " />
-        <div className="box max-w-[75%] mx-auto flex flex-col  gap-7  bg-gray-50 p-3.5 rounded-sm text-center text-sm">
+        <div className="box max-w-[75%] mx-auto flex flex-col  gap-7  bg-gray-50 p-3.5 rounded-sm text-center md:text-sm text-xs">
           <header className="text-center">
             <h1 className="    text-3xl font-bold">Join QuickLinks</h1>
             <p className=" text-base   text-gray-500">
@@ -166,7 +166,7 @@ const SignInPage = props => {
           </div>
         </div>
       </section>
-      <section className="right border max-w-1/2 w-1/2">
+      <section className="right border md:block hidden  md:w-1/2">
         right image here
       </section>
     </main>

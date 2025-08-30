@@ -24,7 +24,7 @@ const TagInput = props => {
   };
   return (
     
-    <div className="  min-w-xs">
+    <div className={`${props.customCssParent}`}>
       <label
         htmlFor="language"
         className="text-xs xs:text-sm font-medium text-gray-700 mb-1"
@@ -48,7 +48,7 @@ const TagInput = props => {
           <line x1="12" x2="12.01" y1="16" y2="16"></line>
         </svg>
       </label>
-      <div className={`flex flex-wrap items-center     rounded-md xs:p-2 bg-white pl-2 ${props.customCss || ''} `}>
+      <div className={`flex flex-wrap items-center     rounded-md   bg-white pl-2 ${props.customCss || ''} `}>
         {props.arrayList.length > 0 &&
           props.arrayList.map((ele, tagKey) => {
             return (
@@ -72,7 +72,7 @@ const TagInput = props => {
           })}
         <input
           type="text"
-          className="      rounded-[5px]  text-black font-light text-sm flex-grow outline-none   w-2/3   xs:ml-2"
+          className="      rounded-[5px]  text-black font-light text-sm flex-grow outline-none     "
           name="tag"
           value={tag}
           onChange={e => {

@@ -135,8 +135,8 @@ export default function UserInfoPage() {
   }
   return (
     <>
-      <form onSubmit={handleSubmit} className="pb-4 mx-14 my-36">
-        <div className="space-y-12">
+      <form onSubmit={handleSubmit} className="pb-4  my-36 w-auto    px-6    ">
+        <div className=" flex flex-col     ">
           <ProfileSection
             form={form}
             handleChange={handleChange}

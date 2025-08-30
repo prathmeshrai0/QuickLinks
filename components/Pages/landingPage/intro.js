@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from "react";
 import LoadingPage from "../Loading/LoadingPage";
 import { useRouter } from "next/navigation";
-
+import {
+  PhotoIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/solid";
 const Intro = () => {
   const [LatestCustomers, setLatestCustomers] = useState()
   const router = useRouter();
@@ -34,11 +37,11 @@ const Intro = () => {
   }
 
   return (
-    <section className="bg-[#254f1a] h-[140vh]   relative    ">
-      <div className=" absolute bottom-30         h-[65%] flex mx-14  gap-20   ">
+    <section className="bg-[#254f1a] min-h-[140vh]         ">
+      <div className=" md:pt-40 pt-32     flex-wrap  justify-center        min-h-[65%] flex   md:gap-20  gap-10 px-3 ">
         {/* part 1  */}
-        <div className="claim flex flex-col   max-w-1/2 gap-9">
-          <h2 className="font-extrabold text-[73px] leading-[78px]  text-[#d2e823]">
+        <div className="claim flex flex-col   md:max-w-1/2 gap-9 w-full    ">
+          <h2 className="font-extrabold md:text-[73px] text-4xl md:leading-[78px] leading-9 break-words md:break-normal text-[#d2e823]">
             Everything you are. In one, simple link in bio.
           </h2>
           <p className="font-bold">
@@ -47,15 +50,15 @@ const Intro = () => {
             Instagram, LinkedIn, Twitter, YouTube and other social media
             profiles.
           </p>
-          <form onSubmit={handleSubmit} className="flex gap-2.5">
-            <input placeholder="Enter Your Username" onChange={handleChange} value={username} type="text" className="custom-button text-black font-medium font-mono cursor-text bg-white rounded-lg" />
+          <form onSubmit={handleSubmit} className="flex gap-2.5   justify-center     flex-wrap">
+            <input placeholder="Enter Your Username" onChange={handleChange} value={username} type="text" className="custom-button text-black font-medium font-mono cursor-text bg-white rounded-lg sm:w-auto w-[90%]  " />
             <button type="submit" className="custom-button bg-[#e9c0e9] text-black py-4">
               Claim your Quicklink
             </button>
           </form>
         </div>
         {/* part 2 */}
-        <div className="w-full max-w-md p-4 bg-white border-2 border-black rounded-lg shadow-md sm:p-8      ">
+        <div className="w-full max-w-md p-4 bg-white   border-black rounded-lg shadow-md sm:p-8      ">
           <div className="flex items-center justify-between mb-4">
             <h5 className="text-xl font-bold leading-none text-gray-900  ">
               Latest Customers
@@ -76,11 +79,14 @@ const Intro = () => {
                 >
                   <div className="flex items-center  ">
                     <div className="shrink-0">
-                      <img
+                      {user.profilePic.length > 0 ? <img
                         className="w-8 h-8 rounded-full"
                         src={user.profilePic}
                         alt={`${user.firstName} image`}
-                      />
+                      /> : <UserCircleIcon
+                        aria-hidden="true"
+                        className="w-8 h-8 bg-gray-400   rounded-full text-gray-300"
+                      />}
                     </div>
                     <div className="flex-1 min-w-0 ms-4">
                       <p className="text-sm font-medium text-gray-900 truncate ">

@@ -3,11 +3,11 @@ import Link from "next/link";
 const Footer = () => {
     return (
         <footer className="bg-white       shadow-md   p-3 mt-10 px-6 md:px-20    ">
-            <div className="w-full max-w-screen-xl mx-auto     ">
-                <div className="sm:flex sm:items-center sm:justify-between       ">
-                    <Logo   />
-                    <p className=" absolute left-1/2 -translate-x-1/2   ">  Everything you are, in one simple link | Quicklinks</p>
-                    <ul className="  flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+            <div className="    mx-auto     ">
+                <div className="flex items-center justify-between   md:flex-row flex-col gap-3    ">
+                    <Logo  customClass={' '} />
+                    <p className="   text-center    ">  Everything you are, in one simple link | Quicklinks</p>
+                    <ul className="     flex flex-wrap justify-center   items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                         <li>
                             <Link href="/aboutus" className="hover:underline me-4 md:me-6">
                                 About Us

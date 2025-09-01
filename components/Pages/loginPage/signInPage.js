@@ -1,26 +1,28 @@
-"use client"
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState, useEffect, useRef } from "react";
 import Logo from "@/assets/Logo";
 import SocialButton from "./socialButton";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/utilities";
 
 const SignInPage = props => {
   const {
     register,
-    handleSubmit,setValue,
+    handleSubmit,
+    setValue,
     formState: { errors },
+    watch,
+    reset,
   } = useForm();
 
- 
   const { data: session } = useSession();
   const router = useRouter();
+  const formValues = watch();
 
-  const submit = async e => {  
-
+  const submit = async e => {
     const { email, username, password } = e;
- 
 
     const sendingData = {
       email,
@@ -36,15 +38,24 @@ const SignInPage = props => {
       alert(res.error);
     }
   };
-   const toggle = () => { 
-     
-    router.push('/login?action=login')
+  const toggle = () => {
+    router.push("/login?action=login");
   };
+
+  useEffect(() => {
+    reset(RetriveFromLocalStorage("signin"));
+  }, []);
+
   useEffect(() => {
     if (props?.username) {
       setValue("username", props.username);
     }
   }, [props]);
+
+  // save form data to localStorage
+  useEffect(() => {
+    SaveToLocalStorage("signin", formValues);
+  }, [formValues]);
 
   useEffect(() => {
     if (session?.user) {
@@ -158,7 +169,7 @@ const SignInPage = props => {
           <div className="toggle flex justify-center items-center">
             <p>Already have an account?</p>
             <button
-              onClick={ toggle}
+              onClick={toggle}
               className="text-purple-500  font-medium cursor-pointer"
             >
               Log in

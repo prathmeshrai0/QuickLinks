@@ -127,7 +127,7 @@ export default function UserInfoPage() {
    
 
   if (status === "loading") {
-    return <LoadingPage />;
+    return <LoadingPage customClass={'h-screen'} /> ;
   }
   if (status === "unauthenticated") {
     // used when the user is unauthorized from starting and browser do not read further code which eventually end up to error
@@ -135,6 +135,7 @@ export default function UserInfoPage() {
   }
   return (
     <>
+ 
       <form onSubmit={handleSubmit} className="pb-4  my-36 w-auto    px-6    ">
         <div className=" flex flex-col     ">
           <ProfileSection

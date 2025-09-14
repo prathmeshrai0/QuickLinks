@@ -150,7 +150,7 @@ const AcademicSection = ({
             htmlFor="postgrad"
             className="block text-sm font-medium text-gray-900"
           >
-            Post-Graduation Course (Optional)
+            Post-Graduation Course (if any)
           </label>
           <div className="mt-2">
             <input
@@ -214,7 +214,7 @@ const AcademicSection = ({
             htmlFor="phd"
             className="block text-sm font-medium text-gray-900"
           >
-            Ph.D. Field (Optional)
+            Ph.D. Field (if any)
           </label>
           <div className="mt-2">
             <input

@@ -36,7 +36,7 @@ const Navbar = () => {
       {hideNavebar && (
         <nav
           className="bg-white max-w-[91%] w-full   h-20    fixed    top-5   left-1/2
-  -translate-x-[50%]  rounded-full flex   items-center px-5 text-black  lg:gap-11  gap-1  z-10 border border-black text-sm      "
+  -translate-x-[50%]  rounded-full flex   items-center px-5 text-black  lg:gap-11  gap-1  z-10 border border-black text-sm   text-center   "
         >
           <Logo customClass={'  hidden lg:flex  '} />
           <svg className="md:hidden size-7" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z" /></svg>
@@ -61,6 +61,11 @@ const Navbar = () => {
               <li className="hover:bg-gray-200 lg:px-5 pr-3 py-1.5 rounded-sm    ">
                 <Link className="" onClick={UnderDevelopmentFeature} href="">
                   Theme
+                </Link>
+              </li>
+              <li className="hover:bg-gray-200 lg:px-5 pr-3 py-1.5 rounded-sm    ">
+                <Link className="" onClick={UnderDevelopmentFeature} href="">
+                  Report an Issue
                 </Link>
               </li>
             </ul>
@@ -154,15 +159,19 @@ const Navbar = () => {
 
               <Link
                 className="hover:bg-gray-200 lg:px-5 px-1 py-1.5 rounded-sm whitespace-nowrap"
-                onClick={()=>{
+                onClick={() => {
                   UnderDevelopmentFeature()
                   toggleSideBar()
                 }}
                 href=""
-                
+
               >
                 Theme
               </Link>
+              <Link className="" onClick={UnderDevelopmentFeature} href="">
+                Report an Issue
+              </Link>
+
 
             </div>
           </div>}

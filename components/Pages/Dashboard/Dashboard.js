@@ -4,6 +4,7 @@ import categories_subCat from "./categories_subCat";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingPage from "../Loading/LoadingPage";
+import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/utilities";
 
 const Dashboard = () => {
   const categories = categories_subCat.categories;
@@ -29,7 +30,6 @@ const Dashboard = () => {
     }
   }, [TotalProjects.length]);
 
-
   useEffect(() => {
     if (session?.user && status === "authenticated") {
       fetch("api/aboutProjects")
@@ -44,6 +44,16 @@ const Dashboard = () => {
       router.push("/login");
     }
   }, [status, router, session]);
+
+  useEffect(() => {
+    const RETRIVED_DATA = RetriveFromLocalStorage("TotalProjects");
+    setTotalProjects([...RETRIVED_DATA]);
+  }, []);
+
+  // save form data to localStorage
+  useEffect(() => {
+    SaveToLocalStorage("TotalProjects", TotalProjects);
+  }, [TotalProjects]);
 
   const handleChange = (e, key) => {
     let name = e.target.name;
@@ -86,7 +96,10 @@ const Dashboard = () => {
   };
   const handleAdd = (e, key) => {
     e.preventDefault();
-
+    if (TotalProjects.length >= 5) {
+      alert("Maximum limit reached ! Save current projects to add more ");
+      return;
+    }
     setTotalProjects([...TotalProjects, form]);
   };
   const isTitleLengthMore = () => {
@@ -109,8 +122,7 @@ const Dashboard = () => {
     return !res;
   };
   const isTechStackOutOfLimit = () => {
-    let res = TotalProjects.every(obj => { 
-
+    let res = TotalProjects.every(obj => {
       if (obj.techStack.length > 0 && obj.techStack.length < 7) {
         return true;
       }
@@ -123,7 +135,7 @@ const Dashboard = () => {
 
     if (isTitleLengthMore()) {
       alert("Title words limit reached");
-    
+
       return false;
     }
     if (isDescLengthMore()) {
@@ -283,10 +295,10 @@ const Dashboard = () => {
                         htmlFor="thumbnail"
                         className="text-xs xs:text-sm font-medium text-gray-700 mb-1"
                       >
-                        Thumbnail (Recommended)
+                        Thumbnail Url (Recommended)
                       </label>
                       <input
-                        type="text"
+                        type="url"
                         id="thumbnail"
                         name="thumbnail"
                         className="h-[50px] rounded-[5px] text-sm xs:text-sm border border-[#D1D5DB] w-full px-2 text-black font-light"
@@ -377,14 +389,22 @@ const Dashboard = () => {
                         type="submit"
                         className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]  gap-[10px] text-white px-1.5 cursor-pointer"
                       >
-                        Continue
+                        Save
                       </button>
                       {ProjectsAlreadyPresent && (
                         <button
                           type="button"
                           className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]  gap-[10px] text-white px-1.5 cursor-pointer"
                           onClick={() => {
-                            router.push("portfolio/" + session.user.username);
+                            if (TotalProjects.length) {
+                              const SHOW_PORTFOLIO = confirm(
+                                "Are you sure you want to continue without saving current projects"
+                              );
+                              SHOW_PORTFOLIO &&
+                                router.push(
+                                  "portfolio/" + session.user.username
+                                );
+                            }
                           }}
                         >
                           Show Portfolio

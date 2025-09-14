@@ -4,48 +4,75 @@ import React, { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import SocialButton from "./socialButton";
 import validator from "validator";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/utilities";
 const LoginPage = props => {
-  const { data: session } = useSession();
   const [form, setform] = useState({
-    email: "test@email.com",
-    username: "testUSername",
-    password: "TEst passw",
-    unknown: "test@email.com",
+    email: "",
+    username: "",
+    password: "",
+    unknown: "",
   });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset,
+    setError,
+  } = useForm();
+
+  const { data: session } = useSession();
   const router = useRouter();
+  const formValues = watch();
 
   const handelChange = e => {
     setform({ ...form, [e.target.name]: e.target.value });
   };
-  const handelSubmit = async e => {
-    e.preventDefault();
-
-    const isEmailGiven = validator.isEmail(form.unknown);
+  const submit = async e => {
+    const isEmailGiven = validator.isEmail(e.unknown);
     let sendingData;
+    if(e.unknown.length )
     if (isEmailGiven) {
-      let { email, password, unknown } = form;
-      email = unknown;
 
-      sendingData = {
-        email,
-        password,
-        redirect: false,
-        isSignUp: false,
-        givenUsername: false,
-      };
+      const { password, unknown } = e
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(unknown)) {
+
+
+        let email = unknown;
+
+        sendingData = {
+          email,
+          password,
+          redirect: false,
+          isSignUp: false,
+          givenUsername: false,
+        };
+      }
+      else {
+        setError("unknown", { type: "manual", message: "Invalid email format" });
+      }
     } else {
-      let { username, password, unknown } = form;
-      username = unknown;
+      const { password, unknown } = e
 
-      sendingData = {
-        username,
-        password,
-        redirect: false,
-        isSignUp: false,
-        givenUsername: true,
-      };
+      if (!/\s/.test(unknown)) { 
+        
+        let username = unknown;
+
+        sendingData = {
+          username,
+          password,
+          redirect: false,
+          isSignUp: false,
+          givenUsername: true,
+        };
+      }
+      else{
+        setError("unknown", { type: "manual", message: "Username cannot contain spaces" });
+      }
     }
+ 
 
     let res = await signIn("credentials", sendingData);
 
@@ -53,17 +80,24 @@ const LoginPage = props => {
       alert(res.error);
     }
   };
- const toggle = () => { 
-     
-    router.push('/login?action=signup')
+  const toggle = () => {
+    router.push("/login?action=signup");
   };
+
+  useEffect(() => {
+    reset(RetriveFromLocalStorage("login"));
+  }, []);
+
+  // save form data to localStorage
+  useEffect(() => {
+    SaveToLocalStorage("login", formValues);
+  }, [formValues]);
+
   useEffect(() => {
     if (session?.user) {
       fetch("api/user")
         .then(res => res.json())
         .then(data => {
-      
-          
           if (data.isAvailable) {
             router.push("dashboard");
           } else {
@@ -73,11 +107,12 @@ const LoginPage = props => {
     }
   }, [session]);
 
+
   return (
     <main className="box border  flex h-screen ">
       <section className="left  border   md:w-1/2 w-full  bg-white  text-black max-h-screen overflow-y-scroll ">
         <Logo customClass="h-20 " />
-        <div className="box max-w-[75%] mx-auto flex flex-col  gap-7  bg-gray-50 p-3.5 rounded-sm text-center md:text-sm text-xs " >
+        <div className="box max-w-[75%] mx-auto flex flex-col  gap-7  bg-gray-50 p-3.5 rounded-sm text-center md:text-sm text-xs ">
           <header className="text-center">
             <h1 className="    text-3xl font-bold">Welcome Back</h1>
             <p className=" text-base   text-gray-500">
@@ -85,25 +120,51 @@ const LoginPage = props => {
             </p>
           </header>
 
-          <form action="" className="flex flex-col    gap-1.5">
+          <form onSubmit={handleSubmit(submit)} action="" className="flex flex-col    gap-1.5">
+            {errors.unknown && (
+              <p className="text-red-500">{errors.unknown.message}</p>
+            )}
             <input
               className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
               type="text"
               placeholder="email or username"
               name="unknown"
-              value={form.unknown}
-              onChange={handelChange}
+              {...register('unknown',{
+                required:"This field is require"
+              })}
             />
+            {errors.password && (
+              <p className="text-red-500">{errors.password.message}</p>
+            )}
             <input
               className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
               type="password"
               placeholder="password"
-              value={form.password}
               name="password"
-              onChange={handelChange}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+                validate: {
+                  nospace: value =>
+                    !/\s/.test(value) || "Cannot contain spaces",
+                  hasUpper: value =>
+                    /[A-Z]/.test(value) ||
+                    "Must include at least one uppercase letter",
+                  hasLower: value =>
+                    /[a-z]/.test(value) ||
+                    "Must include at least one lowercase letter",
+                  hasNumber: value =>
+                    /[0-9]/.test(value) || "Must include at least one number",
+                  hasSpecial: value =>
+                    /[^A-Za-z0-9]/.test(value) ||
+                    "Must include at least one special character",
+                },
+              })}
             />
             <button
-              onClick={handelSubmit}
               className="custom-button rounded-lg bg-black text-white"
             >
               Continue

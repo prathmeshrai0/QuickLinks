@@ -42,15 +42,16 @@ const SignInPage = props => {
     router.push("/login?action=login");
   };
 
-  useEffect(() => {
-    reset(RetriveFromLocalStorage("signin"));
-  }, []);
-
+  
   useEffect(() => {
     if (props?.username) {
       setValue("username", props.username);
     }
   }, [props]);
+  
+  useEffect(() => {
+    reset(RetriveFromLocalStorage("signin"));
+  }, []);
 
   // save form data to localStorage
   useEffect(() => {

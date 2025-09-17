@@ -4,20 +4,20 @@ import { isValidURL } from "@/utlis/helper";
 
 const ProfessionalSection = ({
     form,
-    setform,
+    setForm,
     teckStack,
-    setteckStack,
+    setTeckStack,
     certificationStack,
-    setcertificationStack,
+    setCertificationStack,
 }) => {
     const handleChange = e => {
         const element = e.target.name;
         const value = e.target.value;
         if (element === "certificates") {
             const dataKey = e.target.dataset.key;
-            setcertificationStack({ ...certificationStack, [dataKey]: value });
+            setCertificationStack({ ...certificationStack, [dataKey]: value });
         } else {
-            setform({ ...form, [element]: value });
+            setForm({ ...form, [element]: value });
         }
     };
 
@@ -27,8 +27,8 @@ const ProfessionalSection = ({
 
 
             if (isValidURL(certificationStack.link)) {
-                setform({ ...form, ['certificates']: [...form.certificates, certificationStack] })
-                setcertificationStack({
+                setForm({ ...form, ['certificates']: [...form.certificates, certificationStack] })
+                setCertificationStack({
                     title: "",
                     link: "",
                 })
@@ -47,7 +47,7 @@ const ProfessionalSection = ({
         let ans = confirm("Are you sure you want to delete certificate !")
         if (ans) {
             form.certificates.splice(key, 1);
-            setform({ ...form })
+            setForm({ ...form })
         }
 
     }
@@ -84,7 +84,7 @@ const ProfessionalSection = ({
                 <TagInput
                     name={"TechStack"}
                     arrayList={teckStack}
-                    setarrayList={setteckStack}
+                    setarrayList={setTeckStack}
                     customCss="   rounded-md border border-gray-300 bg-white px-3 py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm  min-h-9    "
                     customCssParent="sm:col-span-2"
                 />

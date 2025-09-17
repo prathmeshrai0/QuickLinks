@@ -1,6 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import LoadingPage from "../Loading/LoadingPage";
 import ProfileSection from "./ProfileSection";
@@ -9,93 +9,21 @@ import ProfessionalSection from "./ProfessionalSection";
 import AcademicSection from "./AcademicSection";
 import ContactSection from "./ContactSection";
 import { fetchFunction, UnderDevelopmentFeature } from "@/utlis";
-import { defaultForm } from "@/hooks/use-user-info";
+import {   useUserInfo } from "@/hooks/use-user-info";
 
 export default function UserInfoPage({ updateInfo }) {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [certificationStack, setcertificationStack] = useState({
-    title: "",
-    link: "",
-  });
-  const [form, setform] = useState( { ...defaultForm});
-
-
-  // for manipulating skills array
-  const [teckStack, setteckStack] = useState([]);
-  useEffect(() => {
-    setform({ ...form, ["skills"]: teckStack });
-  }, [teckStack]);
-  
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
-    }
-    if (status === "authenticated") {
-      if (session.user.image) {
-        setform({ ...form, ["profilePic"]: session.user.image });
-      }
-    }
-  }, [status, router]);
-
-  const handleChange = e => {
-    const element = e.target.name;
-    const value = e.target.value;
-
-    setform({ ...form, [element]: value });
-  };
-
-  const convertInputTypeNumToNumber = () => {
-    const { tenthMarks, twelfthMarks, graduationCgpa, postgradCgpa } = form;
-    return {
-      ...form,
-      tenthMarks: Number(tenthMarks),
-      twelfthMarks: Number(twelfthMarks),
-      graduationCgpa: Number(graduationCgpa),
-      postgradCgpa: Number(postgradCgpa),
-    };
-  };
-
-  const isTechStackEmpty = () => {
-    if (form.skills.length < 1) {
-      return true;
-    }
-    return false;
-  };
-  const handleSubmit = async e => {
-    e.preventDefault();
-    const payLoad = convertInputTypeNumToNumber();
-
-    if (isTechStackEmpty()) {
-      alert("You need to add minimun one skill ");
-      return false;
-    }
-
-    fetchFunction("/api/user", payLoad, "PUT").then(data => {
-      if (data.success) {
-        if (updateInfo) {
-          router.push("update-info");
-        } else {
-          router.push("project");
-        }
-      }
-      else {
-        alert(data.message)
-      }
-    });
-
-  
-  };
-
-  // // used for handling updates
-  useEffect(() => {
-    if (updateInfo) {
-      fetchFunction("api/user").then(data => {
-        setform({ ...data.user });
-        setteckStack([...data.user.skills]);
-      });
-    }
-  }, []);
+   const {
+    form,
+    setForm,
+    teckStack,
+    setTeckStack,
+    certificationStack,
+    setCertificationStack,
+    handleChange,
+    handleSubmit,
+  } = useUserInfo(updateInfo, session, router ,status);
 
   if (status === "loading") {
     return <LoadingPage customClass={"h-screen"} />;
@@ -122,12 +50,12 @@ export default function UserInfoPage({ updateInfo }) {
           />
           <ProfessionalSection
             form={form}
-            setform={setform}
+            setForm={setForm}
             handleChange={handleChange}
             teckStack={teckStack}
-            setteckStack={setteckStack}
+            setTeckStack={setTeckStack}
             certificationStack={certificationStack}
-            setcertificationStack={setcertificationStack}
+            setCertificationStack={setCertificationStack}
           />
 
           <AcademicSection form={form} handleChange={handleChange} />

@@ -47,7 +47,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     const RETRIVED_DATA = RetriveFromLocalStorage("TotalProjects");
-    setTotalProjects([...RETRIVED_DATA]);
+
+    setTotalProjects([...(RETRIVED_DATA ?? [])]);
   }, []);
 
   // save form data to localStorage

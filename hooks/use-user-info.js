@@ -117,9 +117,9 @@ export function useUserInfo(updateInfo, session, router, status) {
 
                 const RETRIVED_DATA = RetriveFromLocalStorage('user-info');
                
-                setForm({ ...data.user, ...RETRIVED_DATA });
+                setForm({ ...data.user, ...(RETRIVED_DATA ?? {}) });
                 
-                const merged = Array.from(new Set([...data.user.skills ,...Array.from(RETRIVED_DATA.skills)]));
+                const merged = Array.from(new Set([...data.user.skills ,...Array.from(RETRIVED_DATA?.skills)]));
                 setTeckStack(merged)
                  
 

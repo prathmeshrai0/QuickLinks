@@ -9,10 +9,10 @@ export function useSaveAndRetrive(key, value, setvalue) {
     useEffect(() => {
         const RETRIVED_DATA = RetriveFromLocalStorage(key);
         if (value instanceof Array) {
-            setvalue([...RETRIVED_DATA])
+            setvalue([...(RETRIVED_DATA ?? [])])
         }
         else if (value instanceof Object) {
-            setvalue({ ...RETRIVED_DATA })
+            setvalue({ ...(RETRIVED_DATA ?? {}) })
         }
     }, []);
 

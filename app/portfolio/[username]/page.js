@@ -34,7 +34,7 @@ const Portfolio = async ({ params }) => {
     <>
       {DataUser ? (
         <PortfolioPage UserDetails={UserDetailsForPortfolio} />
-      ) : (<h2 className=" font-bold mx-auto   w-fit ">This user didn't exists! </h2>
+      ) : (<h2 className=" font-bold mx-auto   w-fit ">This user didn&apos;t exists! </h2>
       )}
     </>
   );

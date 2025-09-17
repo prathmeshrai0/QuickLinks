@@ -44,7 +44,7 @@ const Intro = () => {
           <h2 className="font-extrabold md:text-[73px] text-4xl md:leading-[78px] leading-9 break-words md:break-normal text-[#d2e823]">
             Everything you are. In one, simple link in bio.
           </h2>
-          <p className="font-bold">
+          <p className="font-bold text-[#ededed] ">
             Join people using QuickLinks for their link in bio. One link to help
             you share everything you create, curate and show your projects to
             Instagram, LinkedIn, Twitter, YouTube and other social media

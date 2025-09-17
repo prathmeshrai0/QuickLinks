@@ -1,11 +1,11 @@
-import Dashboard from "@/components/Pages/Dashboard/Dashboard";
+import Projects from "@/components/Pages/ProjectsPage/Projects";
 
  
 const userDashboard = () => {
 
     return (
         <>
-            <Dashboard/>
+            <Projects/>
         </>
     );
 };

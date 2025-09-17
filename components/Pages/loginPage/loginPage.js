@@ -6,7 +6,7 @@ import SocialButton from "./socialButton";
 import validator from "validator";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/utilities";
+import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 const LoginPage = props => {
   const [form, setform] = useState({
     email: "",
@@ -99,9 +99,9 @@ const LoginPage = props => {
         .then(res => res.json())
         .then(data => {
           if (data.isAvailable) {
-            router.push("dashboard");
+            router.push("project");
           } else {
-            router.push("userinfo");
+            router.push("user-info");
           }
         });
     }

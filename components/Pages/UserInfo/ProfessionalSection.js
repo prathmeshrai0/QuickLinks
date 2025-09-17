@@ -1,6 +1,6 @@
 import React from "react";
 import TagInput from "../../TagInput";
-import { isValidURL } from "@/utlis/utilities";
+import { isValidURL } from "@/utlis/helper";
 
 const ProfessionalSection = ({
     form,

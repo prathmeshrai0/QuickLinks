@@ -8,7 +8,7 @@ export async function GET() {
         orderBy:{
             createdAt:"desc"
         },
-        take : 7,
+        take : 6,
     }); 
 
     return new Response(JSON.stringify({ isAvailable: true, status: 200 , message:"fetched latest customers" , users: users}));

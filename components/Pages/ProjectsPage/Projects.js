@@ -4,7 +4,7 @@ import categories_subCat from "./categories_subCat";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingPage from "../Loading/LoadingPage";
-import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/utilities";
+import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 
 const Dashboard = () => {
   const categories = categories_subCat.categories;

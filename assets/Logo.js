@@ -9,11 +9,10 @@ const Logo = (props) => {
 
 
 
-            <Link  href={"/"} className={`   flex w-min  whitespace-nowrap  h-11   items-center justify-center    ${props.customClass || ""}  ` }>
+            <Link  href={"/"} className={`   flex w-min  whitespace-nowrap  h-11   items-center justify-center     ${props.customClass || ""}  ` }>
                 <lord-icon className=" "    
                     src="https://cdn.lordicon.com/xjugsqts.json"
-                    trigger="hover"
-                // style="width:250px;height:250px"
+                    trigger="hover" 
                 >
                 </lord-icon>
                 <span className='font-bold text-black text-lg '>Quicklinks</span>

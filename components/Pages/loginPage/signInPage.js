@@ -5,7 +5,7 @@ import SocialButton from "./socialButton";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/utilities";
+import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 
 const SignInPage = props => {
   const {
@@ -64,9 +64,9 @@ const SignInPage = props => {
         .then(res => res.json())
         .then(data => {
           if (data.isAvailable) {
-            router.push("dashboard");
+            router.push("project");
           } else {
-            router.push("userinfo");
+            router.push("user-info");
           }
         });
     }

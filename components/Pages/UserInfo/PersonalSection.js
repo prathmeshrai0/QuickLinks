@@ -14,7 +14,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
             htmlFor="first-name"
             className="block text-sm/6 font-medium text-gray-900"
           >
-              First name <span className="text-red-500">*</span>
+            First name <span className="text-red-500">*</span>
           </label>
           <div className="mt-2">
             <input
@@ -35,7 +35,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
             htmlFor="last-name"
             className="block text-sm/6 font-medium text-gray-900"
           >
-              Last name <span className="text-red-500">*</span>
+            Last name <span className="text-red-500">*</span>
           </label>
           <div className="mt-2">
             <input
@@ -56,7 +56,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
             htmlFor="email"
             className="block text-sm/6 font-medium text-gray-900"
           >
-              Email address <span className="text-red-500">*</span>
+            Email address <span className="text-red-500">*</span>
           </label>
           <div className="mt-2">
             <input
@@ -75,7 +75,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
             htmlFor="city"
             className="block text-sm/6 font-medium text-gray-900"
           >
-              City 
+            City
           </label>
           <div className="mt-2">
             <input
@@ -94,7 +94,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
             htmlFor="country"
             className="block text-sm/6 font-medium text-gray-900"
           >
-              Country <span className="text-red-500">*</span>
+            Country <span className="text-red-500">*</span>
           </label>
           <div className="mt-2 grid grid-cols-1">
             <select
@@ -123,7 +123,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
             htmlFor="country"
             className="block text-sm/6 font-medium text-gray-900"
           >
-              Gender <span className="text-red-500">*</span>
+            Gender <span className="text-red-500">*</span>
           </label>
           <div className="mt-2 grid grid-cols-3 text-black">
             <div className="mb-5">
@@ -136,6 +136,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
                   className="mx-2"
                   required
                   onChange={handleChange}
+                  checked={form.gender === 'male'}
                 />
 
                 <span className="text-base font-semibold">Male</span>
@@ -151,6 +152,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
                   type="radio"
                   className="mx-2"
                   onChange={handleChange}
+                  checked={form.gender === 'female'}
                 />
 
                 <span className="text-base font-semibold">Female</span>
@@ -166,6 +168,7 @@ const PersonalSection = ({ form, handleChange, session }) => {
                   type="radio"
                   className="mx-2"
                   onChange={handleChange}
+                  checked={form.gender === 'other'}
                 />
 
                 <span className="text-base font-semibold">Other</span>

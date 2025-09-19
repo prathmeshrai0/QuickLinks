@@ -35,6 +35,7 @@ export default function UserInfoPage({ updateInfo }) {
 
   return (
     <>
+ 
       <form onSubmit={handleSubmit} className="pb-4  my-36 w-auto    px-6    ">
         <div className=" flex flex-col     ">
           <ProfileSection

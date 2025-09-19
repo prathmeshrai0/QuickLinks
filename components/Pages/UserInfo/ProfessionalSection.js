@@ -50,7 +50,9 @@ const ProfessionalSection = ({
             setForm({ ...form })
         }
 
-    }
+    }  
+ 
+    
     return (
         <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -146,7 +148,7 @@ const ProfessionalSection = ({
                     </button>
                 </div>
             </div>
-            {form.certificates.length > 0 && form.certificates.map((ele, key) => {
+            {/* {form.certificates.length > 0 && form.certificates.map((ele, key) => {
 
 
                 return <div key={key} className="mt-10 grid grid-cols-1 gap-x-6 sm:gap-y-8 gap-y-4 sm:grid-cols-6  ">
@@ -205,7 +207,7 @@ const ProfessionalSection = ({
                     </div>
                 </div>
 
-            })}
+            })} */}
         </div>
     );
 };

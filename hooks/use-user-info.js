@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import {
   fetchFunction,
   RetriveFromLocalStorage,
   SaveToLocalStorage,
 } from "@/utlis";
-import { useSaveAndRetrive } from ".";
 
 const defaultForm = {
   // Personal Info
@@ -45,21 +44,22 @@ const defaultForm = {
 };
 
 export function useUserInfo(updateInfo, session, router, status) {
-  const [certificationStack, setCertificationStack] = useState({
+  const [certificationStack, setcertificationStack] = useState({
     title: "",
     link: "",
   });
-  const [form, setForm] = useState({ ...defaultForm });
+  const [form, setform] = useState({ ...defaultForm });
   // for manipulating skills array
-  const [teckStack, setTeckStack] = useState([]);
+  const [teckStack, setteckStack] = useState([]);
+ 
 
   useEffect(() => {
     // // used for handling updates
+    const RETRIVED_DATA = RetriveFromLocalStorage("user-info");
     if (updateInfo) {
       fetchFunction("api/user").then(data => {
-        const RETRIVED_DATA = RetriveFromLocalStorage("user-info");
 
-        setForm({ ...data.user, ...(RETRIVED_DATA ?? {}) });
+        setform({ ...data.user, ...(RETRIVED_DATA ?? {}) });
 
         const merged = Array.from(
           new Set([
@@ -68,15 +68,27 @@ export function useUserInfo(updateInfo, session, router, status) {
           ])
         );
 
-        setTeckStack(merged);
+        setteckStack(merged);
       });
+    } else {
+      if (RETRIVED_DATA) {
+        setform( prev =>({
+          ...prev , ...RETRIVED_DATA 
+        })); 
+        setteckStack(prev=>[...RETRIVED_DATA.skills])
+      }
     }
   }, []);
   useEffect(() => {
+    console.log(form);
+    
     SaveToLocalStorage("user-info", form);
   }, [form]);
+
   useEffect(() => {
-    setForm({ ...form, ["skills"]: teckStack });
+   
+
+    setform( prev => ({ ...prev, ["skills"]: teckStack }));
   }, [teckStack]);
 
   useEffect(() => {
@@ -85,16 +97,19 @@ export function useUserInfo(updateInfo, session, router, status) {
     }
     if (status === "authenticated") {
       if (session.user.image) {
-        setForm({ ...form, ["profilePic"]: session.user.image });
+    
+        setform(prev => ({ ...prev, ["profilePic"]: session.user.image }));
       }
     }
+ 
+
   }, [status, router]);
 
   const handleChange = e => {
     const element = e.target.name;
     const value = e.target.value;
 
-    setForm({ ...form, [element]: value });
+    setform({ ...form, [element]: value });
   };
 
   const convertInputTypeNumToNumber = () => {
@@ -135,14 +150,14 @@ export function useUserInfo(updateInfo, session, router, status) {
       }
     });
   };
-
   return {
     form,
-    setForm,
+    setform,
     teckStack,
-    setTeckStack,
+    setteckStack,
     certificationStack,
-    setCertificationStack,
+    setcertificationStack,
+
     handleChange,
     handleSubmit,
   };

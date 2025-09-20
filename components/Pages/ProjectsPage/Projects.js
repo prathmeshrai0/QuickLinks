@@ -7,6 +7,7 @@ import LoadingPage from "../Loading/LoadingPage";
 import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 
 const Dashboard = () => {
+  
   const categories = categories_subCat.categories;
   const subcategoryMap = categories_subCat.subcategoryMap;
   const [form, setform] = useState({
@@ -45,11 +46,11 @@ const Dashboard = () => {
     }
   }, [status, router, session]);
 
-  useEffect(() => {
-    const RETRIVED_DATA = RetriveFromLocalStorage("TotalProjects");
+  // useEffect(() => {
+  //   const RETRIVED_DATA = RetriveFromLocalStorage("TotalProjects");
 
-    setTotalProjects([...(RETRIVED_DATA ?? [])]);
-  }, []);
+  //   setTotalProjects([...(RETRIVED_DATA ?? [])]);
+  // }, []);
 
   // save form data to localStorage
   useEffect(() => {
@@ -168,9 +169,12 @@ const Dashboard = () => {
   if (status === "unauthenticated") {
     return <LoadingPage />;
   }
+
+  console.log('projects here ' ,TotalProjects);
+
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <> 
+      <form onSubmit={handleSubmit}> 
         {TotalProjects.map((itemForm, key) => {
           return (
             <section

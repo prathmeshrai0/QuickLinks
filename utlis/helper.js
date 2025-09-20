@@ -23,6 +23,7 @@ export function SaveToLocalStorage(key, value) {
   }, 1500);
 }
 export function RetriveFromLocalStorage(key) {
+
   return JSON.parse(localStorage.getItem(key));
 }
 

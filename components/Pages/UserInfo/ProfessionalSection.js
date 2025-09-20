@@ -4,20 +4,20 @@ import { isValidURL } from "@/utlis/helper";
 
 const ProfessionalSection = ({
     form,
-    setForm,
+    setform,
     teckStack,
-    setTeckStack,
+    setteckStack,
     certificationStack,
-    setCertificationStack,
+    setcertificationStack,
 }) => {
     const handleChange = e => {
         const element = e.target.name;
         const value = e.target.value;
         if (element === "certificates") {
             const dataKey = e.target.dataset.key;
-            setCertificationStack({ ...certificationStack, [dataKey]: value });
+            setcertificationStack({ ...certificationStack, [dataKey]: value });
         } else {
-            setForm({ ...form, [element]: value });
+            setform({ ...form, [element]: value });
         }
     };
 
@@ -27,11 +27,11 @@ const ProfessionalSection = ({
 
 
             if (isValidURL(certificationStack.link)) {
-                setForm({ ...form, ['certificates']: [...form.certificates, certificationStack] })
-                setCertificationStack({
-                    title: "",
-                    link: "",
-                })
+                    setform({ ...form, ['certificates']: [...form.certificates, certificationStack] })
+                    setcertificationStack({
+                        title: "",
+                        link: "",
+                    })
             }
             else {
                 alert('Kindly enter valid URL')
@@ -46,8 +46,8 @@ const ProfessionalSection = ({
         // delete form.certificates[key];
         let ans = confirm("Are you sure you want to delete certificate !")
         if (ans) {
-            form.certificates.splice(key, 1);
-            setForm({ ...form })
+                form.certificates.splice(key, 1);
+        setform({ ...form })
         }
 
     }  
@@ -86,7 +86,7 @@ const ProfessionalSection = ({
                 <TagInput
                     name={"TechStack"}
                     arrayList={teckStack}
-                    setarrayList={setTeckStack}
+                    setarrayList={setteckStack}
                     customCss="   rounded-md border border-gray-300 bg-white px-3 py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm  min-h-9    "
                     customCssParent="sm:col-span-2"
                 />
@@ -148,7 +148,7 @@ const ProfessionalSection = ({
                     </button>
                 </div>
             </div>
-            {/* {form.certificates.length > 0 && form.certificates.map((ele, key) => {
+            {form.certificates.length > 0 && form.certificates.map((ele, key) => {
 
 
                 return <div key={key} className="mt-10 grid grid-cols-1 gap-x-6 sm:gap-y-8 gap-y-4 sm:grid-cols-6  ">
@@ -207,7 +207,7 @@ const ProfessionalSection = ({
                     </div>
                 </div>
 
-            })} */}
+            })}
         </div>
     );
 };

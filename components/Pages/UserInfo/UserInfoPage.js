@@ -1,78 +1,115 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 import LoadingPage from "../Loading/LoadingPage";
 import ProfileSection from "./ProfileSection";
 import PersonalSection from "./PersonalSection";
 import ProfessionalSection from "./ProfessionalSection";
 import AcademicSection from "./AcademicSection";
 import ContactSection from "./ContactSection";
-import { fetchFunction, UnderDevelopmentFeature } from "@/utlis";
-import {   useUserInfo } from "@/hooks/use-user-info";
+import { UnderDevelopmentFeature } from "@/utlis";
+import { useUserInfo } from "@/hooks/use-user-info";
 
 export default function UserInfoPage({ updateInfo }) {
   const router = useRouter();
   const { data: session, status } = useSession();
-   const {
+  const {
     form,
-    setForm,
+    setform,
     teckStack,
-    setTeckStack,
+    setteckStack,
     certificationStack,
-    setCertificationStack,
+    setcertificationStack,
     handleChange,
     handleSubmit,
-  } = useUserInfo(updateInfo, session, router ,status);
+  } = useUserInfo(updateInfo, session, router, status);
 
-  if (status === "loading") {
-    return <LoadingPage customClass={"h-screen"} />;
-  }
-  if (status === "unauthenticated") {
-    // used when the user is unauthorized from starting and browser do not read further code which eventually end up to error
-    return <LoadingPage />;
-  }
+  if (status === "loading") return <LoadingPage customClass={"h-screen"} />;
+  if (status === "unauthenticated") return <LoadingPage />;
 
   return (
-    <>
- 
-      <form onSubmit={handleSubmit} className="pb-4  my-36 w-auto    px-6    ">
-        <div className=" flex flex-col     ">
-          <ProfileSection
-            form={form}
-            handleChange={handleChange}
-            session={session}
-            UnderDevelopmentFeature={UnderDevelopmentFeature}
-          />
-          <PersonalSection
-            form={form}
-            handleChange={handleChange}
-            session={session}
-          />
-          <ProfessionalSection
-            form={form}
-            setForm={setForm}
-            handleChange={handleChange}
-            teckStack={teckStack}
-            setTeckStack={setTeckStack}
-            certificationStack={certificationStack}
-            setCertificationStack={setCertificationStack}
-          />
+    <form onSubmit={handleSubmit} className="pb-4 my-36 w-auto px-6">
+      <div className="flex flex-col">
+        <ProfileSection
+          form={form}
+          handleChange={handleChange}
+          session={session}
+          UnderDevelopmentFeature={UnderDevelopmentFeature}
+        />
 
-          <AcademicSection form={form} handleChange={handleChange} />
+        <PersonalSection form={form} handleChange={handleChange} session={session} />
 
-          <ContactSection form={form} handleChange={handleChange} />
-        </div>
+        <ProfessionalSection
+          form={form}
+          setform={setform}
+          handleChange={handleChange}
+          teckStack={teckStack}
+          setteckStack={setteckStack}
+          certificationStack={certificationStack}
+          setcertificationStack={setcertificationStack}
+        />
 
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </>
+        <AcademicSection form={form} handleChange={handleChange} />
+
+        <ContactSection form={form} handleChange={handleChange} />
+      </div>
+
+      <div className="mt-6 flex items-center justify-end gap-x-6">
+        <button
+          type="submit"
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Save
+        </button>
+      </div>
+    </form>
   );
 }
+
+
+
+
+
+
+// "use client"
+// import { useState, useEffect } from "react";
+
+// export default function UserInfoPage() {
+//   const [form, setForm] = useState({
+//     name: "",
+//     email: ""
+//   });
+//   // Retrieve from localStorage on first render
+//   useEffect(() => {
+//     const savedForm = localStorage.getItem("my-form");
+//     console.log(savedForm);
+    
+//     if (savedForm) {
+//       setForm(JSON.parse(savedForm));
+//     }
+//   }, []);
+
+//   // Save to localStorage whenever form changes
+//   useEffect(() => {
+//     localStorage.setItem("my-form", JSON.stringify(form));
+//   }, [form]);
+
+
+//   return (
+//     <form>
+//       <input
+//         type="text"
+//         placeholder="Name"
+//         value={form.name}
+//         onChange={(e) => setForm({ ...form, name: e.target.value })}
+//       />
+//       <input
+//         type="email"
+//         placeholder="Email"
+//         value={form.email}
+//         onChange={(e) => setForm({ ...form, email: e.target.value })}
+//       />
+//     </form>
+//   );
+// }
+

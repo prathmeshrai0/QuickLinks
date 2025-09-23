@@ -1,7 +1,7 @@
 import prisma from "@/prisma/connectDb";
 import { isSessionAvailable } from "@/utlis";
 
-const isProjectCountLimitReached = async userId => {
+const isProjectCountLimitReached = async (userId) => {
   const projectsCount = await prisma.allProjects.count({
     where: {
       userId: userId,

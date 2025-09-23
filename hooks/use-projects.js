@@ -43,7 +43,7 @@ export default updateInfo => {
     const RETRIVED_DATA = RetriveFromLocalStorage(LSKey);
 
     if (updateInfoValue) {
-      fetchFunction("api/aboutProjects").then(data => {
+      fetchFunction("/api/aboutProjects").then(data => {
         if (data.success) {
           const projects = data.projects;
 
@@ -147,7 +147,7 @@ export default updateInfo => {
         if (updateInfoValue) {
           const id = TotalProjects[key].id;
           // delete from db
-          fetchFunction("api/aboutProjects", { id: id }, "DELETE");
+          fetchFunction("/api/aboutProjects", { id: id }, "DELETE");
           TotalProjects.splice(key, 1);
           setTotalProjects([...TotalProjects]);
         } else {

@@ -1,3 +1,4 @@
+"use client"
 export async function fetchFunction(resource, payLoad = {}, method = "GET") {
   let fetchOptions = {};
 
@@ -9,9 +10,11 @@ export async function fetchFunction(resource, payLoad = {}, method = "GET") {
 
   return fetch(resource, fetchOptions).then(res => {
     if (!res.ok) {
-      return new Error(`Fetch failed with status ${res.status}`);
+      throw new Error(`Fetch failed with status ${res.status}`);
     }
-    return res.json();
-  })
-  // .then(data=> {return data});
+    else{
+
+      return res.json();
+    }
+  }) 
 }

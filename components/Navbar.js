@@ -8,9 +8,6 @@ import { signOut } from "next-auth/react";
 import { UnderDevelopmentFeature } from "@/utlis/helper";
 const Navbar = () => {
   const pathname = usePathname();
-  if (pathname === "/login" || pathname.startsWith("/portfolio")) {
-    return;
-  }
 
   const { data: session } = useSession();
   const [ifUserInfoAvailable, setifUserInfoAvailable] = useState(null);
@@ -32,6 +29,9 @@ const Navbar = () => {
   const toggleSideBar = () => {
     setshowSideBar(prev => !prev);
   };
+  if (pathname === "/login" || pathname.startsWith("/portfolio")) {
+    return;
+  }
   return (
     <>
       <nav

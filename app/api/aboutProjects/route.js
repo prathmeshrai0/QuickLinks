@@ -1,14 +1,14 @@
 import prisma from "@/prisma/connectDb";
 import { isSessionAvailable } from "@/utlis";
-const  isProjectCountLimitReached  = async (userId)=>{
-const projectsCount =  await prisma.allProjects.count({
-  where :{
-    userId:userId 
-  }
- }) 
- 
- return (projectsCount   >= 10 )
-}
+
+const isProjectCountLimitReached = async userId => {
+  const projectsCount = await prisma.allProjects.count({
+    where: {
+      userId: userId,
+    },
+  });
+  return projectsCount >= 10;
+};
 // to update projects
 export async function PUT(req) {
   const session = await isSessionAvailable();
@@ -46,7 +46,7 @@ export async function PUT(req) {
         });
       })
     );
-     response = {
+    response = {
       success: true,
       status: 200,
       dataSaved: updatedProjects.length,
@@ -60,26 +60,23 @@ export async function PUT(req) {
       error: error,
     };
   }
- 
 
   return new Response(JSON.stringify(response));
 }
 
 // to save projects
 export async function POST(req) {
-  let response;
   const session = await isSessionAvailable();
+  let response;
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
   }
-  const isLimitReached = await isProjectCountLimitReached(session.user.id) ;
-  if(isLimitReached)
-  { 
-    
+  const isLimitReached = await isProjectCountLimitReached(session.user.id);
+  if (isLimitReached) {
     response = {
       success: false,
       status: 429,
-      message: "Project maximum limit reached", 
+      message: "Project maximum limit reached",
     };
     return new Response(JSON.stringify(response));
   }
@@ -91,8 +88,6 @@ export async function POST(req) {
     obj.userId = session.user.id;
   });
 
-  console.log(projects);
-  
   try {
     const createdProjects = await prisma.allProjects.createMany({
       data: projects,
@@ -118,8 +113,8 @@ export async function POST(req) {
 
 // to delete projects
 export async function DELETE(req) {
-  let response;
   const session = await isSessionAvailable();
+  let response;
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
   }
@@ -151,8 +146,8 @@ export async function DELETE(req) {
 
 // used to get project according to session data
 export async function GET(req) {
-  let response;
   const session = await isSessionAvailable();
+  let response;
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
   }

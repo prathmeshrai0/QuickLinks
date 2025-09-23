@@ -1,7 +1,6 @@
 import PortfolioPage from "@/components/Pages/PortfolioPage/PortfolioPage";
 import React from "react";
-import prisma from "@/prisma/connectDb";
-import UnAuthenticatedUser from "@/components/Pages/UnAuthUser/UnAuthenticatedUser";
+import prisma from "@/prisma/connectDb"; 
 const Portfolio = async ({ params }) => {
   const { username } = await params;
 
@@ -21,14 +20,15 @@ const Portfolio = async ({ params }) => {
 
     let { email } = DataUser;
 
-    const UserDetailsForPortfolio = {
+    var UserDetailsForPortfolio = {
       email: email,
       username: username,
       ...DataUserInfo,
     };
     delete UserDetailsForPortfolio.id;
-    delete UserDetailsForPortfolio.userId;
-  }
+    delete UserDetailsForPortfolio.userId; 
+  } 
+  
 
   return (
     <>

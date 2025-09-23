@@ -1,8 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const ProfessionalSection = ({ UserDetails, skills, certificates }) => {
-  console.log(certificates);
+const ProfessionalSection = ({ UserDetails, skills, certificates }) => { 
 
   return (
     <section className="max-w-5xl mx-auto mt-10    ">

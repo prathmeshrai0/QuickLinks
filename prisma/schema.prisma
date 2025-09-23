@@ -93,6 +93,6 @@ model AllProjects {
   techStack   String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  owner       UserInfo @relation(fields: [UserInfoId], references: [userId])
-  UserInfoId  String   @db.ObjectId
+  owner       UserInfo @relation(fields: [userId], references: [userId])
+  userId  String   @db.ObjectId
 }

@@ -1,13 +1,12 @@
-import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis";
-import { useEffect } from "react";
+import { isSessionAvailable, RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis";
 
 export function useSaveAndRetrive(key, value, setvalue) {
 
-    const {id} = value ; 
+    const { id } = value;
     // console.log(key,value);
     console.log(value);
-    
-    
+
+
     // useEffect(() => {
     //     SaveToLocalStorage(key, value);
     // }, [value])
@@ -23,3 +22,4 @@ export function useSaveAndRetrive(key, value, setvalue) {
     // }, []);
 
 }
+ 

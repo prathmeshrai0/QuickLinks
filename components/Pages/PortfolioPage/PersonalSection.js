@@ -13,10 +13,11 @@ const PersonalSection = ({ UserDetails }) => {
           <span className="font-medium">Last Name:</span>{" "}
           {UserDetails.lastName}
         </div>
-        <div>
+        {UserDetails.country && <div>
           <span className="font-medium">Country:</span>{" "}
           {UserDetails.country}
-        </div>
+        </div>}
+
         {UserDetails.city && (
           <div>
             <span className="font-medium">City:</span> {UserDetails.city}

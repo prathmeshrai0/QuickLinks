@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import SessionWrapper from "@/components/Pages/sessionWrapper/page";
+import CopyUrlButton from "@/components/CopyUrlButton";
+import ReportIssue from "@/components/ReportIssue";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +21,13 @@ export const metadata = {
     "Generated your link pages within minutes and share across your all social media plateforms",
 };
 
+
+
+
+
+
+
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -27,6 +36,8 @@ export default function RootLayout({ children }) {
       >
         <SessionWrapper>
           <Navbar />
+          <CopyUrlButton />
+          <ReportIssue />
 
           {children}
         </SessionWrapper>

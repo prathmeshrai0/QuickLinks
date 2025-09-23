@@ -12,9 +12,11 @@ export async function PUT(req) {
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
   }
+  // console.log(safeBody, session.user.id , body);
+
 
   try {
-  const result =   await prisma.userInfo.upsert({
+    const result = await prisma.userInfo.upsert({
       where: {
         userId: session.user.id,
       },
@@ -27,8 +29,8 @@ export async function PUT(req) {
         userId: session.user.id,
       },
     });
-    
-    
+
+
     response = {
       success: true,
       status: 200,
@@ -59,15 +61,23 @@ export async function GET(req) {
     where: {
       userId: session.user.id,
     },
-  });
+  }); 
 
   let response;
-  response = {
-    isAvailable: true,
-    status: 200,
-    message: "Welcome",
-    user: user,
-  };
+  if (user) {
+    response = {
+      isAvailable: true,
+      status: 200,
+      message: "Welcome",
+      user: user,
+    };
+  } else {
+    response = {
+      isAvailable: false,
+      status: 404,
+      message: "Data not available kindly fill user info data",
+    };
+  }
 
   return new Response(JSON.stringify(response));
 }

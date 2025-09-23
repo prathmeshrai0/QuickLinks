@@ -5,164 +5,25 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingPage from "../Loading/LoadingPage";
 import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
-
-const Dashboard = () => {
+import useProjects from "@/hooks/use-projects";
+import { TrashIcon } from "@heroicons/react/24/solid";
+const Dashboard = ({ updateInfo }) => {
+  const { data: session, status } = useSession(); 
   
-  const categories = categories_subCat.categories;
-  const subcategoryMap = categories_subCat.subcategoryMap;
-  const [form, setform] = useState({
-    title: "",
-    description: "",
-    category: "",
-    subcategory: "",
-    thumbnail: "",
-    link: "",
-    tag: "",
-    techStack: [],
-  });
-  const { data: session, status } = useSession();
-  const [TotalProjects, setTotalProjects] = useState([form]);
-  const [ProjectsAlreadyPresent, setProjectsAlreadyPresent] = useState(false);
-  const router = useRouter();
+  
+  const {
+    categories,
+    subcategoryMap,
+    TotalProjects, 
+    ProjectsAlreadyPresent, 
+    updateInfoValue,
+    handleChange,
+    removeTag,
+    handleAdd,
+    handleSubmit,
+    handleDelete,
+  } = useProjects(updateInfo );
 
-  useEffect(() => {
-    if (TotalProjects.length > 1) {
-      window.scrollBy({ top: 580, behavior: "smooth" });
-    }
-  }, [TotalProjects.length]);
-
-  useEffect(() => {
-    if (session?.user && status === "authenticated") {
-      fetch("api/aboutProjects")
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            setProjectsAlreadyPresent(true);
-          }
-        });
-    }
-    if (status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [status, router, session]);
-
-  // useEffect(() => {
-  //   const RETRIVED_DATA = RetriveFromLocalStorage("TotalProjects");
-
-  //   setTotalProjects([...(RETRIVED_DATA ?? [])]);
-  // }, []);
-
-  // save form data to localStorage
-  useEffect(() => {
-    SaveToLocalStorage("TotalProjects", TotalProjects);
-  }, [TotalProjects]);
-
-  const handleChange = (e, key) => {
-    let name = e.target.name;
-    let value = e.target.value;
-
-    const updatedProjects = [...TotalProjects];
-    updatedProjects[key] = {
-      ...updatedProjects[key],
-      [name]: value,
-    };
-
-    if (name === "tag") {
-      let currentForm = updatedProjects[key];
-
-      if (currentForm.tag.endsWith(",") && currentForm.tag.length > 1) {
-        let newTag = currentForm.tag.slice(0, -1);
-
-        let updatedTags = [...currentForm["techStack"], newTag];
-
-        currentForm = {
-          ...currentForm,
-          ["techStack"]: updatedTags,
-          ["tag"]: "",
-        };
-      } else if (currentForm.tag.endsWith(",") && currentForm.tag.length < 2) {
-        alert("You need to add a tag ");
-      }
-      updatedProjects[key] = currentForm;
-    }
-
-    setTotalProjects(updatedProjects);
-  };
-
-  const removeTag = (e, key, tagKey) => {
-    const currentProjectObject = TotalProjects[key];
-    currentProjectObject.techStack.splice(tagKey, 1);
-
-    TotalProjects[key] = currentProjectObject;
-    setTotalProjects([...TotalProjects]);
-  };
-  const handleAdd = (e, key) => {
-    e.preventDefault();
-    if (TotalProjects.length >= 5) {
-      alert("Maximum limit reached ! Save current projects to add more ");
-      return;
-    }
-    setTotalProjects([...TotalProjects, form]);
-  };
-  const isTitleLengthMore = () => {
-    let res = TotalProjects.every(obj => {
-      if (obj.title.length < 100) {
-        return true;
-      }
-      return false;
-    });
-    return !res;
-  };
-
-  const isDescLengthMore = () => {
-    let res = TotalProjects.every(obj => {
-      if (obj.description.length < 200) {
-        return true;
-      }
-      return false;
-    });
-    return !res;
-  };
-  const isTechStackOutOfLimit = () => {
-    let res = TotalProjects.every(obj => {
-      if (obj.techStack.length > 0 && obj.techStack.length < 7) {
-        return true;
-      }
-      return false;
-    });
-    return !res;
-  };
-  const handleSubmit = async e => {
-    e.preventDefault();
-
-    if (isTitleLengthMore()) {
-      alert("Title words limit reached");
-
-      return false;
-    }
-    if (isDescLengthMore()) {
-      alert("Description words limit reached");
-      return false;
-    }
-    if (isTechStackOutOfLimit()) {
-      alert("Kindly add minimun one #Tag and max to your Projects , max 6 ");
-      return false;
-    }
-
-    await fetch("/api/aboutProjects", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(TotalProjects),
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        if (data.success) {
-          router.push("portfolio/" + data.user.username);
-        }
-      });
-  };
   if (status === "loading") {
     return <LoadingPage />;
   }
@@ -170,11 +31,9 @@ const Dashboard = () => {
     return <LoadingPage />;
   }
 
-  console.log('projects here ' ,TotalProjects);
-
   return (
-    <> 
-      <form onSubmit={handleSubmit}> 
+    <>
+      <form onSubmit={handleSubmit}>
         {TotalProjects.map((itemForm, key) => {
           return (
             <section
@@ -182,9 +41,15 @@ const Dashboard = () => {
               className="bg-white p-1 xs:p-8 min-h-screen pt-32 pb-12  "
             >
               <div className="max-w-96 sm:max-w-4xl mx-auto border border-[#4D7C0F] rounded-lg p-8">
-                <h2 className="sm:text-xl text-[12px] font-bold mb-6 text-black">
+                <div className="flex w-full   justify-between items-center mb-6">
+                  <h2 className="sm:text-xl text-[12px] font-bold  text-black  ">
                   Project {key + 1}
-                </h2>
+                </h2> 
+             
+                 <TrashIcon className="size-5 hover:cursor-pointer" onClick={()=>{handleDelete(key)}} />
+             
+                </div>
+             
 
                 <div className="space-y-6">
                   <div>
@@ -381,7 +246,7 @@ const Dashboard = () => {
                 <div className="mt-8 pt-6 border-t border-gray-200 flex  gap-2.5 justify-end">
                   {key == TotalProjects.length - 1 && (
                     <>
-                      <button
+                      {!updateInfoValue && <button
                         onClick={e => {
                           handleAdd(e, key);
                         }}
@@ -389,7 +254,7 @@ const Dashboard = () => {
                         className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]   gap-[10px] text-white px-1.5 cursor-pointer"
                       >
                         Add Project
-                      </button>
+                      </button>}
                       <button
                         type="submit"
                         className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]  gap-[10px] text-white px-1.5 cursor-pointer"

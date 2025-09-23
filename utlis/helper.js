@@ -1,4 +1,3 @@
-
 import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -23,19 +22,19 @@ export function SaveToLocalStorage(key, value) {
   }, 1500);
 }
 export function RetriveFromLocalStorage(key) {
-
   return JSON.parse(localStorage.getItem(key));
+}
+export function DeleteFromLocalStorage(key) {
+  localStorage.removeItem(key);
 }
 
 export async function isSessionAvailable() {
-
   const session = await getServerSession(authOptions);
-  return session ?? {
-        success: false,
-        status: 401,
-        message: "Kindly SignIn / LogIn First",
-      }
- 
+  return (
+    session ?? {
+      success: false,
+      status: 401,
+      message: "Kindly SignIn / LogIn First",
+    }
+  );
 }
-
-

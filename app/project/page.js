@@ -1,11 +1,13 @@
 import Projects from "@/components/Pages/ProjectsPage/Projects";
 
  
-const userDashboard = () => {
+const userDashboard = async ({searchParams}) => {
 
+  const searchParamsData = await searchParams   
+  
     return (
         <>
-            <Projects/>
+            <Projects updateInfo={searchParamsData.update === 'true' ?? false} />
         </>
     );
 };

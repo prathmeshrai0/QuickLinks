@@ -100,6 +100,8 @@ const LoginPage = props => {
         .then(data => {
           if (data.isAvailable) {
             router.push("project");
+       
+            
           } else {
             router.push("user-info");
           }

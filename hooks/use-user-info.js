@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 
 import {
+  DeleteFromLocalStorage,
   fetchFunction,
   RetriveFromLocalStorage,
   SaveToLocalStorage,
@@ -51,16 +52,17 @@ export function useUserInfo(updateInfo, session, router, status) {
   const [form, setform] = useState({ ...defaultForm });
   // for manipulating skills array
   const [teckStack, setteckStack] = useState([]);
- 
+const LSKey = "user-info";
 
   useEffect(() => {
     // // used for handling updates
-    const RETRIVED_DATA = RetriveFromLocalStorage("user-info");
+    const RETRIVED_DATA = RetriveFromLocalStorage(LSKey);
     if (updateInfo) {
       fetchFunction("api/user").then(data => {
+        
 
         setform({ ...data.user, ...(RETRIVED_DATA ?? {}) });
-
+        // make unique elements 
         const merged = Array.from(
           new Set([
             ...data.user.skills,
@@ -72,23 +74,22 @@ export function useUserInfo(updateInfo, session, router, status) {
       });
     } else {
       if (RETRIVED_DATA) {
-        setform( prev =>({
-          ...prev , ...RETRIVED_DATA 
-        })); 
-        setteckStack(prev=>[...RETRIVED_DATA.skills])
+        setform(prev => ({
+          ...prev, ...RETRIVED_DATA
+        }));
+        setteckStack(prev => [...RETRIVED_DATA.skills])
       }
     }
   }, []);
   useEffect(() => {
-    console.log(form);
-    
-    SaveToLocalStorage("user-info", form);
+
+    SaveToLocalStorage(LSKey, form);
   }, [form]);
 
   useEffect(() => {
-   
 
-    setform( prev => ({ ...prev, ["skills"]: teckStack }));
+
+    setform(prev => ({ ...prev, ["skills"]: teckStack }));
   }, [teckStack]);
 
   useEffect(() => {
@@ -97,11 +98,11 @@ export function useUserInfo(updateInfo, session, router, status) {
     }
     if (status === "authenticated") {
       if (session.user.image) {
-    
+
         setform(prev => ({ ...prev, ["profilePic"]: session.user.image }));
       }
     }
- 
+
 
   }, [status, router]);
 
@@ -140,12 +141,15 @@ export function useUserInfo(updateInfo, session, router, status) {
 
     fetchFunction("/api/user", payLoad, "PUT").then(data => {
       if (data.success) {
+        DeleteFromLocalStorage(LSKey );
         if (updateInfo) {
           router.push("update-info");
         } else {
           router.push("project");
         }
       } else {
+        console.log(data);
+        
         alert(data.message);
       }
     });

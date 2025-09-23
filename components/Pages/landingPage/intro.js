@@ -16,7 +16,8 @@ const Intro = () => {
       .then(data => {
 
         setLatestCustomers(data.users)
-      })
+      }) 
+
   }, [])
   const handleChange = (e) => {
     setusername(e.target.value)

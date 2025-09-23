@@ -1,8 +1,7 @@
-"use server"
 import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-export async function isValidURL(urlData) {
+export function isValidURL(urlData) {
   try {
     new URL(urlData);
     return true;
@@ -10,22 +9,22 @@ export async function isValidURL(urlData) {
     return false;
   }
 }
-export async function UnderDevelopmentFeature() {
+export function UnderDevelopmentFeature() {
   alert("This feature is currently under Development , HOLD TIGHT !");
 }
 
 let timer;
-export async function SaveToLocalStorage(key, value) {
+export function SaveToLocalStorage(key, value) {
   if (timer) clearTimeout(timer); // to clear previous timeId not current one
 
   timer = setTimeout(() => {
     localStorage.setItem(key, JSON.stringify(value));
   }, 1500);
 }
-export async function RetriveFromLocalStorage(key) {
+export function RetriveFromLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
-export async function DeleteFromLocalStorage(key) {
+export function DeleteFromLocalStorage(key) {
   localStorage.removeItem(key);
 }
 

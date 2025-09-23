@@ -72,7 +72,8 @@ export default updateInfo => {
         }
       });
     } else {
-      if (RETRIVED_DATA) {
+      if (RETRIVED_DATA) { 
+        
         setTotalProjects([...RETRIVED_DATA]);
       }
     }

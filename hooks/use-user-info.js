@@ -52,14 +52,14 @@ export function useUserInfo(updateInfo, session, router, status) {
   const [form, setform] = useState({ ...defaultForm });
   // for manipulating skills array
   const [teckStack, setteckStack] = useState([]);
-const LSKey = "user-info";
+  const LSKey = "user-info";
 
   useEffect(() => {
     // // used for handling updates
     const RETRIVED_DATA = RetriveFromLocalStorage(LSKey);
     if (updateInfo) {
       fetchFunction("api/user").then(data => {
-        
+
 
         setform({ ...data.user, ...(RETRIVED_DATA ?? {}) });
         // make unique elements 
@@ -97,6 +97,8 @@ const LSKey = "user-info";
       router.push("/login");
     }
     if (status === "authenticated") {
+
+
       if (session.user.image) {
 
         setform(prev => ({ ...prev, ["profilePic"]: session.user.image }));
@@ -137,11 +139,11 @@ const LSKey = "user-info";
     if (isTechStackEmpty()) {
       alert("You need to add minimun one skill ");
       return false;
-    }
+    } 
 
     fetchFunction("/api/user", payLoad, "PUT").then(data => {
       if (data.success) {
-        DeleteFromLocalStorage(LSKey );
+        DeleteFromLocalStorage(LSKey);
         if (updateInfo) {
           router.push("update-info");
         } else {
@@ -149,7 +151,7 @@ const LSKey = "user-info";
         }
       } else {
         console.log(data);
-        
+
         alert(data.message);
       }
     });

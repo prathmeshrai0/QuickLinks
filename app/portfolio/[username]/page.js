@@ -11,14 +11,15 @@ const Portfolio = async ({ params }) => {
   });
 
   if (DataUser) {
+    
     const DataUserInfo = await prisma.userInfo.findFirst({
       where: {
         userId: DataUser.id,
       },
       include: { allProjects: true },
-    });
+    }); 
 
-    let { email } = DataUser;
+    let { email } = DataUser
 
     var UserDetailsForPortfolio = {
       email: email,
@@ -27,7 +28,7 @@ const Portfolio = async ({ params }) => {
     };
     delete UserDetailsForPortfolio.id;
     delete UserDetailsForPortfolio.userId; 
-  } 
+  }  
   
 
   return (

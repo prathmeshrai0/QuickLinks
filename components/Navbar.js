@@ -8,13 +8,16 @@ import { signOut } from "next-auth/react";
 import { UnderDevelopmentFeature } from "@/utlis/helper";
 const Navbar = () => {
   const pathname = usePathname();
-
+  
   const { data: session } = useSession();
-  const [ifUserInfoAvailable, setifUserInfoAvailable] = useState(null);
+  const [ifUserInfoAvailable, setifUserInfoAvailable] = useState(false);
   const [showSideBar, setshowSideBar] = useState(false);
-
+   
+  
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user && !(pathname === "/login" || pathname.startsWith("/portfolio"))) {
+     
+      
       fetch("api/user")
         .then(res => res.json())
         .then(data => {
@@ -24,14 +27,15 @@ const Navbar = () => {
             setifUserInfoAvailable(false);
           }
         });
-    }
-  }, [session]);
-  const toggleSideBar = () => {
-    setshowSideBar(prev => !prev);
-  };
-  if (pathname === "/login" || pathname.startsWith("/portfolio")) {
-    return;
-  }
+      }
+    }, [session , pathname]);
+    const toggleSideBar = () => {
+      setshowSideBar(prev => !prev);
+    };
+    if (pathname === "/login" || pathname.startsWith("/portfolio")) {
+      return null;
+    } 
+  
   return (
     <>
       <nav

@@ -4,7 +4,8 @@ import {
   PhotoIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
-const HeaderSection = ({UserDetails}) => {
+const HeaderSection = ({UserDetails}) => { 
+  
   return ( 
         <header className="bg-white  shadow-md py-10   border   flex justify-around px-7  ">
           <div className="max-w-5xl     flex flex-col md:flex-row md:justify-between md:items-center    ">

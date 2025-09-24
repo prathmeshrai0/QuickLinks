@@ -11,8 +11,7 @@ export async function PUT(req) {
   const session = await isSessionAvailable();
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
-  }
-  // console.log(safeBody, session.user.id , body);
+  } 
 
 
   try {

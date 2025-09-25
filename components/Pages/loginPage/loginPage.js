@@ -7,6 +7,8 @@ import validator from "validator";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
+import EyeClosed from "@/assets/EyeClose";
+import EyeOpen from "@/assets/EyeOpen";
 const LoginPage = props => {
   const [form, setform] = useState({
     email: "",
@@ -27,52 +29,59 @@ const LoginPage = props => {
   const router = useRouter();
   const formValues = watch();
 
+  const [isShowPassword, setisShowPassword] = useState(false)
+
+
+  const togglePassword = (e) => {
+
+    setisShowPassword(!isShowPassword)
+  };
   const handelChange = e => {
     setform({ ...form, [e.target.name]: e.target.value });
   };
   const submit = async e => {
     const isEmailGiven = validator.isEmail(e.unknown);
     let sendingData;
-    if(e.unknown.length )
-    if (isEmailGiven) {
+    if (e.unknown.length)
+      if (isEmailGiven) {
 
-      const { password, unknown } = e
-      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(unknown)) {
+        const { password, unknown } = e
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(unknown)) {
 
 
-        let email = unknown;
+          let email = unknown;
 
-        sendingData = {
-          email,
-          password,
-          redirect: false,
-          isSignUp: false,
-          givenUsername: false,
-        };
+          sendingData = {
+            email,
+            password,
+            redirect: false,
+            isSignUp: false,
+            givenUsername: false,
+          };
+        }
+        else {
+          setError("unknown", { type: "manual", message: "Invalid email format" });
+        }
+      } else {
+        const { password, unknown } = e
+
+        if (!/\s/.test(unknown)) {
+
+          let username = unknown;
+
+          sendingData = {
+            username,
+            password,
+            redirect: false,
+            isSignUp: false,
+            givenUsername: true,
+          };
+        }
+        else {
+          setError("unknown", { type: "manual", message: "Username cannot contain spaces" });
+        }
       }
-      else {
-        setError("unknown", { type: "manual", message: "Invalid email format" });
-      }
-    } else {
-      const { password, unknown } = e
 
-      if (!/\s/.test(unknown)) { 
-        
-        let username = unknown;
-
-        sendingData = {
-          username,
-          password,
-          redirect: false,
-          isSignUp: false,
-          givenUsername: true,
-        };
-      }
-      else{
-        setError("unknown", { type: "manual", message: "Username cannot contain spaces" });
-      }
-    }
- 
 
     let res = await signIn("credentials", sendingData);
 
@@ -98,10 +107,11 @@ const LoginPage = props => {
       fetch("api/user")
         .then(res => res.json())
         .then(data => {
+
           if (data.isAvailable) {
             router.push("project");
-       
-            
+
+
           } else {
             router.push("user-info");
           }
@@ -131,16 +141,23 @@ const LoginPage = props => {
               type="text"
               placeholder="email or username"
               name="unknown"
-              {...register('unknown',{
-                required:"This field is require"
+              {...register('unknown', {
+                required: "This field is require"
               })}
             />
             {errors.password && (
               <p className="text-red-500">{errors.password.message}</p>
             )}
+             <div className=" relative ">
+
+           
+             <button type="button" onClick={togglePassword} className="absolute right-1 top-1/2 -translate-y-1/2">
+              {isShowPassword ? <EyeClosed/> : <EyeOpen/> }
+              
+              </button>
             <input
-              className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
-              type="password"
+              className="custom-button cursor-auto bg-gray-200 font-light rounded-lg w-full"
+              type={isShowPassword ? 'text':'password'}
               placeholder="password"
               name="password"
               {...register("password", {
@@ -166,6 +183,7 @@ const LoginPage = props => {
                 },
               })}
             />
+              </div>
             <button
               className="custom-button rounded-lg bg-black text-white"
             >
@@ -176,11 +194,7 @@ const LoginPage = props => {
           <div className="authLogin">
             <SocialButton />
           </div>
-          {/* <div className="reset flex gap-0.5  justify-center items-center text-purple-500  font-medium [&>*]:cursor-pointer">
-            <span>Forgot username ?</span>
-            <span className="font-bold "> . </span>
-            <span> Forgot password ?</span>
-          </div> */}
+
           <div className="toggle flex justify-center items-center">
             <p>Doesn&apos;t have an account?</p>
             <button

@@ -2,6 +2,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import prisma from "@/prisma/connectDb";
+import { CheckSecurely, SaveSecurely } from "@/utlis";
+
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET, // 👈 REQUIRED to decrypt the session
 
@@ -39,11 +41,12 @@ export const authOptions = {
               throw new Error("User already exists with same Username");
             }
           } else {
+            const password = await SaveSecurely(credentials.password);
             const newUser = await prisma.user.create({
               data: {
                 email: credentials.email,
                 username: credentials.username,
-                password: credentials.password,
+                password: password,
                 provider: false,
               },
             });
@@ -62,10 +65,13 @@ export const authOptions = {
 
           const existingUser = await prisma.user.findFirst({
             where: whereCondition,
-          });
+          }); 
+          
           if (!existingUser) {
             throw new Error("User doesn't exists please Sign up");
-          } else if (existingUser.password != credentials.password) {
+          } else if (
+           ! await  CheckSecurely(existingUser.password, credentials.password)
+          ) {
             throw new Error("User's password didn't match");
           }
           return existingUser;
@@ -95,7 +101,7 @@ export const authOptions = {
       }
 
       session.user = token.user; // this sets what goes to the frontend
-      
+
       delete session.user.password;
       return session;
     },
@@ -124,4 +130,3 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
- 

@@ -70,7 +70,7 @@ const Intro = () => {
           <div className="  border-2 h-96     flex  justify-center ">
             <ul
               role="list"
-              className="divide-y divide-gray-200 w-md   "
+              className="divide-y divide-gray-200 w-md  overflow-hidden  "
             >
               {LatestCustomers ? LatestCustomers.map((user, index) => (
                 <li

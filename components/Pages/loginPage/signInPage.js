@@ -6,6 +6,8 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
+import EyeOpen from "@/assets/EyeOpen";
+import EyeClosed from "@/assets/EyeClose";
 
 const SignInPage = props => {
   const {
@@ -20,6 +22,7 @@ const SignInPage = props => {
   const { data: session } = useSession();
   const router = useRouter();
   const formValues = watch();
+  const [isShowPassword, setisShowPassword] = useState(false)
 
   const submit = async e => {
     const { email, username, password } = e;
@@ -41,14 +44,19 @@ const SignInPage = props => {
   const toggle = () => {
     router.push("/login?action=login");
   };
+  const togglePassword = (e) => { 
+    
+    setisShowPassword( !isShowPassword)
+  };
+ 
 
-  
+
   useEffect(() => {
     if (props?.username) {
       setValue("username", props.username);
     }
   }, [props]);
-  
+
   useEffect(() => {
     reset(RetriveFromLocalStorage("signin"));
   }, []);
@@ -62,7 +70,8 @@ const SignInPage = props => {
     if (session?.user) {
       fetch("api/user")
         .then(res => res.json())
-        .then(data => {
+        .then(data => { 
+
           if (data.isAvailable) {
             router.push("project");
           } else {
@@ -122,37 +131,44 @@ const SignInPage = props => {
             {errors.password && (
               <p className="text-red-500">{errors.password.message}</p>
             )}
-            <input
-              className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
-              type="password"
-              placeholder="password"
-              name="password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-                validate: {
-                  nospace: value =>
-                    !/\s/.test(value) || "Cannot contain spaces",
-                  hasUpper: value =>
-                    /[A-Z]/.test(value) ||
-                    "Must include at least one uppercase letter",
-                  hasLower: value =>
-                    /[a-z]/.test(value) ||
-                    "Must include at least one lowercase letter",
-                  hasNumber: value =>
-                    /[0-9]/.test(value) || "Must include at least one number",
-                  hasSpecial: value =>
-                    /[^A-Za-z0-9]/.test(value) ||
-                    "Must include at least one special character",
-                },
-              })}
-            />
+            <div className=" relative ">
+              <button type="button" onClick={togglePassword} className="absolute right-1 top-1/2 -translate-y-1/2">
+              {isShowPassword ? <EyeClosed/> : <EyeOpen/> }
+              
+              </button>
+
+              <input
+                className="custom-button cursor-auto bg-gray-200 font-light rounded-lg border w-full "
+                type={isShowPassword ? 'text':'password'}
+                placeholder="password"
+                name="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                  validate: {
+                    nospace: value =>
+                      !/\s/.test(value) || "Cannot contain spaces",
+                    hasUpper: value =>
+                      /[A-Z]/.test(value) ||
+                      "Must include at least one uppercase letter",
+                    hasLower: value =>
+                      /[a-z]/.test(value) ||
+                      "Must include at least one lowercase letter",
+                    hasNumber: value =>
+                      /[0-9]/.test(value) || "Must include at least one number",
+                    hasSpecial: value =>
+                      /[^A-Za-z0-9]/.test(value) ||
+                      "Must include at least one special character",
+                  },
+                })}
+              />
+            </div>
             <button
               type="submit"
-              className="custom-button rounded-lg bg-black text-white"
+              className="custom-button rounded-lg bg-black text-white   "
             >
               Continue
             </button>

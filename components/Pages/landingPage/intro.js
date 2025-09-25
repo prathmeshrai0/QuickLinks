@@ -102,7 +102,7 @@ const Intro = () => {
                     </div>
                   </div>
                 </li>
-              )) : <LoadingPage />}
+              )) : <LoadingPage className="min-h-20" />}
             </ul>
           </div>
         </div>

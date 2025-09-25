@@ -10,13 +10,13 @@ const Navbar = () => {
   const pathname = usePathname();
   
   const { data: session } = useSession();
-  const [ifUserInfoAvailable, setifUserInfoAvailable] = useState(false);
+  const [ifUserInfoAvailable, setifUserInfoAvailable] = useState(null);
   const [showSideBar, setshowSideBar] = useState(false);
-   
+    
   
   useEffect(() => {
     if (session?.user && !(pathname === "/login" || pathname.startsWith("/portfolio"))) {
-     
+      
       
       fetch("api/user")
         .then(res => res.json())

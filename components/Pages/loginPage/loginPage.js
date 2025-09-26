@@ -6,10 +6,15 @@ import SocialButton from "./socialButton";
 import validator from "validator";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { DeleteFromLocalStorage, RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
+import {
+  DeleteFromLocalStorage,
+  RetriveFromLocalStorage,
+  SaveToLocalStorage,
+} from "@/utlis/helper";
 import EyeClosed from "@/assets/EyeClose";
 import EyeOpen from "@/assets/EyeOpen";
 import { fetchFunction } from "@/utlis";
+import Image from "next/image";
 const LoginPage = props => {
   const [form, setform] = useState({
     email: "",
@@ -36,7 +41,7 @@ const LoginPage = props => {
   const togglePassword = e => {
     setisShowPassword(!isShowPassword);
   };
-  
+
   const submit = async e => {
     const isEmailGiven = validator.isEmail(e.unknown);
     let sendingData;
@@ -101,9 +106,8 @@ const LoginPage = props => {
 
   useEffect(() => {
     if (session?.user) {
-      fetchFunction("/api/user").then(data => { 
-        
-        if (data.success) { 
+      fetchFunction("/api/user").then(data => {
+        if (data.success) {
           if (data.isAvailable) {
             router.push("project");
           } else {
@@ -207,8 +211,13 @@ const LoginPage = props => {
           </div>
         </div>
       </section>
-      <section className="right border max-w-1/2   hidden">
-        right image here
+      <section className="right relative border max-w-1/2 w-1/2   hidden md:block  ">
+        <Image
+          src="/login.jpg"
+          alt="Profile picture"
+          fill
+          style={{ objectFit: "cover" }}
+        />
       </section>
     </main>
   );

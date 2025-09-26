@@ -9,6 +9,7 @@ import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 import EyeOpen from "@/assets/EyeOpen";
 import EyeClosed from "@/assets/EyeClose";
 import { DeleteFromLocalStorage, fetchFunction } from "@/utlis";
+import Image from "next/image";
 
 const SignInPage = props => {
   const {
@@ -67,18 +68,16 @@ const SignInPage = props => {
 
   useEffect(() => {
     if (session?.user) {
-
       fetchFunction("api/user").then(data => {
-        if (data.success) { 
+        if (data.success) {
           if (data.isAvailable) {
             router.push("project");
           } else {
             router.push("user-info");
           }
         } else {
-          console.error(data.error)
+          console.error(data.error);
           console.log(data.message);
-
         }
       });
     }
@@ -199,8 +198,13 @@ const SignInPage = props => {
           </div>
         </div>
       </section>
-      <section className="right border md:block hidden  md:w-1/2">
-        right image here
+      <section className="right relative border max-w-1/2 w-1/2   hidden md:block  ">
+        <Image
+          src="/signin.jpg"
+          alt="Profile picture"
+          fill
+          style={{ objectFit: "cover" }}
+        />
       </section>
     </main>
   );

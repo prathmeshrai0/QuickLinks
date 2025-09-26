@@ -14,9 +14,13 @@ const ReportPage = () => {
 
   useEffect(() => {
     if (status === "unauthenticated") {
+      
+      alert("sign in first") 
+      
+      
       router.push("/");
     }
-  }, [status]);
+  }, [status ]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -70,9 +74,8 @@ const ReportPage = () => {
 
           <button
             type="submit"
-            className={`w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md transition-colors    ${
-              disableSubmit ? "cursor-not-allowed" : "cursor-pointer   "
-            }  `}
+            className={`w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md transition-colors    ${disableSubmit ? "cursor-not-allowed" : "cursor-pointer   "
+              }  `}
             disabled={disableSubmit}
           >
             Submit Report

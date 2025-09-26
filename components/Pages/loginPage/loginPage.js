@@ -103,8 +103,7 @@ const LoginPage = props => {
     if (session?.user) {
       fetchFunction("/api/user").then(data => { 
         
-        if (data.success) {
-          DeleteFromLocalStorage(LSKey);
+        if (data.success) { 
           if (data.isAvailable) {
             router.push("project");
           } else {

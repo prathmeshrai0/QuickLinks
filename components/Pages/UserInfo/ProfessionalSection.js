@@ -151,7 +151,7 @@ const ProfessionalSection = ({
             {form.certificates.length > 0 && form.certificates.map((ele, key) => {
 
 
-                return <div key={key} className="mt-10 grid grid-cols-1 gap-x-6 sm:gap-y-8 gap-y-4 sm:grid-cols-6  ">
+                return <div key={key} className="mt-10 grid grid-cols-1 gap-x-6 sm:gap-y-8 gap-y-4 sm:grid-cols-6  bg-gray-200 p-2 rounded-md ">
                     <div className="sm:col-span-2">
                         <label
                             htmlFor="certificates"

@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
         <SessionWrapper>
           <Navbar />
           <CopyUrlButton />
-          <ReportIssue />
+          {/* <ReportIssue /> */}
 
           {children}
         </SessionWrapper>

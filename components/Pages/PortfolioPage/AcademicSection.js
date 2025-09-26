@@ -2,7 +2,7 @@ import React from "react";
 
 const AcademicSection = ({ UserDetails }) => {
   return (
-    <section className="max-w-5xl mx-auto mt-10    ">
+    <section className="max-w-5xl mx-auto       w-full     ">
       <h2 className="text-2xl font-semibold mb-4">Academic Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
         {UserDetails.tenthMarks > 0 && (

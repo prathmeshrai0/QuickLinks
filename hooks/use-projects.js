@@ -2,7 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { DeleteFromLocalStorage, RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
+import {
+  DeleteFromLocalStorage,
+  RetriveFromLocalStorage,
+  SaveToLocalStorage,
+} from "@/utlis/helper";
 import categories_subCat from "@/components/Pages/ProjectsPage/categories_subCat";
 import { fetchFunction } from "@/utlis";
 
@@ -72,8 +76,7 @@ export default updateInfo => {
         }
       });
     } else {
-      if (RETRIVED_DATA) { 
-        
+      if (RETRIVED_DATA) {
         setTotalProjects([...RETRIVED_DATA]);
       }
     }
@@ -134,7 +137,9 @@ export default updateInfo => {
   const handleAdd = (e, key) => {
     e.preventDefault();
     if (TotalProjects.length >= 5) {
-      alert("Maximum limit reached ! Currently you can add only 10 projects. We are working on it, HANG TIGHT !!!");
+      alert(
+        "Maximum limit reached ! Currently you can add only 10 projects. We are working on it, HANG TIGHT !!!"
+      );
       return;
     }
     setTotalProjects([...TotalProjects, form]);
@@ -142,12 +147,13 @@ export default updateInfo => {
   const handleDelete = key => {
     let c = confirm("Are you sure you want to delete this Project!");
     if (c) {
-      if (key === 0) {
+      if (key === 0 && TotalProjects.length === 1) {
         setTotalProjects([form]);
       } else {
         if (updateInfoValue) {
-          const id = TotalProjects[key].id;
           // delete from db
+          const id = TotalProjects[key].id;
+
           fetchFunction("/api/aboutProjects", { id: id }, "DELETE");
           TotalProjects.splice(key, 1);
           setTotalProjects([...TotalProjects]);
@@ -206,36 +212,29 @@ export default updateInfo => {
       projects: TotalProjects,
     };
 
-    if(updateInfo){
+    if (updateInfo) {
       fetchFunction("/api/aboutProjects", payLoad, "PUT").then(data => {
-        if(data.success){
-          DeleteFromLocalStorage(LSKey)
-          router.push("update-info"  );
-
-        }
-        else{
+        if (data.success) {
+          DeleteFromLocalStorage(LSKey);
+          router.push("update-info");
+        } else {
           console.log(data.error);
-          alert(data.message)
-          
+          alert(data.message);
         }
       });
-      
-    }else{
+    } else {
       fetchFunction("/api/aboutProjects", payLoad, "POST").then(data => {
-        if(data.success){
-          DeleteFromLocalStorage(LSKey)
+        console.log(data);
+
+        if (data.success) {
+          DeleteFromLocalStorage(LSKey);
           router.push("portfolio/" + session.user.username);
-          
-        }
-        else{
+        } else {
           console.log(data.error);
-          alert(data.message)
-          
+          alert(data.message);
         }
       });
-      
     }
-       
   };
 
   return {

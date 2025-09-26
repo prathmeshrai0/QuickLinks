@@ -20,6 +20,7 @@ const ReportIssue = () => {
 
         router.push('/report-issue')
     };
+   
     return (
         <>
             {isShowButton && (

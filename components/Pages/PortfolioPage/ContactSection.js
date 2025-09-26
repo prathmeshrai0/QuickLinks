@@ -3,7 +3,7 @@ import React from "react";
 
 const ContactSection = ({ UserDetails }) => {
     return (
-        <section className="max-w-5xl mx-auto mt-10   ">
+        <section className="max-w-5xl mx-auto       w-full  text-center sm:text-left   ">
             <h2 className="text-2xl font-semibold mb-4">Let&apos;s Connect</h2>
 
             <div className="flex justify-start sm:gap-[33%]  sm:flex-row flex-col  gap-4   text-gray-700">

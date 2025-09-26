@@ -25,21 +25,21 @@ const PortfolioPage = props => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-100  sm:text-base     text-gray-900 font-sans">
+      <div className="min-h-screen bg-gray-100      text-gray-900 font-sans text-sm sm:text-base">
         <HeaderSection UserDetails={UserDetails} />
 
 
 
 
-        <div className=" px-7">
+        <div className=" px-7 flex flex-col      h-full     sm:gap-8 sm:pt-8 gap-4 pt-4  ">
           <PersonalSection UserDetails={UserDetails} />
 
-        <ProfessionalSection UserDetails={UserDetails} certificates={certificates} skills={skills} />
-        <AcademicSection UserDetails={UserDetails} />
+          <ProfessionalSection UserDetails={UserDetails} certificates={certificates} skills={skills} />
+          <AcademicSection UserDetails={UserDetails} />
 
 
-        <ProjectSection UserDetails={UserDetails} allProjects={allProjects} />
-        <ContactSection UserDetails={UserDetails} />
+          <ProjectSection UserDetails={UserDetails} allProjects={allProjects} />
+          <ContactSection UserDetails={UserDetails} />
         </div>
 
         <Footer />

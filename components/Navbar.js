@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { UnderDevelopmentFeature } from "@/utlis/helper";
+import SelectMore from "@/assets/navbar/SelectMore";
 const Navbar = () => {
   const pathname = usePathname();
 
@@ -60,42 +61,24 @@ const Navbar = () => {
         <div className="   navLinks&buttons      flex w-full md:justify-between justify-end  gap-2   items-center ">
           <ul className="    items-center   md:gap-2  lg:gap-4      hidden md:flex    w-full   ">
             <Link
-              className="hover:bg-gray-200 lg:px-5  p-3 py-1.5 rounded-sm   "
+              className="hover:bg-gray-400 lg:px-5  p-3 py-1.5 rounded-sm   bg-gray-200 "
               href="/"
             >
               Home
             </Link>
 
-            <Link
-              className="hover:bg-gray-200 lg:px-5  p-3 py-1.5 rounded-sm  "
-              href="/upcoming-updates"
-            >
-              Upcoming Updates
-            </Link>
 
-            <Link
-              className="hover:bg-gray-200 lg:px-5 p-3 py-1.5 rounded-sm"
-              href="/about-us"
-            >
-              About Us
-            </Link>
-
-            <Link
-              className="hover:bg-gray-200 lg:px-5 p-3 py-1.5 rounded-sm "
-              onClick={UnderDevelopmentFeature}
-              href=""
-            >
-              Theme
-            </Link>
 
             {ifUserInfoAvailable && (
               <Link
-                className="hover:bg-gray-200 lg:px-5 p-3 py-1.5 rounded-sm "
+                className="hover:bg-gray-400 lg:px-5 p-3 py-1.5 rounded-sm  bg-gray-200"
                 href="/update-info"
               >
                 Update Info
               </Link>
             )}
+
+            <SelectMore option={   ['Upcoming Updates', 'About Us' ,'Theme', 'Report Issue'] } />
           </ul>
           <div className="buttons flex gap-3   justify-center  items-center sm:justify-end     w-min    ">
             {session?.user ? (

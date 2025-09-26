@@ -47,7 +47,7 @@ const Intro = () => {
       alert("Enter Your Username First!")
     }
 
-  }
+  } 
 
   return (
     <section className="bg-[#254f1a] min-h-[140vh]         ">
@@ -122,8 +122,7 @@ const Intro = () => {
                     </div>
                   </div>
                 </li>
-              )) : <LoadingPage className="   !min-h-20    " />}
-
+              )) : <LoadingPage className="   !min-h-20    " />} 
               
             </ul>
           </div>

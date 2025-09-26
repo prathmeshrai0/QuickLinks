@@ -8,16 +8,16 @@ import { signOut } from "next-auth/react";
 import { UnderDevelopmentFeature } from "@/utlis/helper";
 const Navbar = () => {
   const pathname = usePathname();
-  
+
   const { data: session } = useSession();
   const [ifUserInfoAvailable, setifUserInfoAvailable] = useState(null);
   const [showSideBar, setshowSideBar] = useState(false);
-    
-  
+
   useEffect(() => {
-    if (session?.user && !(pathname === "/login" || pathname.startsWith("/portfolio"))) {
-      
-      
+    if (
+      session?.user &&
+      !(pathname === "/login" || pathname.startsWith("/portfolio"))
+    ) {
       fetch("api/user")
         .then(res => res.json())
         .then(data => {
@@ -27,15 +27,15 @@ const Navbar = () => {
             setifUserInfoAvailable(false);
           }
         });
-      }
-    }, [session , pathname]);
-    const toggleSideBar = () => {
-      setshowSideBar(prev => !prev);
-    };
-    if (pathname === "/login" || pathname.startsWith("/portfolio")) {
-      return null;
-    } 
-  
+    }
+  }, [session, pathname]);
+  const toggleSideBar = () => {
+    setshowSideBar(prev => !prev);
+  };
+  if (pathname === "/login" || pathname.startsWith("/portfolio")) {
+    return null;
+  }
+
   return (
     <>
       <nav
@@ -48,7 +48,7 @@ const Navbar = () => {
           href="/"
         >
           <svg
-            className="md:hidden size-6"
+            className="md:hidden size-5"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -58,9 +58,9 @@ const Navbar = () => {
           </svg>
         </Link>
         <div className="   navLinks&buttons      flex w-full md:justify-between justify-end  gap-2   items-center ">
-          <ul className="    items-center   gap-4       hidden md:flex   ">
+          <ul className="    items-center   md:gap-2  lg:gap-4      hidden md:flex    w-full   ">
             <Link
-              className="hover:bg-gray-200 lg:px-5  p-3 py-1.5 rounded-sm "
+              className="hover:bg-gray-200 lg:px-5  p-3 py-1.5 rounded-sm   "
               href="/"
             >
               Home
@@ -97,27 +97,28 @@ const Navbar = () => {
               </Link>
             )}
           </ul>
-          <div className="buttons flex gap-2      ">
+          <div className="buttons flex gap-3   justify-center  items-center sm:justify-end     w-min    ">
             {session?.user ? (
-              // gray
               <Link
                 href={"/login?action=login"}
-                className=" text-center sm:min-w-24  bg-gray-200 py-3   rounded-sm font-bold w-20 max-h-full h-[75%] px-1 text-xs"
+                className="  text-center sm:min-w-24  bg-gray-200 py-2   rounded-sm font-bold w-16 max-h-full h-[75%] px-1 text-xs"
                 onClick={() => signOut({ callbackUrl: "/login?action=login" })}
               >
                 Sign out
               </Link>
             ) : (
               <>
+                {/* gray button  */}
                 <Link
                   href={"/login?action=login"}
-                  className=" text-center sm:min-w-24  bg-gray-200 py-3   rounded-sm font-bold w-20 max-h-full h-[75%] px-1 text-xs"
+                  className=" text-center sm:min-w-24  bg-gray-200 py-2   rounded-sm font-bold w-16 max-h-full h-[75%] px-1 text-xs"
                 >
                   Log in
                 </Link>
+                {/* black button  */}
                 <Link
                   href={"/login?action=signup"}
-                  className=" text-center custom-button  sm:min-w-36      bg-gray-900 text-white  w-24 max-h-full h-[75%] px-1 text-xs  "
+                  className=" text-center custom-button  sm:min-w-36  py-2     bg-gray-900 text-white  w-24 max-h-full h-[75%] px-1 text-xs  "
                 >
                   Sign up free
                 </Link>
@@ -127,14 +128,14 @@ const Navbar = () => {
               (ifUserInfoAvailable ? (
                 <Link
                   href={"/project"}
-                  className=" text-center custom-button  sm:min-w-36      bg-gray-900 text-white  w-24 max-h-full h-[75%] px-1 text-xs "
+                  className=" text-center custom-button  sm:min-w-36  py-2     bg-gray-900 text-white  w-24 max-h-full h-[75%] px-1 text-xs "
                 >
                   Add Project
                 </Link>
               ) : (
                 <Link
                   href={"/user-info"}
-                  className=" text-center sm:min-w-24  bg-gray-200 py-3   rounded-sm font-bold w-20 max-h-full h-[75%] px-1 text-xs"
+                  className="  text-center sm:min-w-24  bg-gray-200 py-2   rounded-sm font-bold w-16 max-h-full h-[75%] px-1 text-xs   "
                 >
                   Userinfo
                 </Link>

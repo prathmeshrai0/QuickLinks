@@ -11,7 +11,7 @@ export async function PUT(req) {
   const session = await isSessionAvailable();
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
-  } 
+  }
 
 
   try {
@@ -56,26 +56,37 @@ export async function GET(req) {
   }
 
   let user = null;
-  user = await prisma.userInfo.findFirst({
-    where: {
-      userId: session.user.id,
-    },
-  }); 
-
   let response;
-  if (user) {
+  try {
+
+    user = await prisma.userInfo.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
+
+    if (user) {
+      response = {
+        success: true,
+        isAvailable: true,
+        status: 200,
+        message: "Welcome",
+        user: user,
+      };
+    } else {
+      response = {
+        success: true,
+        isAvailable: false,
+        status: 404,
+        message: "Data not available kindly fill user info data",
+      };
+    }
+  }catch(error ){
     response = {
-      isAvailable: true,
-      status: 200,
-      message: "Welcome",
-      user: user,
-    };
-  } else {
-    response = {
-      isAvailable: false,
-      status: 404,
-      message: "Data not available kindly fill user info data",
-    };
+        success: false, 
+        status: 500,
+        message: "some error occured",
+      };
   }
 
   return new Response(JSON.stringify(response));

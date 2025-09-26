@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 import EyeOpen from "@/assets/EyeOpen";
 import EyeClosed from "@/assets/EyeClose";
+import { DeleteFromLocalStorage, fetchFunction } from "@/utlis";
 
 const SignInPage = props => {
   const {
@@ -22,7 +23,8 @@ const SignInPage = props => {
   const { data: session } = useSession();
   const router = useRouter();
   const formValues = watch();
-  const [isShowPassword, setisShowPassword] = useState(false)
+  const [isShowPassword, setisShowPassword] = useState(false);
+  const LSKey = "signin";
 
   const submit = async e => {
     const { email, username, password } = e;
@@ -44,12 +46,13 @@ const SignInPage = props => {
   const toggle = () => {
     router.push("/login?action=login");
   };
-  const togglePassword = (e) => { 
-    
-    setisShowPassword( !isShowPassword)
+  const togglePassword = e => {
+    setisShowPassword(!isShowPassword);
   };
- 
 
+  useEffect(() => {
+    reset(RetriveFromLocalStorage(LSKey));
+  }, []);
 
   useEffect(() => {
     if (props?.username) {
@@ -57,27 +60,28 @@ const SignInPage = props => {
     }
   }, [props]);
 
-  useEffect(() => {
-    reset(RetriveFromLocalStorage("signin"));
-  }, []);
-
   // save form data to localStorage
   useEffect(() => {
-    SaveToLocalStorage("signin", formValues);
+    SaveToLocalStorage(LSKey, formValues);
   }, [formValues]);
 
   useEffect(() => {
     if (session?.user) {
-      fetch("api/user")
-        .then(res => res.json())
-        .then(data => { 
 
+      fetchFunction("api/user").then(data => {
+        if (data.success) {
+          DeleteFromLocalStorage(LSKey)
           if (data.isAvailable) {
             router.push("project");
           } else {
             router.push("user-info");
           }
-        });
+        } else {
+          console.error(data.error)
+          console.log(data.message);
+
+        }
+      });
     }
   }, [session]);
 
@@ -132,14 +136,9 @@ const SignInPage = props => {
               <p className="text-red-500">{errors.password.message}</p>
             )}
             <div className=" relative ">
-              <button type="button" onClick={togglePassword} className="absolute right-1 top-1/2 -translate-y-1/2">
-              {isShowPassword ? <EyeClosed/> : <EyeOpen/> }
-              
-              </button>
-
               <input
                 className="custom-button cursor-auto bg-gray-200 font-light rounded-lg border w-full "
-                type={isShowPassword ? 'text':'password'}
+                type={isShowPassword ? "text" : "password"}
                 placeholder="password"
                 name="password"
                 {...register("password", {
@@ -165,6 +164,13 @@ const SignInPage = props => {
                   },
                 })}
               />
+              <button
+                type="button"
+                onClick={togglePassword}
+                className="absolute right-1 top-1/2 -translate-y-1/2"
+              >
+                {isShowPassword ? <EyeClosed /> : <EyeOpen />}
+              </button>
             </div>
             <button
               type="submit"

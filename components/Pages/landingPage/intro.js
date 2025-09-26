@@ -6,10 +6,22 @@ import {
   PhotoIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
+
+import { useForm } from "react-hook-form";
 const Intro = () => {
   const [LatestCustomers, setLatestCustomers] = useState()
   const router = useRouter();
   const [username, setusername] = useState("")
+    const {
+      register,
+      handleSubmit,
+      setValue,
+      formState: { errors },
+      watch,
+      reset,
+    } = useForm({
+      mode : "onChange"
+    });
   useEffect(() => {
     fetch(new URL('api/latestCustomers', process.env.NEXT_PUBLIC_BASE_URL))
       .then(res => res.json())
@@ -25,8 +37,8 @@ const Intro = () => {
   }
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const submit = (e) => {  
+    const {username} = e ;
 
     if (username.length > 0) {
 
@@ -39,27 +51,36 @@ const Intro = () => {
 
   return (
     <section className="bg-[#254f1a] min-h-[140vh]         ">
-      <div className=" md:pt-40 pt-32     flex-wrap  justify-center        min-h-[65%] flex   md:gap-20  gap-10 px-3 ">
-        {/* part 1  */}
-        <div className="claim flex flex-col   md:max-w-1/2 gap-9 w-full    ">
-          <h2 className="font-extrabold md:text-[73px] text-4xl md:leading-[78px] leading-9 break-words md:break-normal text-[#d2e823]">
+      <div className=" md:pt-40 pt-32     flex-wrap  justify-center    border-white     flex   md:gap-20  gap-10    text-sm sm:text-base   ">
+       
+        <div className="claim flex flex-col   sm:w-[60%] gap-9 w-full   text-center px-3      ">
+          <h2 className="font-extrabold md:text-[73px] text-4xl md:leading-[78px] leading-9 break-words md:break-normal text-[#d2e823]    ">
             Everything you are. In one, simple link in bio.
           </h2>
-          <p className="font-bold text-[#ededed] ">
+          <p className="font-bold text-[#ededed]   ">
             Join people using QuickLinks for their link in bio. One link to help
             you share everything you create, curate and show your projects to
             Instagram, LinkedIn, Twitter, YouTube and other social media
             profiles.
           </p>
-          <form onSubmit={handleSubmit} className="flex gap-2.5   justify-center     flex-wrap">
-            <input placeholder="Enter Your Username" onChange={handleChange} value={username} type="text" className="custom-button text-black font-medium font-mono cursor-text bg-white rounded-lg sm:w-auto w-[90%]  " />
+          <form onSubmit={handleSubmit(submit)} className="flex gap-2.5   justify-center     flex-wrap  ">
+           <div className="flex flex-col gap-1.5 justify-center items-center w-full  ">
+             {errors.username && (
+              <p className="text-red-500">{errors.username.message}</p>
+            )}
+            <input placeholder="Enter Your Username"     type="text" name="username"
+              {...register("username", {
+                required: "Username is required",
+                validate: value =>
+                  !/\s/.test(value) || "Username cannot contain spaces",
+              })}className="custom-button text-black font-medium font-mono cursor-text bg-white rounded-lg sm:w-auto    " />
+           </div>
             <button type="submit" className="custom-button bg-[#e9c0e9] text-black py-4">
               Claim your Quicklink
             </button>
           </form>
-        </div>
-        {/* part 2 */}
-        <div className="w-full max-w-md p-4 bg-white   border-black rounded-lg shadow-md sm:p-8      ">
+        </div> 
+        <div className="max-w-full  p-4 bg-white     rounded-lg shadow-md sm:p-8  m-7 min-h-96 overflow-hidden      ">
           <div className="flex items-center justify-between mb-4">
             <h5 className="text-xl font-bold leading-none text-gray-900  ">
               Latest Customers
@@ -67,7 +88,7 @@ const Intro = () => {
 
           </div>
 
-          <div className="  border-2 h-96     flex  justify-center ">
+          <div className="  border-2  my-4  w-56 sm:w-72 flex  justify-center ">
             <ul
               role="list"
               className="divide-y divide-gray-200 w-md  overflow-hidden  "
@@ -75,8 +96,7 @@ const Intro = () => {
               {LatestCustomers ? LatestCustomers.map((user, index) => (
                 <li
                   key={index}
-                  className={`py-3 sm:py-4   px-2   w-full ${index === 4 ? "pb-0 sm:pt-4 pt-3" : ""
-                    }`}
+                  className={`py-3 sm:py-4   px-2   `}
                 >
                   <div className="flex items-center  ">
                     <div className="shrink-0">
@@ -102,7 +122,9 @@ const Intro = () => {
                     </div>
                   </div>
                 </li>
-              )) : <LoadingPage className="min-h-20" />}
+              )) : <LoadingPage className="   !min-h-20    " />}
+
+              
             </ul>
           </div>
         </div>

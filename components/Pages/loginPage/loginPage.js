@@ -6,9 +6,10 @@ import SocialButton from "./socialButton";
 import validator from "validator";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
+import { DeleteFromLocalStorage, RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 import EyeClosed from "@/assets/EyeClose";
 import EyeOpen from "@/assets/EyeOpen";
+import { fetchFunction } from "@/utlis";
 const LoginPage = props => {
   const [form, setform] = useState({
     email: "",
@@ -29,26 +30,20 @@ const LoginPage = props => {
   const router = useRouter();
   const formValues = watch();
 
-  const [isShowPassword, setisShowPassword] = useState(false)
+  const [isShowPassword, setisShowPassword] = useState(false);
+  const LSKey = "login";
 
-
-  const togglePassword = (e) => {
-
-    setisShowPassword(!isShowPassword)
+  const togglePassword = e => {
+    setisShowPassword(!isShowPassword);
   };
-  const handelChange = e => {
-    setform({ ...form, [e.target.name]: e.target.value });
-  };
+  
   const submit = async e => {
     const isEmailGiven = validator.isEmail(e.unknown);
     let sendingData;
     if (e.unknown.length)
       if (isEmailGiven) {
-
-        const { password, unknown } = e
+        const { password, unknown } = e;
         if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(unknown)) {
-
-
           let email = unknown;
 
           sendingData = {
@@ -58,15 +53,16 @@ const LoginPage = props => {
             isSignUp: false,
             givenUsername: false,
           };
-        }
-        else {
-          setError("unknown", { type: "manual", message: "Invalid email format" });
+        } else {
+          setError("unknown", {
+            type: "manual",
+            message: "Invalid email format",
+          });
         }
       } else {
-        const { password, unknown } = e
+        const { password, unknown } = e;
 
         if (!/\s/.test(unknown)) {
-
           let username = unknown;
 
           sendingData = {
@@ -76,12 +72,13 @@ const LoginPage = props => {
             isSignUp: false,
             givenUsername: true,
           };
-        }
-        else {
-          setError("unknown", { type: "manual", message: "Username cannot contain spaces" });
+        } else {
+          setError("unknown", {
+            type: "manual",
+            message: "Username cannot contain spaces",
+          });
         }
       }
-
 
     let res = await signIn("credentials", sendingData);
 
@@ -94,31 +91,32 @@ const LoginPage = props => {
   };
 
   useEffect(() => {
-    reset(RetriveFromLocalStorage("login"));
+    reset(RetriveFromLocalStorage(LSKey));
   }, []);
 
   // save form data to localStorage
   useEffect(() => {
-    SaveToLocalStorage("login", formValues);
+    SaveToLocalStorage(LSKey, formValues);
   }, [formValues]);
 
   useEffect(() => {
     if (session?.user) {
-      fetch("api/user")
-        .then(res => res.json())
-        .then(data => {
-
+      fetchFunction("/api/user").then(data => { 
+        
+        if (data.success) {
+          DeleteFromLocalStorage(LSKey);
           if (data.isAvailable) {
             router.push("project");
-
-
           } else {
             router.push("user-info");
           }
-        });
+        } else {
+          console.error(data.error);
+          console.log(data.message);
+        }
+      });
     }
   }, [session]);
-
 
   return (
     <main className="box border  flex h-screen ">
@@ -132,7 +130,11 @@ const LoginPage = props => {
             </p>
           </header>
 
-          <form onSubmit={handleSubmit(submit)} action="" className="flex flex-col    gap-1.5">
+          <form
+            onSubmit={handleSubmit(submit)}
+            action=""
+            className="flex flex-col    gap-1.5"
+          >
             {errors.unknown && (
               <p className="text-red-500">{errors.unknown.message}</p>
             )}
@@ -141,52 +143,52 @@ const LoginPage = props => {
               type="text"
               placeholder="email or username"
               name="unknown"
-              {...register('unknown', {
-                required: "This field is require"
+              {...register("unknown", {
+                required: "This field is require",
               })}
             />
             {errors.password && (
               <p className="text-red-500">{errors.password.message}</p>
             )}
-             <div className=" relative ">
+            <div className=" relative ">
+              <input
+                className="custom-button cursor-auto bg-gray-200 font-light rounded-lg w-full"
+                type={isShowPassword ? "text" : "password"}
+                placeholder="password"
+                name="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                  validate: {
+                    nospace: value =>
+                      !/\s/.test(value) || "Cannot contain spaces",
+                    hasUpper: value =>
+                      /[A-Z]/.test(value) ||
+                      "Must include at least one uppercase letter",
+                    hasLower: value =>
+                      /[a-z]/.test(value) ||
+                      "Must include at least one lowercase letter",
+                    hasNumber: value =>
+                      /[0-9]/.test(value) || "Must include at least one number",
+                    hasSpecial: value =>
+                      /[^A-Za-z0-9]/.test(value) ||
+                      "Must include at least one special character",
+                  },
+                })}
+              />
 
-           
-             <button type="button" onClick={togglePassword} className="absolute right-1 top-1/2 -translate-y-1/2">
-              {isShowPassword ? <EyeClosed/> : <EyeOpen/> }
-              
+              <button
+                type="button"
+                onClick={togglePassword}
+                className="absolute right-1 top-1/2 -translate-y-1/2"
+              >
+                {isShowPassword ? <EyeClosed /> : <EyeOpen />}
               </button>
-            <input
-              className="custom-button cursor-auto bg-gray-200 font-light rounded-lg w-full"
-              type={isShowPassword ? 'text':'password'}
-              placeholder="password"
-              name="password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-                validate: {
-                  nospace: value =>
-                    !/\s/.test(value) || "Cannot contain spaces",
-                  hasUpper: value =>
-                    /[A-Z]/.test(value) ||
-                    "Must include at least one uppercase letter",
-                  hasLower: value =>
-                    /[a-z]/.test(value) ||
-                    "Must include at least one lowercase letter",
-                  hasNumber: value =>
-                    /[0-9]/.test(value) || "Must include at least one number",
-                  hasSpecial: value =>
-                    /[^A-Za-z0-9]/.test(value) ||
-                    "Must include at least one special character",
-                },
-              })}
-            />
-              </div>
-            <button
-              className="custom-button rounded-lg bg-black text-white"
-            >
+            </div>
+            <button className="custom-button rounded-lg bg-black text-white">
               Continue
             </button>
           </form>

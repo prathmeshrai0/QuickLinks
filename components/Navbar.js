@@ -85,7 +85,7 @@ const Navbar = () => {
               <Link
                 href={"/login?action=login"}
                 className="  text-center sm:min-w-24  bg-gray-200 py-2   rounded-sm font-bold w-16 max-h-full h-[75%] px-1 text-xs"
-                onClick={() => signOut({ callbackUrl: "/login?action=login" })}
+                onClick={() => signOut({ callbackUrl: "/login" })}
               >
                 Sign out
               </Link>
@@ -93,7 +93,7 @@ const Navbar = () => {
               <>
                 {/* gray button  */}
                 <Link
-                  href={"/login?action=login"}
+                  href={"/login"}
                   className=" text-center sm:min-w-24  bg-gray-200 py-2   rounded-sm font-bold w-16 max-h-full h-[75%] px-1 text-xs"
                 >
                   Log in

@@ -42,7 +42,7 @@ const Intro = () => {
 
     if (username.length > 0) {
 
-      router.push(process.env.NEXT_PUBLIC_BASE_URL + `/login?action=signup&username=${username}`)
+      router.push(process.env.NEXT_PUBLIC_BASE_URL + `/signup?username=${username}`)
     } else {
       alert("Enter Your Username First!")
     }

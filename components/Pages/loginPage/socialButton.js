@@ -1,11 +1,11 @@
-import React from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+"use client"
+import React from "react"; 
 const SocialButton = () => {
-    const { data: session } = useSession();
+     
     return (
         <>
-            {
-                session ? <button onClick={() => signOut()}>Sign out</button> :
+         
+                
 
                     <div className="flex flex-col gap-2  items-center   p-10  ">
                         {/* 
@@ -73,7 +73,7 @@ const SocialButton = () => {
                         </button>
                     </div>
 
-            }
+           
         </>
     );
 };

@@ -122,104 +122,71 @@ const LoginPage = props => {
   }, [session]);
 
   return (
-    <main className="box border  flex h-screen ">
-      <section className="left  border   md:w-1/2 w-full  bg-white  text-black max-h-screen overflow-y-scroll ">
-        <Logo customClass="h-20 " />
-        <div className="box max-w-[75%] mx-auto flex flex-col  gap-7  bg-gray-50 p-3.5 rounded-sm text-center md:text-sm text-xs ">
-          <header className="text-center">
-            <h1 className="    text-3xl font-bold">Welcome Back</h1>
-            <p className=" text-base   text-gray-500">
-              Log in to your QuickLinks
-            </p>
-          </header>
 
-          <form
-            onSubmit={handleSubmit(submit)}
-            action=""
-            className="flex flex-col    gap-1.5"
-          >
-            {errors.unknown && (
-              <p className="text-red-500">{errors.unknown.message}</p>
-            )}
-            <input
-              className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
-              type="text"
-              placeholder="email or username"
-              name="unknown"
-              {...register("unknown", {
-                required: "This field is require",
-              })}
-            />
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
-            )}
-            <div className=" relative ">
-              <input
-                className="custom-button cursor-auto bg-gray-200 font-light rounded-lg w-full"
-                type={isShowPassword ? "text" : "password"}
-                placeholder="password"
-                name="password"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters",
-                  },
-                  validate: {
-                    nospace: value =>
-                      !/\s/.test(value) || "Cannot contain spaces",
-                    hasUpper: value =>
-                      /[A-Z]/.test(value) ||
-                      "Must include at least one uppercase letter",
-                    hasLower: value =>
-                      /[a-z]/.test(value) ||
-                      "Must include at least one lowercase letter",
-                    hasNumber: value =>
-                      /[0-9]/.test(value) || "Must include at least one number",
-                    hasSpecial: value =>
-                      /[^A-Za-z0-9]/.test(value) ||
-                      "Must include at least one special character",
-                  },
-                })}
-              />
 
-              <button
-                type="button"
-                onClick={togglePassword}
-                className="absolute right-1 top-1/2 -translate-y-1/2"
-              >
-                {isShowPassword ? <EyeClosed /> : <EyeOpen />}
-              </button>
-            </div>
-            <button className="custom-button rounded-lg bg-black text-white">
-              Continue
-            </button>
-          </form>
-          <h3 className="text-center">OR</h3>
-          <div className="authLogin">
-            <SocialButton />
-          </div>
-
-          <div className="toggle flex justify-center items-center">
-            <p>Doesn&apos;t have an account?</p>
-            <button
-              onClick={toggle}
-              className="text-purple-500  font-medium cursor-pointer"
-            >
-              Sign up
-            </button>
-          </div>
-        </div>
-      </section>
-      <section className="right relative border max-w-1/2 w-1/2   hidden md:block  ">
-        <Image
-          src="/login.jpg"
-          alt="Profile picture"
-          fill
-          style={{ objectFit: "cover" }}
+    <form
+      onSubmit={handleSubmit(submit)}
+      action=""
+      className="flex flex-col    gap-1.5"
+    >
+      {errors.unknown && (
+        <p className="text-red-500">{errors.unknown.message}</p>
+      )}
+      <input
+        className="custom-button cursor-auto bg-gray-200 font-light rounded-lg "
+        type="text"
+        placeholder="email or username"
+        name="unknown"
+        {...register("unknown", {
+          required: "This field is require",
+        })}
+      />
+      {errors.password && (
+        <p className="text-red-500">{errors.password.message}</p>
+      )}
+      <div className=" relative ">
+        <input
+          className="custom-button cursor-auto bg-gray-200 font-light rounded-lg w-full"
+          type={isShowPassword ? "text" : "password"}
+          placeholder="password"
+          name="password"
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters",
+            },
+            validate: {
+              nospace: value =>
+                !/\s/.test(value) || "Cannot contain spaces",
+              hasUpper: value =>
+                /[A-Z]/.test(value) ||
+                "Must include at least one uppercase letter",
+              hasLower: value =>
+                /[a-z]/.test(value) ||
+                "Must include at least one lowercase letter",
+              hasNumber: value =>
+                /[0-9]/.test(value) || "Must include at least one number",
+              hasSpecial: value =>
+                /[^A-Za-z0-9]/.test(value) ||
+                "Must include at least one special character",
+            },
+          })}
         />
-      </section>
-    </main>
+
+        <button
+          type="button"
+          onClick={togglePassword}
+          className="absolute right-1 top-1/2 -translate-y-1/2"
+        >
+          {isShowPassword ? <EyeClosed /> : <EyeOpen />}
+        </button>
+      </div>
+      <button className="custom-button rounded-lg bg-black text-white">
+        Continue
+      </button>
+    </form>
+
   );
 };
 

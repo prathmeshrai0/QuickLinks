@@ -1,6 +1,6 @@
 "use client"
-export async function fetchFunction(resource, payLoad = {}, method = "GET") {
-  let fetchOptions = {};
+export async function fetchFunction(resource: string, payLoad :Record<string, any>  = {}, method : string = "GET") {
+  let fetchOptions :RequestInit ={} ;
 
   if (method !== "GET") {
     fetchOptions.method = method;

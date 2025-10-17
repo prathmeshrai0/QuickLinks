@@ -7,7 +7,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper.js";
 import EyeOpen from "@/assets/EyeOpen.js";
 import EyeClosed from "@/assets/EyeClose.js";
-import { DeleteFromLocalStorage, fetchFunction } from "@/utlis/index";
+import {   fetchFunction } from "@/utlis/api.js";
 
 type Inputs = {
   email: string;

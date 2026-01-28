@@ -1,5 +1,5 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+import { toast } from "react-toastify";
 export function isValidURL(urlData) {
   try {
     new URL(urlData);
@@ -9,7 +9,7 @@ export function isValidURL(urlData) {
   }
 }
 export function UnderDevelopmentFeature() {
-  alert("This feature is currently under Development , HOLD TIGHT !");
+  toast.warn("This feature is currently under Development , HOLD TIGHT !");
 }
 
 let timer;
@@ -25,15 +25,4 @@ export function RetriveFromLocalStorage(key) {
 }
 export function DeleteFromLocalStorage(key) {
   localStorage.removeItem(key);
-}
-
-export async function isSessionAvailable() {
-  const session = await getServerSession(authOptions);
-  return (
-    session ?? {
-      success: false,
-      status: 401,
-      message: "Kindly SignIn / LogIn First",
-    }
-  );
 }

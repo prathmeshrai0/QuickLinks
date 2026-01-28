@@ -1,8 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 
 generator client {
   provider = "prisma-client-js"
@@ -10,9 +9,13 @@ generator client {
 
 datasource db {
   provider = "mongodb"
+
+  /* Error
+    The datasource property `url` is no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the `PrismaClient` constructor. See https://pris.ly/d/config-datasource and https://pris.ly/d/prisma7-client-configPrisma
+    update of prisma v7 is available but not for mongodb
+ */
   url      = env("DATABASE_URL")
 }
-
 model User {
   // fieldName  FieldType   @attribute
 
@@ -40,7 +43,7 @@ model UserInfo {
   firstName  String
   lastName   String
   country    String
-  gender     String
+  gender     gender
   city       String?
   profilePic String?
   about      String
@@ -56,9 +59,9 @@ model UserInfo {
   schoolName             String
   collegeName            String?
   graduationCourse       String?
-  graduationCgpa         Float?
+  graduationMarks         Float?
   postgrad               String?
-  postgradCgpa           Float?
+  postgradMarks           Float?
   postgradSpecialization String?
   phd                    String?
   phdSpecialization      String?

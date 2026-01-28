@@ -14,13 +14,13 @@ const UnAuthenticatedUser = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/login?action=login"
+              href="/sign-in"
               className="bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 px-8 rounded-full transition-colors"
             >
-              Log In
+              Sign In
             </Link>
             <Link
-              href="/login?action=signup"
+              href="/sign-up"
               className="bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-4 px-8 rounded-full transition-colors flex items-center justify-center"
             >
               <svg
@@ -37,7 +37,7 @@ const UnAuthenticatedUser = () => {
                   d="M3 4a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM3 16a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM10 3a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1V3zM10 9a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1V9zM10 15a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2z"
                 />
               </svg>
-              Sign In
+              Sign Up
             </Link>
           </div>
         </div>

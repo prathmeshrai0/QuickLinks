@@ -8,6 +8,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint",
+    
     "postinstall": "prisma generate || true"
   },
   "dependencies": {
@@ -47,3 +48,4 @@
     "typescript": "^5.9.3"
   }
 }
+ 

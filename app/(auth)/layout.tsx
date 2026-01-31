@@ -1,4 +1,4 @@
-"use server";
+
 import React from "react";
 const layout = async ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;

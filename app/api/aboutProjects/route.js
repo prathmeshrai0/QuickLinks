@@ -1,13 +1,20 @@
 import prisma from "@/prisma/connectDb";
 import { isSessionAvailable } from "@/utlis";
-
+import { schema } from "@/components/Pages/ProjectsPage/schema/projects-schema"
 const isProjectCountLimitReached = async (userId) => {
   const projectsCount = await prisma.allProjects.count({
     where: {
       userId: userId,
     },
   });
-  return projectsCount >= 10;
+  if (projectsCount >= 10) {
+    response = {
+      success: false,
+      status: 429,
+      message: "Project maximum limit reached",
+    };
+    return new Response(JSON.stringify(response));
+  }
 };
 // to update projects
 export async function PUT(req) {
@@ -17,15 +24,31 @@ export async function PUT(req) {
   }
   let response;
   const body = await req.json();
-  const projects = body.projects;
+  const projects = body.projects?.TotalProjects;
+
+  const zodCheck = schema.safeParse(projects);
+  if (!zodCheck) {
+    response = {
+      success: false,
+      status: 400,
+      message: "Validation fails",
+      error: zodCheck.error,
+    };
+
+    return new Response(JSON.stringify(response));
+  }
 
   projects.forEach(obj => {
-    delete obj.tag;
     delete obj.createdAt;
     delete obj.updatedAt;
 
     obj.userId = session.user.id;
+    let index = 0;
+    obj.techStack.forEach(techStackObj => {
+      obj.techStack[index++] = techStackObj.tag;
+    })
   });
+  console.log(projects)
   try {
     const updatedProjects = await Promise.all(
       projects.map(projectObj => {
@@ -38,7 +61,7 @@ export async function PUT(req) {
             description: projectObj.description,
             category: projectObj.category,
             subcategory: projectObj.subcategory,
-            thumbnail: projectObj.thumbnail,
+            thumbnail: projectObj?.thumbnail,
             link: projectObj.link,
             techStack: projectObj.techStack,
             userId: projectObj.userId,
@@ -60,7 +83,7 @@ export async function PUT(req) {
       error: error,
     };
   }
-
+  // return new Response({ testing: true })
   return new Response(JSON.stringify(response));
 }
 
@@ -71,26 +94,25 @@ export async function POST(req) {
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
   }
-  const isLimitReached = await isProjectCountLimitReached(session.user.id);
-  if (isLimitReached) {
-    response = {
-      success: false,
-      status: 429,
-      message: "Project maximum limit reached",
-    };
-    return new Response(JSON.stringify(response));
-  }
+  await isProjectCountLimitReached(session.user.id);
+
   const body = await req.json();
-  const projects = body.projects;
+  const projects = body.projects?.TotalProjects;
+
   projects.forEach(obj => {
-    delete obj.tag;
     delete obj.id;
     obj.userId = session.user.id;
+
+    let index = 0;
+    obj.techStack.forEach(techStackObj => {
+      obj.techStack[index++] = techStackObj.tag;
+    })
   });
+  console.log(projects)
 
   try {
     const createdProjects = await prisma.allProjects.createMany({
-      data: projects,
+      data: projects
     });
     response = {
       success: true,
@@ -106,8 +128,7 @@ export async function POST(req) {
       error: error,
     };
   }
-
-  // return new Response(JSON.stringify({ response: "hellow" }));
+ 
   return new Response(JSON.stringify(response));
 }
 
@@ -161,10 +182,8 @@ export async function GET(req) {
   // deleting unecessary data and adding tag so not to face uncontrolled input error in react
   Projects.forEach(obj => {
     delete obj.userId;
-    obj.tag = "";
   });
-
-  const { id, userId, createdAt, updatedAt } = Projects;
+ 
   if (Projects) {
     response = {
       success: true,

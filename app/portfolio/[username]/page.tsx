@@ -1,4 +1,4 @@
-import PortfolioPage from "@/components/Pages/PortfolioPage/PortfolioPage";
+import PortfolioPage from "@/components/Pages/PortfolioPage";
 import React from "react";
 import prisma from "@/prisma/connectDb";
 const Portfolio = async ({ params }: { params: { username: string } }) => {

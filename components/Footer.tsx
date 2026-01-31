@@ -1,8 +1,8 @@
 import Logo from "@/assets/Logo";
 import Link from "next/link";
-const Footer = () => {
+const Footer = ({className}) => {
     return (
-        <footer className="bg-white       shadow-md   p-3 mt-10 px-6 md:px-20    ">
+        <footer className={` bg-white       shadow-md   p-3 mt-10 px-6 md:px-20  ${className}   `}>
             <div className="    mx-auto     ">
                 <div className="flex items-center justify-between   md:flex-row flex-col gap-3    ">
                     <Logo  customClass={' '} />

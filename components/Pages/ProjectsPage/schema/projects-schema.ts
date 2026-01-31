@@ -46,8 +46,8 @@ export const schema = zod.object({
             zod.object({
               tag: zod
                 .string()
-                // .min(1, { message: "Tag cannot be empty" })
-                // .max(15, { message: "Tag too long" })
+                .min(1, { message: "Tag cannot be empty" })
+                .max(15, { message: "Tag too long" })
                 .transform(val => val.trim()),
             }),
           )

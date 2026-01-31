@@ -7,7 +7,7 @@ import {
 const HeaderSection = ({UserDetails}) => { 
   
   return ( 
-        <header className="bg-white  shadow-md sm:py-10 py-3   border   flex justify-around  px-7     ">
+        <header className="bg-white  shadow-md sm:py-10 py-3   border   flex justify-around  px-7      ">
           <div className="max-w-5xl     flex flex-col md:flex-row md:justify-between md:items-center    ">
             <div>
               <h1 className="sm:text-4xl text-2xl font-bold mb-2">

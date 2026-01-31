@@ -8,12 +8,12 @@ import {
   PhotoIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
-import HeaderSection from "./HeaderSection";
-import AcademicSection from "./AcademicSection";
-import PersonalSection from "./PersonalSection";
-import ProjectSection from "./ProjectSection";
-import ProfessionalSection from "./ProfessionalSection";
-import ContactSection from "./ContactSection";
+import HeaderSection from "./sections/HeaderSection";
+import AcademicSection from "./sections/AcademicSection";
+import PersonalSection from "./sections/PersonalSection";
+import ProjectSection from "./sections/ProjectSection";
+import ProfessionalSection from "./sections/ProfessionalSection";
+import ContactSection from "./sections/ContactSection";
 const PortfolioPage = props => {
   const router = useRouter();
 
@@ -31,7 +31,7 @@ const PortfolioPage = props => {
 
 
 
-        <div className=" px-7 flex flex-col      h-full     sm:gap-8 sm:pt-8 gap-4 pt-4  ">
+        <div className=" px-7 flex flex-col      h-full     sm:gap-8 sm:pt-8 gap-4 pt-4   ">
           <PersonalSection UserDetails={UserDetails} />
 
           <ProfessionalSection UserDetails={UserDetails} certificates={certificates} skills={skills} />
@@ -41,8 +41,8 @@ const PortfolioPage = props => {
           <ProjectSection UserDetails={UserDetails} allProjects={allProjects} />
           <ContactSection UserDetails={UserDetails} />
         </div>
+        <Footer className={"max-w-screen mx-auto"} />
 
-        <Footer />
       </div>
     </>
   );

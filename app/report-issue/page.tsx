@@ -47,7 +47,7 @@ const ReportPage = () => {
 
   if (status === "authenticated") {
     return (
-      <main className="min-h-screen bg-gray-100 text-gray-900 p-8 flex flex-col m-30 items-center border-2 border-black mx-auto w-3xl">
+      <main className="min-h-screen bg-gray-100 text-gray-900 p-8 flex flex-col m-30 items-center border-2 border-black mx-auto max-w-3xl">
         <h1 className="text-xl md:text-2xl font-semibold text-center text-gray-800 dark:text-white mb-6">
           🚧 This website is currently under development. If you find any
           issues, reporting them would be greatly appreciated!

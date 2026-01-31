@@ -19,10 +19,12 @@ const Navbar = () => {
   ) {
     return null;
   }
+ 
   const grayThemeButton =
     "hover:bg-gray-400 lg:px-5  p-3 py-1.5 rounded-sm   bg-gray-200";
   const blackThemeButton =
     "lg:px-5 p-3 py-1.5 rounded-sm whitespace-nowrap font-bold text-xs bg-gray-900  text-white hover:bg-gray-800";
+
   return (
     <>
       <nav
@@ -100,7 +102,7 @@ const Navbar = () => {
         ) : (
           <Hamburger func={toggleSideBar} />
         )}
-        {showSideBar && <SideBar />}
+        {showSideBar && (<SideBar toggleSideBar={toggleSideBar} />)}
       </nav>
     </>
   );

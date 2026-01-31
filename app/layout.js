@@ -4,7 +4,7 @@ import Navbar from "@/components/navbar/Navbar";
 import SessionWrapper from "@/components/Pages/sessionWrapper/page";
 import CopyUrlButton from "@/components/CopyUrlButton";
 import ReportIssue from "@/components/ReportIssue";
-import ToastWrapper from "@/components/pages/ToastWrapper/ToastWrapper";
+import ToastWrapper from "@/components/Pages/ToastWrapper/ToastWrapper";
 
 
 const geistSans = Geist({

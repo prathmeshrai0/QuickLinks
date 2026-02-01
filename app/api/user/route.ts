@@ -2,6 +2,7 @@ import prisma from "@/prisma/connectDb";
 import { isSessionAvailable } from "@/utlis";
 import { schema } from "@/components/Pages/UserInfo/schema/schema"
 import { safeParse, ZodError } from "zod";
+import test from "node:test";
 // creating /  updating user info
 export async function PUT(req) {
   let response;
@@ -142,31 +143,32 @@ export async function GET(req) {
         userId: session.user.id,
       },
     });
+    console.log("user info data ", user);
+    console.log("user id ", session.user.id);
 
-    if (user) {
+      if (user) {
+        response = {
+          success: true,
+          isAvailable: true,
+          status: 200,
+          message: "Welcome",
+          user: user,
+        };
+      } else {
+        response = {
+          success: true,
+          isAvailable: false,
+          status: 404,
+          message: "Data not available kindly fill user info data",
+        };
+      }
+    } catch (error) {
       response = {
-        success: true,
-        isAvailable: true,
-        status: 200,
-        message: "Welcome",
-        user: user,
+        success: false,
+        status: 500,
+        message: "some error occured while fetching user info data",
+        error: error,
       };
-    } else {
-      response = {
-        success: true,
-        isAvailable: false,
-        status: 404,
-        message: "Data not available kindly fill user info data",
-      };
-    }
-  } catch (error) {
-    response = {
-      success: false,
-      status: 500,
-      message: "some error occured",
-      error: error,
-    };
+    } 
+    return new Response(JSON.stringify(response));
   }
-
-  return new Response(JSON.stringify(response));
-}

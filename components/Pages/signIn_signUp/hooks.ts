@@ -72,6 +72,8 @@ export default function (FormType: FormType, username: string) {
   useEffect(() => {
     if (session?.user) {
       fetchFunction("/api/user").then(data => {
+        console.log("user info fetch response ", data);
+        console.log("session user ", session.user);
         if (data.success) {
           DeleteFromLocalStorage(LSKey);
           if (data.isAvailable) {

@@ -75,9 +75,11 @@ export default function (FormType: FormType, username: string) {
         if (data.success) {
           DeleteFromLocalStorage(LSKey);
           if (data.isAvailable) {
-            router.push("project");
+            // router.push("project");
+            console.log("push to projects" );
           } else {
-            router.push("user-info");
+            // router.push("user-info");
+            console.log("push to user-info" );
           }
         } else {
           console.error(data.error);

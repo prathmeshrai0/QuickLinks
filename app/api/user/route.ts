@@ -129,7 +129,6 @@ export async function PUT(req) {
 
 // getting particular userInfo data according to session data
 export async function GET(req) {
-  // return message if session not available
   const session = await isSessionAvailable();
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
@@ -165,6 +164,7 @@ export async function GET(req) {
       success: false,
       status: 500,
       message: "some error occured",
+      error: error,
     };
   }
 

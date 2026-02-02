@@ -52,7 +52,7 @@ export default function (FormType: FormType, username: string) {
   const togglePassword = () => {
     setisShowPassword(!isShowPassword);
   };
-  
+
   useEffect(() => {
     reset(RetriveFromLocalStorage(LSKey));
   }, []);
@@ -61,9 +61,9 @@ export default function (FormType: FormType, username: string) {
   }, [pathname]);
 
 
-    useEffect(() => { 
+  useEffect(() => {
     if (username) setValue("username", username);
-     
+
   }, [username, setValue]);
 
   useEffect(() => {
@@ -72,19 +72,17 @@ export default function (FormType: FormType, username: string) {
   useEffect(() => {
     if (session?.user) {
       fetchFunction("/api/user").then(data => {
-        console.log("user info fetch response ", data);
         console.log("session user ", session.user);
         if (data.success) {
           DeleteFromLocalStorage(LSKey);
           if (data.isAvailable) {
-            // router.push("project");
-            console.log("push to projects" );
+            router.push("project");
           } else {
-            // router.push("user-info");
-            console.log("push to user-info" );
+            router.push("user-info");
           }
         } else {
           console.error(data.error);
+
           toast(data.message);
         }
       });
@@ -104,7 +102,7 @@ export default function (FormType: FormType, username: string) {
     } else {
       return val2;
     }
-  } 
+  }
   return {
     currentPage,
     setCurrentPage,
@@ -122,6 +120,6 @@ export default function (FormType: FormType, username: string) {
     currentPageIsSignIn,
     register,
     handleSubmit,
-    errors, 
+    errors,
   };
 }

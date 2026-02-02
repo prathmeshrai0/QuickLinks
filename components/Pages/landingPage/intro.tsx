@@ -35,7 +35,7 @@ const Intro = () => {
     fetch(new URL('api/latestCustomers', process.env.NEXT_PUBLIC_BASE_URL))
       .then(res => res.json())
       .then(data => {
-
+        console.log(data);
         setLatestCustomers(data.users)
       })
 

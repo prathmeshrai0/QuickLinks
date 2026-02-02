@@ -9,7 +9,7 @@ export async function GET(req) {
         createdAt: "desc",
       },
       take: 6,
-    });
+    }); 
     response = {
       isAvailable: true,
       status: 200,

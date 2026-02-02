@@ -117,7 +117,6 @@ export default function (FormType: FormType, username: string) {
     currentPageIsSignIn,
     register,
     handleSubmit,
-    errors,
-    LSKey,
+    errors, 
   };
 }

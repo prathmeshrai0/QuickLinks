@@ -46,11 +46,10 @@ export const authOptions: NextAuthOptions = {
         const FormType = credentials.FormType;
         if (!isFormType(FormType)) {
           throw new Error("Invalid formType");
-        } 
+        }
 
         let formSchema = authFormSchema(FormType);
-       
-    
+
         type FormValuesType = z.infer<typeof formSchema>;
         const result = formSchema!.safeParse(credentials);
 
@@ -88,7 +87,6 @@ export const authOptions: NextAuthOptions = {
                 email,
                 username: username ?? undefined,
               };
-
             }
           } else {
             // SIGN IN FLOW
@@ -99,20 +97,17 @@ export const authOptions: NextAuthOptions = {
             } else if (
               !(await CheckSecurely(
                 existingUser.password!,
-                credentials.password
+                credentials.password,
               ))
             ) {
               throw new Error("User's password didn't match");
-            }
-            else {
+            } else {
               return {
                 id: existingUser.id,
                 email: existingUser.email,
                 username: existingUser.username ?? undefined,
               };
-
             }
-
           }
         }
       },
@@ -155,7 +150,6 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
         },
       });
-
       if (!existingUser) {
         // create new user
         await prisma.user.create({
@@ -165,6 +159,10 @@ export const authOptions: NextAuthOptions = {
             provider: true,
           },
         });
+      } else {
+        if (!existingUser.provider) {
+          throw new Error("User has already signed up with credentials");
+        }
       }
 
       return true;

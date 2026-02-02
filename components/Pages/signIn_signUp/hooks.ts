@@ -41,12 +41,11 @@ export default function (FormType: FormType, username: string) {
 
   const onSubmit: SubmitHandler<FormValuesType> = async data => {
     const sendingData = { ...data, FormType };
-
-    let res = await signIn("credentials", { ...sendingData, redirect: false });
-    if (res?.error) {
-      console.error(res.error);
-
-      toast(res.error);
+    try {
+      await signIn("credentials", { ...sendingData, redirect: false });
+    } catch (error) {
+      console.error(error);
+      toast(error);
     }
   };
   const togglePassword = () => {
@@ -60,10 +59,8 @@ export default function (FormType: FormType, username: string) {
     pathname === "/sign-in" ? setCurrentPage(SIGN_IN) : setCurrentPage(SIGN_UP);
   }, [pathname]);
 
-
   useEffect(() => {
     if (username) setValue("username", username);
-
   }, [username, setValue]);
 
   useEffect(() => {
@@ -121,5 +118,6 @@ export default function (FormType: FormType, username: string) {
     register,
     handleSubmit,
     errors,
+    LSKey,
   };
 }

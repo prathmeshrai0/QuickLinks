@@ -35,6 +35,7 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
     register,
     handleSubmit,
     errors,  
+    LSKey,
   } = hooks(FormType , username);
   return (
     <main className="box border  flex h-screen ">
@@ -119,7 +120,7 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
 
           <h3 className="text-center">OR</h3>
           <div className="authLogin">
-            <SocialButton />
+            <SocialButton  LSKey={LSKey}/>
           </div>
 
           {currentPage === SIGN_IN ? (

@@ -32,7 +32,7 @@ export async function PUT(req) {
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
   }
-  console.log("safebody ", safeBody);
+  console.log("safebody ", safeBody , session.user.id);
   try {
     const result = await prisma.userInfo.upsert({
       where: {
@@ -142,8 +142,7 @@ export async function GET(req) {
       where: {
         userId: session.user.id,
       },
-    });
-    console.log("user info data ", user);
+    }); 
     console.log("user id ", session.user.id);
 
       if (user) {

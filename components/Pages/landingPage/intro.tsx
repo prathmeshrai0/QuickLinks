@@ -34,8 +34,7 @@ const Intro = () => {
   useEffect(() => {
     fetch(new URL('api/latestCustomers', process.env.NEXT_PUBLIC_BASE_URL))
       .then(res => res.json())
-      .then(data => {
-        console.log(data);
+      .then(data => { 
         setLatestCustomers(data.users)
       })
 

@@ -8,7 +8,7 @@ const ToastWrapper = ({ children }: { children: ReactNode }) => {
     <>
       {children}
     
-      <ToastContainer />
+      <ToastContainer stacked  />
     </>
   );
 };

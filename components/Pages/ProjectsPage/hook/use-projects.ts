@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@/utlis/helper";
 import categories_subCat from "@/components/Pages/ProjectsPage/categories_subCat";
 import { fetchFunction } from "@/utlis";
-import { toast } from "react-toastify";
+import { toast ,ToastContentProps  } from "react-toastify";
 import { schema } from "../schema/projects-schema";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import zod, { string } from "zod";
@@ -56,6 +56,9 @@ export default (updateInfo: boolean) => {
 
   const [ProjectsAlreadyPresent, setProjectsAlreadyPresent] = useState(false);
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
+  const [toBeDeletedProject, settoBeDeletedProject] = useState({})
+  const undoRef = useRef<Object>({});
+
   const router = useRouter();
   const LSKey = "TotalProjects";
 
@@ -72,7 +75,14 @@ export default (updateInfo: boolean) => {
 
   useEffect(() => {
     const RETRIVED_DATA = RetriveFromLocalStorage(LSKey);
-    if (updateInfo && !dataLoaded) {
+    if (updateInfo) {
+
+      fetchFunction("/api/aboutProjects?exists=true").then(data => {
+        if (!data.success) {
+          toast.error("User has not added projects info yet");
+          router.push("/update-info");
+        }
+      });
       fetchFunction("/api/aboutProjects").then(data => {
         if (data.success) {
           let arr = [...data.projects];
@@ -86,7 +96,6 @@ export default (updateInfo: boolean) => {
 
           const mergerdData = [...data.projects];
           reset({ TotalProjects: mergerdData });
-          setDataLoaded(true);
         }
       });
     } else {
@@ -97,10 +106,10 @@ export default (updateInfo: boolean) => {
         reset(RETRIVED_DATA);
       }
     }
-  }, []);  
+  }, []);
   useEffect(() => {
     SaveToLocalStorage(LSKey, projectDataValue);
-  }, [projectDataValue, updateInfo, dataLoaded]); 
+  }, [projectDataValue, updateInfo]);
   const Submit = async () => {
     const payLoad = {
       projects: projectDataValue,
@@ -108,7 +117,7 @@ export default (updateInfo: boolean) => {
     if (updateInfo) {
       fetchFunction("/api/aboutProjects", payLoad, "PUT").then(data => {
         if (data.success) {
-          DeleteFromLocalStorage(LSKey); 
+          DeleteFromLocalStorage(LSKey);
           router.push("update-info");
           toast.success("Projects info updated successfully");
         } else {
@@ -129,7 +138,7 @@ export default (updateInfo: boolean) => {
       });
     }
   };
-
+  
   return {
     categories,
     subcategoryMap,
@@ -155,5 +164,8 @@ export default (updateInfo: boolean) => {
     projectsArray,
 
     useFieldArray,
+    toBeDeletedProject,
+    settoBeDeletedProject,
+    undoRef,
   };
 };

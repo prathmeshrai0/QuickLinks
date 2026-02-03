@@ -1,7 +1,7 @@
 import prisma from "@/prisma/connectDb";
 import { isSessionAvailable } from "@/utlis";
-import { schema } from "@/components/Pages/ProjectsPage/schema/projects-schema"
-const isProjectCountLimitReached = async (userId) => {
+import { schema } from "@/components/Pages/ProjectsPage/schema/projects-schema";
+const isProjectCountLimitReached = async userId => {
   const projectsCount = await prisma.allProjects.count({
     where: {
       userId: userId,
@@ -46,9 +46,9 @@ export async function PUT(req) {
     let index = 0;
     obj.techStack.forEach(techStackObj => {
       obj.techStack[index++] = techStackObj.tag;
-    })
+    });
   });
-  console.log(projects)
+  console.log(projects);
   try {
     const updatedProjects = await Promise.all(
       projects.map(projectObj => {
@@ -67,7 +67,7 @@ export async function PUT(req) {
             userId: projectObj.userId,
           },
         });
-      })
+      }),
     );
     response = {
       success: true,
@@ -106,13 +106,13 @@ export async function POST(req) {
     let index = 0;
     obj.techStack.forEach(techStackObj => {
       obj.techStack[index++] = techStackObj.tag;
-    })
+    });
   });
-  console.log(projects)
+  console.log(projects);
 
   try {
     const createdProjects = await prisma.allProjects.createMany({
-      data: projects
+      data: projects,
     });
     response = {
       success: true,
@@ -128,7 +128,7 @@ export async function POST(req) {
       error: error,
     };
   }
- 
+
   return new Response(JSON.stringify(response));
 }
 
@@ -166,38 +166,64 @@ export async function DELETE(req) {
 }
 
 // used to get project according to session data
+/*
+with 2 working 
+1 if projects is available return true ;
+2 get all the projects 
+*/
 export async function GET(req) {
   const session = await isSessionAvailable();
   let response;
   if (session?.success === false) {
     return new Response(JSON.stringify(session));
   }
-
-  const Projects = await prisma.allProjects.findMany({
-    where: {
-      userId: session.user.id,
-    },
-  });
-
-  // deleting unecessary data and adding tag so not to face uncontrolled input error in react
-  Projects.forEach(obj => {
-    delete obj.userId;
-  });
- 
-  if (Projects) {
-    response = {
-      success: true,
-      status: 200,
-      message: "Projects fetched",
-      projects: Projects,
-    };
+  const { searchParams } = new URL(req.url);
+  const exists = searchParams.get("exists");
+  if (exists) {
+    const Project = await prisma.allProjects.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
+    if (Project) {
+      response = {
+        success: true,
+        status: 200,
+        message: "User has Project data",
+      };
+    } else {
+      response = {
+        success: false,
+        status: 404,
+        message: "User does not have Project data",
+      };
+    }
   } else {
-    response = {
-      success: false,
-      status: 404,
-      message: "Projects not Present  ",
-    };
-  }
+    const Projects = await prisma.allProjects.findMany({
+      where: {
+        userId: session.user.id,
+      },
+    });
 
+    // deleting unecessary data and adding tag so not to face uncontrolled input error in react
+    Projects.forEach(obj => {
+      delete obj.userId;
+    });
+
+    if (Projects) {
+      response = {
+        success: true,
+        status: 200,
+        message: "Projects fetched",
+        projects: Projects,
+      };
+    } else {
+      response = {
+        success: false,
+        status: 404,
+        message: "Projects not Present  ",
+      };
+    }
+  }
   return new Response(JSON.stringify(response));
 }

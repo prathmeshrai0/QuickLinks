@@ -50,7 +50,7 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
               )}
             </h1>
             <p className=" text-base   text-gray-500">
-              {currentPageIsSignIn<string>("Log", "Sign")} in to your QuickLinks
+              {currentPageIsSignIn<string>("Sign in", "Sign up")}  to your QuickLinks
             </p>
           </header>
 
@@ -140,7 +140,7 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
                 onClick={toggle}
                 className="text-purple-500  font-medium cursor-pointer"
               >
-                Login
+                Sign In
               </button>
             </div>
           )}

@@ -142,6 +142,8 @@ export function useUserInfo(
     };
   }; 
   const Submit = async () => {
+    const convertedFormFieldsValue = convertInputTypeNumToNumber(); 
+    reset(convertedFormFieldsValue);
     const payLoad = formFieldsValue;
     for (const key in formFieldsValue) {
       if (typeof formFieldsValue[key] === "string") {
@@ -161,9 +163,8 @@ export function useUserInfo(
           }
         }
       }
-    }
-    fetchFunction("/api/user", payLoad, "PUT").then(data => {
-      console.log("response from user info api ", data);
+    } 
+    fetchFunction("/api/user", payLoad, "PUT").then(data => { 
       if (data.success) {
         DeleteFromLocalStorage(LSKey);
         toast(data.message, {

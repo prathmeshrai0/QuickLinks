@@ -1,5 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import prisma from "@/prisma/connectDb";
 // import { CheckSecurely, SaveSecurely } from "@/utlis";
@@ -7,10 +7,6 @@ import { NextAuthOptions } from "next-auth";
 import * as z from "zod";
 import {
   authFormSchema,
-  authFormSchemaSignin,
-  authFormSchemaSignup,
-  signinSchema,
-  signupSchema,
 } from "@/components/Pages/signIn_signUp/schema/sign-in-up-schema";
 import { CheckSecurely, SaveSecurely } from "@/utlis";
 
@@ -41,18 +37,16 @@ export const authOptions: NextAuthOptions = {
         FormType: { label: "formType", type: "text" },
       },
 
-      async authorize(credentials, req) {
+      async authorize(credentials, req): Promise<User | null> {
         if (!credentials) throw new Error("Missing credentials");
         const FormType = credentials.FormType;
         if (!isFormType(FormType)) {
           throw new Error("Invalid formType");
         }
-
         let formSchema = authFormSchema(FormType);
-
         type FormValuesType = z.infer<typeof formSchema>;
         const result = formSchema!.safeParse(credentials);
-
+        
         if (!result.success) {
           console.error("zod safeParse issue occured", result.error);
           throw new Error("Invalid Input");
@@ -65,11 +59,10 @@ export const authOptions: NextAuthOptions = {
               OR: [{ email: data.email }, { username: data.username }],
             },
           });
-
           // SIGN UP FLOW
           if (FormType === "signup") {
-            if (existingUser) {
-              throw new Error("User already exists");
+            if (existingUser) { 
+              throw new Error("User already exists with credentials");
             } else {
               const password = await SaveSecurely(data.password);
               const newUser = await prisma.user.create({
@@ -91,16 +84,16 @@ export const authOptions: NextAuthOptions = {
           } else {
             // SIGN IN FLOW
             if (!existingUser) {
-              throw new Error("User doesn't exists please Sign up");
-            } else if (existingUser.provider) {
-              throw new Error("User hasn't signed in with creadentials");
+              throw new Error("User does not exists please Sign up");
+            } else if (existingUser?.provider) {
+              throw new Error("User has not signed in with creadentials");
             } else if (
               !(await CheckSecurely(
                 existingUser.password!,
                 credentials.password,
               ))
             ) {
-              throw new Error("User's password didn't match");
+              throw new Error("User password did not match");
             } else {
               return {
                 id: existingUser.id,
@@ -145,26 +138,25 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
-      const existingUser = await prisma.user.findUnique({
-        where: {
-          email: user.email,
-        },
-      });
-      if (!existingUser) {
-        // create new user
-        await prisma.user.create({
-          data: {
+      const method = account?.type;
+
+      if (method === "oauth") {
+        const existingUser = await prisma.user.findUnique({
+          where: {
             email: user.email,
-            username: user.name,
-            provider: true,
           },
         });
-      } else {
-        if (!existingUser.provider) {
-          throw new Error("User has already signed up with credentials");
+        if (!existingUser) {
+          // create new user
+          await prisma.user.create({
+            data: {
+              email: user.email,
+              username: user.name,
+              provider: true,
+            },
+          });
         }
       }
-
       return true;
     },
   },

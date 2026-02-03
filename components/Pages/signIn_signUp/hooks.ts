@@ -38,14 +38,18 @@ export default function (FormType: FormType, username: string) {
   const LSKey: FormType = FormType;
   const formFieldsValue = watch();
   const [isShowPassword, setisShowPassword] = useState(false);
-
+  console.log(errors)
   const onSubmit: SubmitHandler<FormValuesType> = async data => {
-    const sendingData = { ...data, FormType };
-    try {
-      await signIn("credentials", { ...sendingData, redirect: false });
-    } catch (error) {
-      console.error(error);
-      toast(error);
+    const sendingData = { ...data, FormType }; 
+    
+    const res = await signIn("credentials", {
+      ...sendingData,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      toast.error(res.error);
+      console.error("SignIn/Up Error: ", res.error);
     }
   };
   const togglePassword = () => {
@@ -117,6 +121,6 @@ export default function (FormType: FormType, username: string) {
     currentPageIsSignIn,
     register,
     handleSubmit,
-    errors, 
+    errors,
   };
 }

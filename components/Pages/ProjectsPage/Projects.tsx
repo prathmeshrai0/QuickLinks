@@ -14,6 +14,8 @@ import zod, { string } from "zod";
 import { FormProvider } from "react-hook-form";
 import TechStackComp from "./TechStackComp";
 
+import { Button } from "@/components/ui/button";
+import { fetchFunction } from "@/utlis";
 const Dashboard = ({ updateInfo }: { updateInfo: boolean }) => {
   const { data: session, status } = useSession();
 
@@ -38,12 +40,68 @@ const Dashboard = ({ updateInfo }: { updateInfo: boolean }) => {
     projectDataValue,
 
     projectsArray,
+    toBeDeletedProject,
+    settoBeDeletedProject,
+    undoRef,
+  } = useProjects(updateInfo); 
 
-  } = useProjects(updateInfo);
-  //  const { register } = useFormContext();
-  type FormType = zod.infer<typeof schema>;
 
-  // const methods = useForm();
+
+  const DeleteProject = (index: number) => {
+    projectsArray.remove(index);
+    let revert : Boolean = false;
+    toast.dismiss("undo-project-delete");
+
+    settoBeDeletedProject({
+      project: projectDataValue.TotalProjects[index],
+      id: projectsArray.fields[index].id,
+      index: index,
+    });
+    undoRef.current = {
+      project: projectDataValue.TotalProjects[index],
+      id: projectsArray.fields[index].id,
+      index: index,
+    };
+
+    setTimeout(() => {
+
+
+      toast(
+        ({ closeToast }) => {
+          return (
+            <div className="flex flex-col gap-2 items-end   w-full ">
+              <p>Do you want to Undo Changes ? </p>
+              <Button
+                size="sm"
+                onClick={() => {
+ 
+                  projectsArray.insert(
+                    undoRef.current.index,
+                    undoRef.current.project,
+                  );
+                  revert = true;
+                  closeToast();
+                }}
+              >
+                Yes
+              </Button>
+            </div>
+          );
+        },
+        {
+          toastId: "undo-project-delete",
+          autoClose: 5000,
+
+          onClose: () => {
+            const id = undoRef.current.project.id
+            if (!revert) {
+              fetchFunction("/api/aboutProjects", { id: id }, "DELETE"); 
+            }
+          },
+        },
+      );
+    }, 900);
+  };
 
   if (status === "loading") {
     return <LoadingPage />;
@@ -73,7 +131,7 @@ const Dashboard = ({ updateInfo }: { updateInfo: boolean }) => {
                   <TrashIcon
                     className="size-5 hover:cursor-pointer"
                     onClick={() => {
-                      projectsArray.remove(index);
+                      DeleteProject(index);
                     }}
                   />
                 </div>
@@ -163,10 +221,7 @@ const Dashboard = ({ updateInfo }: { updateInfo: boolean }) => {
                         <span className="text-red-500">*</span>
                         {errors.TotalProjects?.[index]?.subcategory && (
                           <FieldError>
-                            {
-                              errors.TotalProjects?.[index]?.subcategory
-                                .message
-                            }
+                            {errors.TotalProjects?.[index]?.subcategory.message}
                           </FieldError>
                         )}
                       </label>
@@ -249,12 +304,20 @@ const Dashboard = ({ updateInfo }: { updateInfo: boolean }) => {
                         )}
                         {errors.TotalProjects?.[index]?.techStack?.root && (
                           <FieldError>
-                            {errors.TotalProjects?.[index]?.techStack?.root?.message}
+                            {
+                              errors.TotalProjects?.[index]?.techStack?.root
+                                ?.message
+                            }
                           </FieldError>
                         )}
                       </label>
                       <div className="flex flex-wrap items-center border rounded-md xs:p-2 bg-white pl-2">
-                        <TechStackComp projectIndex={index} control={control} register={register} errors={errors} />
+                        <TechStackComp
+                          projectIndex={index}
+                          control={control}
+                          register={register}
+                          errors={errors}
+                        />
                       </div>
                     </div>
                   </div>
@@ -266,8 +329,8 @@ const Dashboard = ({ updateInfo }: { updateInfo: boolean }) => {
           );
         })}
         <div className="flex   justify-evenly mb-2 gap-1.5  ">
-          {
-            !updateInfo && <button
+          {!updateInfo && (
+            <button
               onClick={() => {
                 projectsArray.append({
                   title: "",
@@ -284,12 +347,10 @@ const Dashboard = ({ updateInfo }: { updateInfo: boolean }) => {
             >
               Add Project
             </button>
-          }
+          )}
           <button
             type="submit"
-            // onClick={() => {
-            //   console.log("clicked");
-            // }}
+           
             className="sm:w-[86px] w-full h-[50px] text-xs sm:text-base bg-[#4D7C0F] rounded-[5px]   gap-[10px] text-white px-1.5 cursor-pointer"
           >
             Save

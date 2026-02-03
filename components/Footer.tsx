@@ -9,14 +9,14 @@ const Footer = ({className}) => {
                     <p className="   text-center    ">  Everything you are, in one simple link | Quicklinks</p>
                     <ul className="     flex flex-wrap justify-center   items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                         <li>
-                            <Link href="/aboutus" className="hover:underline me-4 md:me-6">
+                            <Link href="/about-us" className="hover:underline me-4 md:me-6">
                                 About Us
                             </Link>
                         </li>
 
                        
                         <li>
-                            <a href="/upcomingUpdates" className="hover:underline">
+                            <a href="/upcoming-updates" className="hover:underline">
                                 Upcoming Updates
                             </a>
                         </li>

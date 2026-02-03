@@ -48,7 +48,7 @@ export const schema = zod.object({
                 .string()
                 .min(1, { message: "Tag cannot be empty" })
                 .max(15, { message: "Tag too long" })
-                .transform(val => val.trim()),
+                .transform(val => val.trim().replace(/\s+/g, "_")),
             }),
           )
           .min(1, { message: "At least one tech stack tag is required" })

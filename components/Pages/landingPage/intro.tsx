@@ -17,6 +17,7 @@ type User = {
 };
 
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 const Intro = () => {
   const [LatestCustomers, setLatestCustomers] = useState<User[]>()
   const router = useRouter();
@@ -31,10 +32,13 @@ const Intro = () => {
   } = useForm<FormValues>({
     mode: "onChange"
   });
+  const { data: session, status } = useSession();
+ 
+
   useEffect(() => {
     fetch(new URL('api/latestCustomers', process.env.NEXT_PUBLIC_BASE_URL))
       .then(res => res.json())
-      .then(data => { 
+      .then(data => {
         setLatestCustomers(data.users)
       })
 
@@ -46,8 +50,8 @@ const Intro = () => {
 
 
 
-    const {username} = data ;
- 
+    const { username } = data;
+
 
 
     if (username.length > 0) {
@@ -78,7 +82,7 @@ const Intro = () => {
               {errors.username && (
                 <p className="text-red-500">{errors.username.message}</p>
               )}
-              <input placeholder="Enter Your Username" type="text"  
+              <input placeholder="Enter Your Username" type="text"
                 {...register("username", {
                   required: "Username is required",
                   validate: value =>

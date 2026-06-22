@@ -26,3 +26,12 @@ export function RetriveFromLocalStorage(key) {
 export function DeleteFromLocalStorage(key) {
   localStorage.removeItem(key);
 }
+
+
+export function deleteAllLocalStorageData(){
+  let keys = ['TotalProjects','signin' , 'signup' , 'user-info']
+
+  keys.forEach(key=>{
+    DeleteFromLocalStorage(key);
+  })
+}

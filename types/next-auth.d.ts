@@ -7,7 +7,7 @@ declare module "next-auth" {
       id: string;
       email: string;
       username?: string;
-      provider?: string;
+      provider?: boolean;
       password?: string; // optional so we can delete
       image?: string;
     };

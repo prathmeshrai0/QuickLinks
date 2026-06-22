@@ -9,6 +9,7 @@ import LinkTag from "./LinkTag";
 import Cross from "@/assets/Cross";
 import Hamburger from "@/assets/Hamburger";
 import Home from "@/assets/Home";
+import { deleteAllLocalStorageData } from "@/utlis";
 const Navbar = () => {
   const { pathname, session, ifUserInfoAvailable, showSideBar, toggleSideBar } =
     hooks();
@@ -19,7 +20,7 @@ const Navbar = () => {
   ) {
     return null;
   }
- 
+
   const grayThemeButton =
     "hover:bg-gray-400 lg:px-5  p-3 py-1.5 rounded-sm   bg-gray-200";
   const blackThemeButton =
@@ -60,7 +61,13 @@ const Navbar = () => {
                 className={grayThemeButton}
                 tagName="Sign out"
                 href="/sign-in"
-                func={() => signOut({ callbackUrl: "/sign-in" })}
+                func={
+                  () =>{ 
+                    deleteAllLocalStorageData()
+                    signOut({ callbackUrl: "/sign-in" })
+
+                }
+                }
               />
             ) : (
               <>
@@ -102,7 +109,7 @@ const Navbar = () => {
         ) : (
           <Hamburger func={toggleSideBar} />
         )}
-        {showSideBar && (<SideBar toggleSideBar={toggleSideBar} />)}
+        {showSideBar && <SideBar toggleSideBar={toggleSideBar} />}
       </nav>
     </>
   );

@@ -5,9 +5,7 @@ import prisma from "@/prisma/connectDb";
 // import { CheckSecurely, SaveSecurely } from "@/utlis";
 import { NextAuthOptions } from "next-auth";
 import * as z from "zod";
-import {
-  authFormSchema,
-} from "@/components/Pages/signIn_signUp/schema/sign-in-up-schema";
+import { authFormSchema } from "@/components/Pages/signIn_signUp/schema/sign-in-up-schema";
 import { CheckSecurely, SaveSecurely } from "@/utlis";
 
 type FormType = "signin" | "signup";
@@ -46,7 +44,7 @@ export const authOptions: NextAuthOptions = {
         let formSchema = authFormSchema(FormType);
         type FormValuesType = z.infer<typeof formSchema>;
         const result = formSchema!.safeParse(credentials);
-        
+
         if (!result.success) {
           console.error("zod safeParse issue occured", result.error);
           throw new Error("Invalid Input");
@@ -61,7 +59,7 @@ export const authOptions: NextAuthOptions = {
           });
           // SIGN UP FLOW
           if (FormType === "signup") {
-            if (existingUser) { 
+            if (existingUser) {
               throw new Error("User already exists with credentials");
             } else {
               const password = await SaveSecurely(data.password);
@@ -132,7 +130,7 @@ export const authOptions: NextAuthOptions = {
         Object.assign(token.user, dbUser);
       }
 
-      session.user = token.user; // this sets what goes to the frontend
+      session.user = dbUser; // this sets what goes to the frontend
 
       delete session.user.password;
       return session;
@@ -160,6 +158,11 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
   },
+  events: {
+    async signOut() {
+      
+    }
+  }
 };
 const handler = NextAuth(authOptions);
 

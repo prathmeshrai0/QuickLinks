@@ -1,6 +1,7 @@
 import prisma from "@/prisma/connectDb";
 import { isSessionAvailable } from "@/utlis";
 import { schema } from "@/components/Pages/ProjectsPage/schema/projects-schema";
+
 const isProjectCountLimitReached = async userId => {
   const projectsCount = await prisma.allProjects.count({
     where: {
@@ -16,6 +17,8 @@ const isProjectCountLimitReached = async userId => {
     return new Response(JSON.stringify(response));
   }
 };
+
+
 // to update projects
 export async function PUT(req) {
   const session = await isSessionAvailable();
@@ -47,8 +50,7 @@ export async function PUT(req) {
     obj.techStack.forEach(techStackObj => {
       obj.techStack[index++] = techStackObj.tag;
     });
-  });
-  console.log(projects);
+  }); 
   try {
     const updatedProjects = await Promise.all(
       projects.map(projectObj => {
@@ -107,8 +109,7 @@ export async function POST(req) {
     obj.techStack.forEach(techStackObj => {
       obj.techStack[index++] = techStackObj.tag;
     });
-  });
-  console.log(projects);
+  }); 
 
   try {
     const createdProjects = await prisma.allProjects.createMany({
@@ -179,6 +180,15 @@ export async function GET(req) {
   }
   const { searchParams } = new URL(req.url);
   const exists = searchParams.get("exists");
+ 
+
+  let val = await prisma.allProjects.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
+ 
+
   if (exists) {
     const Project = await prisma.allProjects.findFirst({
       where: {
@@ -225,5 +235,11 @@ export async function GET(req) {
       };
     }
   }
+
+      //   response = {
+      //   success: false,
+      //   status: 404,
+      //   message: "testing  ",
+      // };
   return new Response(JSON.stringify(response));
 }

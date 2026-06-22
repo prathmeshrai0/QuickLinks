@@ -9,7 +9,7 @@ import {
 } from "@/utlis/helper";
 import categories_subCat from "@/components/Pages/ProjectsPage/categories_subCat";
 import { fetchFunction } from "@/utlis";
-import { toast ,ToastContentProps  } from "react-toastify";
+import { toast, ToastContentProps } from "react-toastify";
 import { schema } from "../schema/projects-schema";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import zod, { string } from "zod";
@@ -111,9 +111,10 @@ export default (updateInfo: boolean) => {
     SaveToLocalStorage(LSKey, projectDataValue);
   }, [projectDataValue, updateInfo]);
   const Submit = async () => {
+    console.log("tesing")
     const payLoad = {
       projects: projectDataValue,
-    };
+    }; 
     if (updateInfo) {
       fetchFunction("/api/aboutProjects", payLoad, "PUT").then(data => {
         if (data.success) {
@@ -138,7 +139,7 @@ export default (updateInfo: boolean) => {
       });
     }
   };
-  
+
   return {
     categories,
     subcategoryMap,

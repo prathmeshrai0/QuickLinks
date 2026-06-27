@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "quickLinks: Everything you are, in one simple link | Quicklinks",
+  title: "Create a Portfolio Website in Minutes | QuickLinks",
   description:
-    "Generated your link pages within minutes and share across your all social media plateforms",
+    "Build and share your personal portfolio website without coding. Perfect for students, developers, and professionals.",
   verification: {
     google: "7y6fVBMy6SEz6cnep0tFse0DEpaPr8XHk9cVc8ff5j8",
   },

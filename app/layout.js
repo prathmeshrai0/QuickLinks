@@ -6,7 +6,6 @@ import CopyUrlButton from "@/components/CopyUrlButton";
 import ReportIssue from "@/components/ReportIssue";
 import ToastWrapper from "@/components/Pages/ToastWrapper/ToastWrapper";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -21,11 +20,12 @@ export const metadata = {
   title: "quickLinks: Everything you are, in one simple link | Quicklinks",
   description:
     "Generated your link pages within minutes and share across your all social media plateforms",
+  verification: {
+    google: "7y6fVBMy6SEz6cnep0tFse0DEpaPr8XHk9cVc8ff5j8",
+  },
 };
 
 export default async function RootLayout({ children }) {
-
-
   return (
     <html lang="en">
       <body
@@ -36,11 +36,7 @@ export default async function RootLayout({ children }) {
           <CopyUrlButton />
           {/* <ReportIssue /> */}
 
-          <ToastWrapper>
-
-            {children}
-          </ToastWrapper>
-
+          <ToastWrapper>{children}</ToastWrapper>
         </SessionWrapper>
 
         {/* scripts */}

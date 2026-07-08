@@ -1,12 +1,11 @@
 import Image from "next/image";
-import landingSections from "@/components/Pages/landingPage/export";
+import HomePage from "../components/Pages/HomePage/HomePage";
 export default function Home() {
-  const { Intro: Intro  } = landingSections; 
 
   return (
     <>
-      <main className="    "  >
-        <Intro /> 
+      <main className=""  >
+        <HomePage/>
       </main>
 
 

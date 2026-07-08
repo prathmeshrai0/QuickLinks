@@ -1,38 +1,23 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { DeleteFromLocalStorage } from "@/utlis";
-const SocialButton = ({ LSKey }) => {
+import LoadingPage from "@/components/util/Loading/LoadingPage";
+const SocialButton = ({ LSKey ,isSubmitting}) => {
+  const [isOAuthLoading, setIsOAuthLoading] = useState(false);
+ 
   return (
     <>
       <div className="flex flex-col gap-2  items-center     ">
-        {/* 
-                        <button className="   flex items-center bg-white border border-gray-900 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 min-w-3xs  ">
-                            ...Google SVG...
-                            <span>Continue with Google</span>
-                        </button>
-
-                        <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 min-w-3xs  ">
-                            ...LinkedIn SVG...
-                            <span>Continue with LinkedIn</span>
-                        </button>
-
-                        <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 min-w-3xs  ">
-                            ...Twitter SVG...
-                            <span>Continue with Twitter</span>
-                        </button>
-
-                        <button className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 min-w-3xs  ">
-                            ...Facebook SVG...
-                            <span>Continue with Facebook</span>
-                        </button>
-                        */}
+      
         <button
+          disabled={isOAuthLoading || isSubmitting}
           onClick={() => {
+            setIsOAuthLoading(true);
             DeleteFromLocalStorage(LSKey);
             signIn("github");
           }}
-          className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 min-w-3xs  "
+          className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 min-w-3xs disabled:cursor-not-allowed "
         >
           <svg
             className="h-6 w-6 mr-2"

@@ -7,7 +7,7 @@ import {
   RetriveFromLocalStorage,
   SaveToLocalStorage,
 } from "@/utlis/helper";
-import categories_subCat from "@/components/Pages/ProjectsPage/categories_subCat";
+import categories_subCat from "../utils/categories_subCat";
 import { fetchFunction } from "@/utlis";
 import { toast, ToastContentProps } from "react-toastify";
 import { schema } from "../schema/projects-schema";
@@ -24,19 +24,7 @@ export default (updateInfo: boolean) => {
   const useFormMethods = useForm<FormType>({
     resolver: zodResolver(projectSchema) as any,
     mode: "onChange",
-    // defaultValues: {
-    //   TotalProjects: [
-    //     {
-    //       title: "",
-    //       description: "",
-    //       category: "Web Development",
-    //       subcategory: "",
-    //       thumbnail: "",
-    //       link: "",
-    //       techStack: [{ tag: "" }],
-    //     },
-    //   ],
-    // },
+  
   });
   const {
     register,

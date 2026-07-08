@@ -1,10 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/navbar/Navbar";
-import SessionWrapper from "@/components/Pages/sessionWrapper/page";
-import CopyUrlButton from "@/components/CopyUrlButton";
-import ReportIssue from "@/components/ReportIssue";
-import ToastWrapper from "@/components/Pages/ToastWrapper/ToastWrapper";
+import "./globals.css"; 
+import SessionWrapper from "@/components/util/sessionWrapper/page";
+import CopyUrlButton from "@/components/util/CopyUrlButton";
+import ReportIssue from "@/components/util/ReportIssue";
+import ToastWrapper from "@/components/util/ToastWrapper/ToastWrapper";
+import Navbar from "@/components/util/Navbar/Navbar"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,10 +18,52 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Create a Portfolio Website in Minutes | QuickLinks",
+
   description:
     "Build and share your personal portfolio website without coding. Perfect for students, developers, and professionals.",
+    
   verification: {
     google: "7y6fVBMy6SEz6cnep0tFse0DEpaPr8XHk9cVc8ff5j8",
+  },
+
+  keywords: [
+    "portfolio builder",
+    "portfolio website",
+    "developer portfolio",
+    "student portfolio",
+    "portfolio generator",
+    "personal website",
+    "online portfolio",
+    "resume portfolio",
+  ],
+
+  applicationName: "QuickLinks",
+
+  authors: [{ name: "Prathmesh Rai" }],
+
+  creator: "Prathmesh Rai",
+
+  metadataBase: new URL("https://quick-links-three.vercel.app"),
+
+  openGraph: {
+    title: "Create a Portfolio Website in Minutes | QuickLinks",
+    description:
+      "Build and share your personal portfolio website without coding.",
+    url: "https://quick-links-three.vercel.app",
+    siteName: "QuickLinks",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Create a Portfolio Website in Minutes | QuickLinks",
+    description:
+      "Build and share your personal portfolio website without coding.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -29,10 +71,11 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased   bg-white  min-h-screen   text-black      `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background min-h-screen   text-black      `}
       >
         <SessionWrapper>
-          <Navbar />
+          <Navbar/>
+          
           <CopyUrlButton />
           {/* <ReportIssue /> */}
 

@@ -11,19 +11,20 @@ import {
 import { Input } from "../../ui/input";
 import { Button } from "@/components/ui/button";
 import Logo from "@/assets/Logo";
-import SocialButton from "@/components/Pages/signIn_signUp/socialButton";
+import SocialButton from "@/components/Pages/signIn_signUp/utils/socialButton";
 import Image from "next/image";
 import EyeClosed from "@/assets/EyeClose";
 import EyeOpen from "@/assets/EyeOpen";
-import hooks from "./hooks";
+import hooks from "./hook/hooks";
 
 import { useSearchParams } from 'next/navigation';
+import LoadingPage from "@/components/util/Loading/LoadingPage";
 type FormType = "signin" | "signup";
 const SIGN_IN = "sign-in";
 const SIGN_UP = "sign-up";
 const AuthForm = ({ FormType }: { FormType: FormType }) => {
   const params = useSearchParams();
-  const username = params.get('username') ;
+  const username = params.get('username');
   const {
     currentPage,
 
@@ -34,22 +35,28 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
     currentPageIsSignIn,
     register,
     handleSubmit,
-    errors,  
+    errors,
+    isSubmitting,
     LSKey,
-  } = hooks(FormType , username);
-  return (
-    <main className="box border  flex h-screen ">
-      <section className="left  border   lg:w-1/2 w-full  bg-white  text-black max-h-screen overflow-y-scroll    ">
+  } = hooks(FormType, username);
+  
+
+  
+
+  if(isSubmitting)return <LoadingPage/>
+  return (<>
+    <main  className="box border  flex h-screen ">
+      <section className="left  border   lg:w-1/2 w-full  bg-background   max-h-screen overflow-y-scroll    ">
         <Logo customClass="h-20 " />
-        <div className="box max-w-[75%] mx-auto flex flex-col  gap-7  bg-gray-50  p-3.5 rounded-sm text-center md:text-sm text-xs     ">
+        <div className="box max-w-[75%] mx-auto flex flex-col  gap-7  bg-muted  p-3.5 rounded-sm text-center md:text-sm text-xs     ">
           <header className="text-center">
-            <h1 className="    text-3xl font-bold">
+            <h1 className="    text-3xl font-bold  ">
               {currentPageIsSignIn<string>(
                 "Welcome Back",
                 "Sign Up To Your Account"
               )}
             </h1>
-            <p className=" text-base   text-gray-500">
+            <p className=" text-base    ">
               {currentPageIsSignIn<string>("Sign in", "Sign up")}  to your QuickLinks
             </p>
           </header>
@@ -77,7 +84,7 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
                 <Field>
                   <FieldLabel htmlFor="username">Username</FieldLabel>
                   <Input
-                    {...register("username") }
+                    {...register("username")}
                     id="username"
                     autoComplete="on"
                     aria-invalid={!!errors.username}
@@ -108,10 +115,10 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
                 </Field>
               </FieldGroup>
             </FieldSet>
-            <Button
+            <Button disabled={isSubmitting}
               size="sm"
-              variant="outline"
-              className="cursor-pointer invert-100"
+              variant="default"
+              className="cursor-pointer bg-primary text-primary-foreground disabled:cursor-not-allowed"
             >
               {/* <Spinner /> */}
               Submit
@@ -120,30 +127,22 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
 
           <h3 className="text-center">OR</h3>
           <div className="authLogin">
-            <SocialButton  LSKey={LSKey}/>
+            <SocialButton  LSKey={LSKey} isSubmitting={isSubmitting} />
           </div>
 
-          {currentPage === SIGN_IN ? (
-            <div className="toggle flex justify-center items-center">
-              <p>Doesn&apos;t have an account?</p>
-              <button
-                onClick={toggle}
-                className="text-purple-500  font-medium cursor-pointer"
-              >
-                Sign up
-              </button>
-            </div>
-          ) : (
-            <div className="toggle flex justify-center items-center">
-              <p>Already Registered</p>
-              <button
-                onClick={toggle}
-                className="text-purple-500  font-medium cursor-pointer"
-              >
-                Sign In
-              </button>
-            </div>
-          )}
+          <div className="toggle flex justify-center items-center">
+            <p>Doesn&apos;t have an account?</p>
+            <button
+              onClick={toggle}
+              className=" underline font-medium cursor-pointer text-secondary"
+            >
+              {currentPage === SIGN_IN ? (
+                "Sign up"
+              ) : (
+                "Sign In"
+              )}
+            </button>
+          </div>
         </div>
       </section>
       <section className="right relative border max-w-1/2 w-1/2   hidden lg:block  ">
@@ -155,6 +154,8 @@ const AuthForm = ({ FormType }: { FormType: FormType }) => {
         />
       </section>
     </main>
+
+  </>
   );
 };
 

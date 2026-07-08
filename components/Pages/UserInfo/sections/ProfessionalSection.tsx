@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import TagInput from "@/components/TagInput";
+import TagInput from "@/components/utilities/TagInput";
 import { isValidURL } from "@/utlis/helper";
 import { Field, FieldError } from "@/components/ui/field";
 import { useFieldArray } from "react-hook-form";

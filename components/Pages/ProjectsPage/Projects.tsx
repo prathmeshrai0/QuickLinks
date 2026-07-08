@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import categories_subCat from "./categories_subCat";
+import categories_subCat from "./utils/categories_subCat";
 import { useSession } from "next-auth/react";
-import LoadingPage from "../Loading/LoadingPage";
+import LoadingPage from "../../util/Loading/LoadingPage";
 import { RetriveFromLocalStorage, SaveToLocalStorage } from "@/utlis/helper";
 import useProjects from "@/components/Pages/ProjectsPage/hook/use-projects";
 import { TrashIcon } from "@heroicons/react/24/solid";
@@ -12,7 +12,7 @@ import { useForm, useFormContext, useFieldArray } from "react-hook-form";
 import { schema } from "./schema/projects-schema";
 import zod, { string } from "zod";
 import { FormProvider } from "react-hook-form";
-import TechStackComp from "./TechStackComp";
+import TechStackComp from "./utils/TechStackComp";
 
 import { Button } from "@/components/ui/button";
 import { fetchFunction } from "@/utlis";

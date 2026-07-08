@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { authFormSchema } from "./schema/sign-in-up-schema";
+import { authFormSchema } from "../schema/sign-in-up-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -13,22 +13,24 @@ import {
   RetriveFromLocalStorage,
   SaveToLocalStorage,
 } from "@/utlis";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"; 
+
 
 type FormType = "signin" | "signup";
 const SIGN_IN = "sign-in";
 const SIGN_UP = "sign-up";
 export default function (FormType: FormType, username: string) {
+
   const [currentPage, setCurrentPage] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const formSchema = authFormSchema(FormType);
-  const { data: session } = useSession();
+  const { data: session ,status } = useSession();
   type FormValuesType = z.infer<typeof formSchema>;
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors ,isSubmitting },
     watch,
     reset,
     setValue,
@@ -38,7 +40,7 @@ export default function (FormType: FormType, username: string) {
   const LSKey: FormType = FormType;
   const formFieldsValue = watch();
   const [isShowPassword, setisShowPassword] = useState(false);
-  console.log(errors)
+
   const onSubmit: SubmitHandler<FormValuesType> = async data => {
     const sendingData = { ...data, FormType }; 
     
@@ -52,6 +54,7 @@ export default function (FormType: FormType, username: string) {
       console.error("SignIn/Up Error: ", res.error);
     }
   };
+
   const togglePassword = () => {
     setisShowPassword(!isShowPassword);
   };
@@ -59,6 +62,7 @@ export default function (FormType: FormType, username: string) {
   useEffect(() => {
     reset(RetriveFromLocalStorage(LSKey));
   }, []);
+
   useEffect(() => {
     pathname === "/sign-in" ? setCurrentPage(SIGN_IN) : setCurrentPage(SIGN_UP);
   }, [pathname]);
@@ -70,8 +74,9 @@ export default function (FormType: FormType, username: string) {
   useEffect(() => {
     SaveToLocalStorage(LSKey, formFieldsValue);
   }, [formFieldsValue]);
+
   useEffect(() => {
-    if (session?.user) {
+    if (status === 'authenticated') {
       fetchFunction("/api/user").then(data => {
         console.log("session user ", session.user);
         if (data.success) {
@@ -122,5 +127,6 @@ export default function (FormType: FormType, username: string) {
     register,
     handleSubmit,
     errors,
+    isSubmitting,
   };
 }

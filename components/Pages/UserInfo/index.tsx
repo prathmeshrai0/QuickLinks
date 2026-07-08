@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import LoadingPage from "../Loading/LoadingPage";
+import LoadingPage from "../../util/Loading/LoadingPage";
 import ProfileSection from "./sections/ProfileSection";
 import PersonalSection from "./sections/PersonalSection";
 import ProfessionalSection from "./sections/ProfessionalSection";

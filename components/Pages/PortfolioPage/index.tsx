@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import LoadingPage from "../Loading/LoadingPage";
+import LoadingPage from "../../util/Loading/LoadingPage";
 import { useRouter } from "next/navigation";
-import Footer from "../../Footer";
+import Footer from "../../util/Footer";
 import Link from "next/link";
 import {
   PhotoIcon,

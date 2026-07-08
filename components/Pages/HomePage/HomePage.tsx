@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import LoadingPage from "../Loading/LoadingPage";
+import LoadingPage from "../../util/Loading/LoadingPage";
 import { useRouter } from "next/navigation";
 import {
   PhotoIcon,
@@ -18,7 +18,7 @@ type User = {
 
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
-const Intro = () => {
+const HomePage = () => {
   const [LatestCustomers, setLatestCustomers] = useState<User[]>()
   const router = useRouter();
   const [username, setusername] = useState("")
@@ -64,14 +64,14 @@ const Intro = () => {
   }
 
   return (
-    <section className="bg-[#254f1a] min-h-[140vh]         ">
+    <section className="   min-h-[140vh]          ">
       <div className=" md:pt-40 pt-32     flex-wrap  justify-center    border-white     flex   md:gap-20  gap-10    text-sm sm:text-base   ">
 
         <div className="claim flex flex-col   sm:w-[60%] gap-9 w-full   text-center px-3      ">
-          <h2 className="font-extrabold md:text-[73px] text-4xl md:leading-[78px] leading-9 break-words md:break-normal text-[#d2e823]    ">
+          <h2 className="font-extrabold md:text-[73px] text-4xl md:leading-[78px] leading-9 break-words md:break-normal text-foreground    ">
             Everything you are. In one, simple link in bio.
           </h2>
-          <p className="font-bold text-[#ededed]   ">
+          <p className="font-bold text-foreground   ">
             Join people using QuickLinks for their link in bio. One link to help
             you share everything you create, curate and show your projects to
             LinkedIn, Instagram, Twitter, YouTube and other social media
@@ -87,14 +87,14 @@ const Intro = () => {
                   required: "Username is required",
                   validate: value =>
                     !/\s/.test(value) || "Username cannot contain spaces",
-                })} className="custom-button text-black font-medium font-mono cursor-text bg-white rounded-lg sm:w-auto    " />
+                })} className="custom-button text-black font-medium font-mono cursor-text bg-muted rounded-lg sm:w-auto border-2 border-black    " />
             </div>
-            <button type="submit" className="custom-button bg-[#e9c0e9] text-black py-4">
+            <button type="submit" className="custom-button border-2 border-black  bg-secondary text-secondary-foreground text-black py-4">
               Claim your Quicklink
             </button>
           </form>
         </div>
-        <div className="max-w-full  p-4 bg-white     rounded-lg shadow-md sm:p-8  m-7 min-h-96 overflow-hidden      ">
+        <div className="max-w-full  p-4 bg-muted    rounded-lg shadow-md sm:p-8  m-7 min-h-96 overflow-hidden  border-2 border-black">
           <div className="flex items-center justify-between mb-4">
             <h5 className="text-xl font-bold leading-none text-gray-900  ">
               Latest Customers
@@ -102,7 +102,7 @@ const Intro = () => {
 
           </div>
 
-          <div className="  border-2  my-4  w-56 sm:w-72 flex  justify-center ">
+          <div className="  border-2  my-4  w-56 sm:w-72 flex  justify-center     ">
             <ul
               role="list"
               className="divide-y divide-gray-200 w-md  overflow-hidden  "
@@ -146,4 +146,4 @@ const Intro = () => {
   );
 };
 
-export default Intro;
+export default HomePage;
